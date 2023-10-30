@@ -53,11 +53,10 @@ namespace Michsky.MUIP
 #elif ENABLE_INPUT_SYSTEM
             if (allowSway == true) { cursorPos = Mouse.current.position.ReadValue(); }
 #endif
-            if(mainCanvas) { 
-                if (mainCanvas.renderMode == RenderMode.ScreenSpaceOverlay) { ProcessOverlay(); }
-                else if (mainCanvas.renderMode == RenderMode.ScreenSpaceCamera) { ProcessSSC(); }
-                else if (mainCanvas.renderMode == RenderMode.WorldSpace) { ProcessWorldSpace(); }
-            }
+
+            if (mainCanvas.renderMode == RenderMode.ScreenSpaceOverlay) { ProcessOverlay(); }
+            else if (mainCanvas.renderMode == RenderMode.ScreenSpaceCamera) { ProcessSSC(); }
+            else if (mainCanvas.renderMode == RenderMode.WorldSpace) { ProcessWorldSpace(); }
         }
 
         void ProcessOverlay()
