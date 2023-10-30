@@ -18,9 +18,9 @@ MonoBehaviour:
   animatedIconColor: {r: 1, g: 1, b: 1, a: 1}
   contextBackgroundColor: {r: 0.21568628, g: 0.29411766, b: 0.37254903, a: 1}
   buttonFont: {fileID: 11400000, guid: 13c94ca6a7b191d4591460686efcab35, type: 2}
-  buttonNormalColor: {r: 0.21568628, g: 0.29411766, b: 0.37254903, a: 255}
-  buttonAccentColor: {r: 1, g: 1, b: 1, a: 255}
-  buttonDisabledAlpha: 0.4
+  buttonNormalColor: {r: 0.3490566, g: 0.3490566, b: 0.3490566, a: 255}
+  buttonAccentColor: {r: 0.09433961, g: 0.04509314, b: 0.04509314, a: 255}
+  buttonDisabledAlpha: 0.407
   dropdownFont: {fileID: 11400000, guid: 4bd810f1cbcb0f446a8f5a31453e243f, type: 2}
   dropdownItemFont: {fileID: 11400000, guid: 4bd810f1cbcb0f446a8f5a31453e243f, type: 2}
   dropdownBackgroundColor: {r: 0.21568628, g: 0.29411766, b: 0.37254903, a: 255}
