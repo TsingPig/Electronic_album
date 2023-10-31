@@ -334,7 +334,7 @@ namespace Michsky.MUIP {
         }
 
         IEnumerator DisablePreviousWindow() {
-            yield return new WaitForSeconds(0.4f);
+            yield return new WaitForSeconds(0.05f);
 
             for(int i = 0; i < windows.Count; i++) {
                 if(i == currentWindowIndex)
