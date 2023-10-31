@@ -166,8 +166,11 @@ namespace Michsky.MUIP {
                 currentWindowAnimator = currentWindow.GetComponent<Animator>();
                 nextWindowAnimator = nextWindow.GetComponent<Animator>();
 
-                currentWindowAnimator.Play(windowFadeOut);
-                nextWindowAnimator.Play(windowFadeIn);
+                if(currentButtonAnimator)
+                    currentWindowAnimator.Play(windowFadeOut);
+                
+                if (nextWindowAnimator)
+                    nextWindowAnimator.Play(windowFadeIn);
 
                 if(cullWindows == true)
                     StartCoroutine("DisablePreviousWindow");
