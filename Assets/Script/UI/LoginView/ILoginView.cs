@@ -1,14 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using MVPFrameWork;
-using System;
+using UnityEngine.UI;
 
 public interface ILoginView : IView
 {
-    string account { get; set; }
+    Text TxtRegisterInputAccount { get; set; }
 
-    string password { get; set; }
+    Text TxtRegisterInputPassWord { get; set; }
 
-    bool isHidden { get; set; }
+    Text TxtRegisterInputSurePassWord { get; set; }
+
+    Text TxtLoginInputAccount { get; set; }
+
+    Text TxtLoginInputPassWord { get; set; }
+
+    Toggle TglLoginChangePasswordState { get; set; }
 }
