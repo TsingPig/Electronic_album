@@ -12,6 +12,37 @@ namespace MVPFrameWork
         {
         }
 
+        private class SingletonTypeNode : ITypeNode
+        {
+            private object _obj;
+
+            private Type _type;
+
+            public object Obj
+            {
+                get
+                {
+                    if (_obj == null)
+                    {
+                        _obj = Activator.CreateInstance(_type);
+                        GenerateInterfaceField(_obj);
+                    }
+
+                    return _obj;
+                }
+            }
+
+            public SingletonTypeNode(Type objType)
+            {
+                _type = objType;
+            }
+
+            public SingletonTypeNode(object obj)
+            {
+                _obj = obj;
+            }
+        }
+
         private class NormalTypeNode : ITypeNode
         {
             public Type objType;
