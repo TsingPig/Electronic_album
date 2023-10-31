@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
-
 namespace MVPFrameWork
 {
     public static class Container
@@ -11,7 +10,6 @@ namespace MVPFrameWork
         private interface ITypeNode
         {
         }
-
         private class SingletonTypeNode : ITypeNode
         {
             private object _obj;
@@ -22,7 +20,7 @@ namespace MVPFrameWork
             {
                 get
                 {
-                    if (_obj == null)
+                    if(_obj == null)
                     {
                         _obj = Activator.CreateInstance(_type);
                         GenerateInterfaceField(_obj);
@@ -42,7 +40,6 @@ namespace MVPFrameWork
                 _obj = obj;
             }
         }
-
         private class NormalTypeNode : ITypeNode
         {
             public Type objType;
