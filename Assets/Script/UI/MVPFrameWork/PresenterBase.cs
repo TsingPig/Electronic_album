@@ -33,25 +33,34 @@ namespace MVPFrameWork
         {
         }
 
+        
         public virtual void OnDestroy()
-        {
-        }
-
-        public virtual void OnHideCompleted()
-        {
-        }
-
-        public virtual void OnHideStart()
-        {
-        }
-
-        public virtual void OnShowCompleted()
         {
         }
 
         public virtual void OnShowStart()
         {
         }
+
+
+        public virtual void OnShowCompleted()
+        {
+        }
+
+
+
+        public virtual void OnHideStart()
+        {
+        }
+
+
+        public virtual void OnHideCompleted()
+        {
+        }
+
+        
+
+        
     }
 
 }
