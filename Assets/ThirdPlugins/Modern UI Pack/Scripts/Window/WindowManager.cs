@@ -334,6 +334,8 @@ namespace Michsky.MUIP {
         }
 
         IEnumerator DisablePreviousWindow() {
+
+            //布局残留
             yield return new WaitForSeconds(0.05f);
 
             for(int i = 0; i < windows.Count; i++) {
