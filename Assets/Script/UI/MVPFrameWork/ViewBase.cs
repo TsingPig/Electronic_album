@@ -59,7 +59,7 @@ namespace MVPFrameWork
 
         public ViewBase()
         {
-            // Presenter = Container.Resolve<TPresenter>();
+            Presenter = Container.Resolve<TPresenter>();
         }
 
         
@@ -137,7 +137,12 @@ namespace MVPFrameWork
 
         public void Destroy()
         {
-            
+            /*
+            OnDestroy();
+            Presenter = null;
+            UnityEngine.Object.DestroyImmediate(_root.gameObject);
+            Singleton<ResManager>.Instance.Unload(_resPath);
+            */
         }
 
         protected abstract void OnCreate();
