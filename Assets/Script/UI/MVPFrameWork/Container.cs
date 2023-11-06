@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
@@ -113,14 +112,14 @@ namespace MVPFrameWork
                     obj = Activator.CreateInstance(normalTypeNode.objType);
                     GenerateInterfaceField(obj);
                 }
-                else if (value2 is SingletonTypeNode)
+                else if(value2 is SingletonTypeNode)
                 {
                     SingletonTypeNode singletonTypeNode = value2 as SingletonTypeNode;
                     obj = singletonTypeNode.Obj;
                 }
             }
 
-            if (obj == null)
+            if(obj == null)
             {
                 Debug.LogErrorFormat("<Ming> ## Uni Error ## Cls:Container Func:Resolve Type:{0}{1} Info:Unregistered", type, (!string.IsNullOrEmpty(name)) ? (" Name:" + name) : string.Empty);
             }
@@ -132,7 +131,7 @@ namespace MVPFrameWork
         {
             name = (string.IsNullOrEmpty(name) ? string.Empty : name);
             Type typeFromHandle = typeof(T);
-            if (!_dic.TryGetValue(typeFromHandle, out var value))
+            if(!_dic.TryGetValue(typeFromHandle, out var value))
             {
                 value = new Dictionary<string, ITypeNode>();
                 _dic[typeFromHandle] = value;
@@ -148,33 +147,33 @@ namespace MVPFrameWork
 
         private static void GenerateInterfaceField(object target, Type type)
         {
-            if (target == null || type == null)
+            if(target == null || type == null)
             {
                 return;
             }
 
             FieldInfo[] fields = type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-            if (fields != null && fields.Length != 0)
+            if(fields != null && fields.Length != 0)
             {
-                foreach (FieldInfo fieldInfo in fields)
+                foreach(FieldInfo fieldInfo in fields)
                 {
-                    if (!(fieldInfo != null) || !fieldInfo.FieldType.IsInterface)
+                    if(!(fieldInfo != null) || !fieldInfo.FieldType.IsInterface)
                     {
                         continue;
                     }
 
                     object[] customAttributes = fieldInfo.GetCustomAttributes(typeof(AutoBuildAttribute), inherit: true);
                     string name = null;
-                    if (customAttributes == null || customAttributes.Length == 0)
+                    if(customAttributes == null || customAttributes.Length == 0)
                     {
                         continue;
                     }
 
                     object[] array = customAttributes;
-                    for (int j = 0; j < array.Length; j++)
+                    for(int j = 0; j < array.Length; j++)
                     {
                         AutoBuildAttribute autoBuildAttribute = (AutoBuildAttribute)array[j];
-                        if (autoBuildAttribute != null)
+                        if(autoBuildAttribute != null)
                         {
                             name = autoBuildAttribute.name;
                             break;
