@@ -19,7 +19,6 @@ public static class UIRegister
     {
         Container.Regist<ILoginPresenter, LoginPresenter>();
         Container.Regist<IView, LoginView>(ViewId.LoginView);
-
         
     }
 }

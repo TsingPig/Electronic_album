@@ -1,11 +1,9 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 
-namespace MVPFrameWork
+namespace MVPFrameWork.Singleton
 {
+
     public abstract class Singleton<T> where T : Singleton<T>
     {
         private static T _instance;
@@ -16,11 +14,11 @@ namespace MVPFrameWork
         {
             get
             {
-                if (_instance == null)
+                if(_instance == null)
                 {
-                    lock (_locker)
+                    lock(_locker)
                     {
-                        if (_instance == null)
+                        if(_instance == null)
                         {
                             _instance = Activator.CreateInstance<T>();
                         }
@@ -33,11 +31,11 @@ namespace MVPFrameWork
 
         protected Singleton()
         {
-            if (GetType() != typeof(T))
+            if(GetType() != typeof(T))
             {
                 throw new InvalidOperationException($"type:{GetType()},T:{typeof(T)}");
             }
         }
     }
-}
 
+}

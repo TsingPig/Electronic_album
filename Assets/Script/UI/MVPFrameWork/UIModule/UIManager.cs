@@ -1,23 +1,36 @@
 using System;
-
+using TsingPigSDK;
+using UnityEngine;
 
 namespace MVPFrameWork
 {
-
     public sealed class UIManager : Singleton<UIManager>, IPopUIModule
     {
         private IPopUIModule _module;
-        public UIManager()
+
+        private void Init()
         {
             _module = new PopUIModule();
         }
-        public void Enter(int viewId,  Action callback = null)
+
+        private new void Awake()
         {
-            _module?.Enter(viewId,callback);
+            base.Awake();
+            Init();
+        }
+
+        public void Enter(int viewId, Action callback = null)
+        {
+            Debug.Log("Enter" + viewId);
+            _module.Enter(viewId, callback);
         }
         public void Quit(int viewId, Action callback = null)
         {
             _module?.Quit(viewId, callback);
+        }
+        public void Preload(int viewId, bool instantiate = true)
+        {
+            _module?.Preload(viewId, instantiate);
         }
 
     }

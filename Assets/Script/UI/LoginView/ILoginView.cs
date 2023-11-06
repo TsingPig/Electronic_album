@@ -14,4 +14,6 @@ public interface ILoginView : IView
     Text TxtLoginInputPassWord { get; set; }
 
     Toggle TglLoginChangePasswordState { get; set; }
+
+    Button BtnLogin { get; set; }
 }

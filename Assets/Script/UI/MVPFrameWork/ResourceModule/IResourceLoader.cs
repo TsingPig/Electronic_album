@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MVPFrameWork.ResourceModule
+namespace MVPFrameWork.Singleton
 {
     public interface IResourceLoader
     {

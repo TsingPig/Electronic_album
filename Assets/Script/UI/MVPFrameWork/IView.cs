@@ -8,6 +8,8 @@ namespace MVPFrameWork
 
         bool Active { get; set; }
 
+        void Preload(Action callback = null, bool instantiate = true);
+
         void Create(Action callback = null);
 
         void Show(Action callback = null);

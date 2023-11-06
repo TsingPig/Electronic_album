@@ -62,7 +62,27 @@ namespace MVPFrameWork
             Presenter = Container.Resolve<TPresenter>();
         }
 
-        
+        public void Preload(Action callback = null, bool instantiate = true)
+        {
+            if(_created)
+            {
+                return;
+            }
+
+            ParseResInfo(out var assetPath, out var _);
+            _resPath = assetPath;
+            UISetting.DefaultResoucesLoader?.LoadAssetAsync(assetPath, delegate (GameObject obj)
+            {
+                if(instantiate)
+                {
+                    OnGetResInfoCompleted(obj);
+                    Active = false;
+                }
+
+                callback?.Invoke();
+            });
+        }
+
         public void Create(Action callback = null)
         {
             
@@ -161,6 +181,108 @@ namespace MVPFrameWork
 
         protected virtual void OnDestroy()
         {
+        }
+
+        private void ParseResInfo(out string assetPath, out bool async)
+        {
+            assetPath = string.Empty;
+            async = false;
+            Type type = GetType();
+            object[] customAttributes = type.GetCustomAttributes(typeof(ResInfoAttribute), inherit: true);
+            if(customAttributes != null)
+            {
+                object[] array = customAttributes;
+                for(int i = 0; i < array.Length; i++)
+                {
+                    ResInfoAttribute resInfoAttribute = (ResInfoAttribute)array[i];
+                    if(resInfoAttribute != null)
+                    {
+                        assetPath = resInfoAttribute.assetPath;
+                        async = resInfoAttribute.async;
+                    }
+                }
+            }
+
+            if(string.IsNullOrEmpty(assetPath))
+            {
+                string name = type.Name;
+                assetPath = "assets/res/ui/" + name + "/" + name + ".prefab";
+            }
+        }
+
+        private Transform ParseParentAttr()
+        {
+            Transform result = null;
+            FindType type = FindType.None;
+            string param = string.Empty;
+            GenerateDefaultParentInfo(ref type, ref param);
+            Type type2 = GetType();
+            object[] customAttributes = type2.GetCustomAttributes(typeof(ParentInfoAttribute), inherit: true);
+            if(customAttributes != null)
+            {
+                object[] array = customAttributes;
+                for(int i = 0; i < array.Length; i++)
+                {
+                    ParentInfoAttribute parentInfoAttribute = (ParentInfoAttribute)array[i];
+                    if(parentInfoAttribute != null)
+                    {
+                        type = parentInfoAttribute.type;
+                        param = parentInfoAttribute.param;
+                    }
+                }
+            }
+
+            switch(type)
+            {
+                case FindType.FindWithTag:
+                result = NodeContainer.FindNodeWithTag(param);
+                break;
+                case FindType.FindWithName:
+                result = NodeContainer.FindNodeWithName(param);
+                break;
+            }
+
+            return result;
+        }
+
+        private void GenerateDefaultParentInfo(ref FindType type, ref string param)
+        {
+            if(UISetting.DefaultParentParam != null)
+            {
+                type = UISetting.DefaultParentParam.findType;
+                param = UISetting.DefaultParentParam.param;
+            }
+            else
+            {
+                type = FindType.FindWithName;
+                param = "Canvas";
+            }
+        }
+
+        private void OnGetResInfoCompleted(GameObject obj)
+        {
+            if(obj != null)
+            {
+                Transform parent = ParseParentAttr();
+                _root = UnityEngine.Object.Instantiate(obj, parent).GetComponent<RectTransform>();
+                if(_root != null)
+                {
+                    _rootCanvas = _root.GetComponent<CanvasGroup>();
+                    if(_rootCanvas == null)
+                    {
+                        _rootCanvas = _root.gameObject.AddComponent<CanvasGroup>();
+                    }
+
+                    OnCreate();
+                    _created = true;
+                    _presenter?.OnCreateCompleted();
+                    return;
+                }
+
+                throw new Exception("<Ming> ## Uni Exception ## Cls:" + GetType().Name + " Func:Create Info:Instantiate failed !");
+            }
+
+            throw new Exception("<Ming> ## Uni Exception ## Cls:" + GetType().Name + " Func:Create Info:Load res failed !");
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TsingPigSDK;
 
 namespace MVPFrameWork
 {
@@ -39,8 +40,7 @@ namespace MVPFrameWork
                 view.Show(callback);
             }
         }
-
-
+        
         public void Quit(int viewId, Action callback = null, bool destroy = false)
         {
             IView view = this[viewId];
@@ -59,6 +59,27 @@ namespace MVPFrameWork
 
                 callback?.Invoke();
             });
+        }
+        
+        public void Preload(int viewId, bool instantiate = true)
+        {
+            Log.Info("Preload");
+            IView view = this[viewId];
+            if(view != null)
+            {
+                return;
+            }
+
+            view = Container.Resolve<IView>(viewId);
+            view?.Preload(delegate
+            {
+                IView view2 = this[viewId];
+                if(instantiate && view2 == null)
+                {
+                    this[viewId] = view;
+                    view.Active = false;
+                }
+            }, instantiate);
         }
 
 

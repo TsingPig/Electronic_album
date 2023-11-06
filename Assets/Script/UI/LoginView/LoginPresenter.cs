@@ -7,6 +7,7 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
 {
     public void OnLogin()
     {
+        Debug.Log(1);
     }
 
     public void OnRegister()

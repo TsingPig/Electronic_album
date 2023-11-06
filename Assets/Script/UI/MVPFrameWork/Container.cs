@@ -136,7 +136,6 @@ namespace MVPFrameWork
                 value = new Dictionary<string, ITypeNode>();
                 _dic[typeFromHandle] = value;
             }
-
             value[name] = node;
         }
 
