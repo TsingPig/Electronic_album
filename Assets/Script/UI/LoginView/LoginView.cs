@@ -1,5 +1,4 @@
 using MVPFrameWork;
-using MVPFrameWork.UIModule;
 using UnityEngine.UI;
 
 [ParentInfo(FindType.FindWithName, ConstDef.CANVAS)]
