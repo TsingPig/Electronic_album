@@ -17,10 +17,6 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 58f02926e152f91428b7f27f7c8337ec
   m_SerializeEntries:
-  - m_GUID: 0f1e5193296401945bcf0ec3fd0fac84
-    m_Address: AlbumItem
-    m_ReadOnly: 0
-    m_SerializedLabels: []
   - m_GUID: 2f230dc9de1093e4b9d37c74b28116af
     m_Address: Assets/Res/UI/LoginView/LoginView.prefab
     m_ReadOnly: 0
