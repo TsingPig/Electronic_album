@@ -8,6 +8,7 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
     public void OnLogin()
     {
         Debug.Log(1);
+        UIManager.Instance.Enter(ViewId.MainView);
     }
 
     public void OnRegister()
