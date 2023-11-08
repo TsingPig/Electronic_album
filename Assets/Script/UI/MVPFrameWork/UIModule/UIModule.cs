@@ -25,6 +25,7 @@ namespace MVPFrameWork
 
         public void Enter(int viewId, Action callback = null)
         {
+            Log.Info("UIModule Enter");
             IView view = this[viewId];
             if(view == null)
             {

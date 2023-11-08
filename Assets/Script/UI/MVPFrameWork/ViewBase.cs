@@ -1,6 +1,6 @@
 
 using System;
-
+using TsingPigSDK;
 using UnityEngine;
 
 
@@ -29,7 +29,7 @@ namespace MVPFrameWork
             set
             {
                 _rootCanvasIsActive = value;
-                _rootCanvas.alpha =  value ? 1f: 0f;
+                _rootCanvas.alpha = value ? 1f : 0f;
                 _rootCanvas.blocksRaycasts = value;
                 _rootCanvas.interactable = value;
             }
@@ -43,13 +43,13 @@ namespace MVPFrameWork
             }
             set
             {
-                if (_presenter != null)
+                if(_presenter != null)
                 {
                     _presenter.Uninstall();
                 }
 
                 _presenter = value as TPresenter;
-                if (_presenter != null)
+                if(_presenter != null)
                 {
                     _presenter.View = this;
                     _presenter.Install();
@@ -85,17 +85,42 @@ namespace MVPFrameWork
 
         public void Create(Action callback = null)
         {
+            if(_created)
+            {
+                callback?.Invoke();
+                return;
+            }
+
+            ParseResInfo(out var assetPath, out var async);
+            _resPath = assetPath;
+            var obj = Res.Load<GameObject>(_resPath);
+            Debug.Log("ViewBase Create" + obj);
             
+            OnGetResInfoCompleted(obj);
+
+            //if(async)
+            //{
+            //    UISetting.DefaultResoucesLoader?.LoadAssetAsync(assetPath, delegate (GameObject obj)
+            //    {
+            //        OnGetResInfoCompleted(obj);
+            //        callback?.Invoke();
+            //    });
+            //}
+            //else
+            //{
+            //    GameObject obj2 = UISetting.DefaultResoucesLoader?.LoadAsset<GameObject>(assetPath);
+            //    OnGetResInfoCompleted(obj2);
+            //    callback?.Invoke();
+            //}
         }
-        
+
 
         public void Show(Action callback = null)
         {
             try
             {
                 _presenter?.OnShowStart();
-            }
-            catch (Exception exception)
+            } catch(Exception exception)
             {
                 Debug.LogException(exception);
             }
@@ -107,16 +132,14 @@ namespace MVPFrameWork
                     try
                     {
                         _presenter?.OnShowCompleted();
-                    }
-                    catch (Exception exception3)
+                    } catch(Exception exception3)
                     {
                         Debug.LogException(exception3);
                     }
 
                     callback?.Invoke();
                 });
-            }
-            catch (Exception exception2)
+            } catch(Exception exception2)
             {
                 Debug.LogException(exception2);
             }
@@ -127,8 +150,7 @@ namespace MVPFrameWork
             try
             {
                 _presenter?.OnHideStart();
-            }
-            catch (Exception exception)
+            } catch(Exception exception)
             {
                 Debug.LogException(exception);
             }
@@ -140,16 +162,14 @@ namespace MVPFrameWork
                     try
                     {
                         _presenter?.OnHideCompleted();
-                    }
-                    catch (Exception exception3)
+                    } catch(Exception exception3)
                     {
                         Debug.LogException(exception3);
                     }
 
                     callback?.Invoke();
                 });
-            }
-            catch (Exception exception2)
+            } catch(Exception exception2)
             {
                 Debug.LogException(exception2);
             }
@@ -206,8 +226,9 @@ namespace MVPFrameWork
             if(string.IsNullOrEmpty(assetPath))
             {
                 string name = type.Name;
-                assetPath = "assets/res/ui/" + name + "/" + name + ".prefab";
+                assetPath = "Assets/Res/UI/" + name + "/" + name + ".prefab";
             }
+            Debug.Log("ViewBase" + assetPath);
         }
 
         private Transform ParseParentAttr()
