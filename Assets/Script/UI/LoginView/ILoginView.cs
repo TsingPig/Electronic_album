@@ -1,3 +1,4 @@
+using Michsky.MUIP;
 using MVPFrameWork;
 using UnityEngine.UI;
 
@@ -15,5 +16,5 @@ public interface ILoginView : IView
 
     Toggle TglLoginChangePasswordState { get; set; }
 
-    Button BtnLogin { get; set; }
+    ButtonManager BtnLogin { get; set; }
 }

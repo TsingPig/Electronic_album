@@ -85,6 +85,7 @@ namespace MVPFrameWork
 
         public void Create(Action callback = null)
         {
+
             if(_created)
             {
                 callback?.Invoke();
