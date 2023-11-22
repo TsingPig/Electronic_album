@@ -268,7 +268,7 @@ MonoBehaviour:
   m_text: "\u6731\u6B63\u9633"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 13c94ca6a7b191d4591460686efcab35, type: 2}
-  m_sharedMaterial: {fileID: 6277242281737497577, guid: 13c94ca6a7b191d4591460686efcab35, type: 2}
+  m_sharedMaterial: {fileID: 5802694236505231938, guid: 13c94ca6a7b191d4591460686efcab35, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -441,7 +441,7 @@ MonoBehaviour:
   m_text: "\u9EBB\u86CB\u600E\u4E48\u4E00\u5929\u5929\u4F5C\u4E1A\u8FD9\u4E48\u591A\u7684\u3002\u6211\u4ED6\u5988\u5E27\u7684\u662F\u670D\u4E86\u9EBB\u86CB\u600E\u4E48\u4E00\u5929\u5929\u4F5C\u4E1A\u8FD9\u4E48\u591A\u7684\u3002\u6211\u4ED6\u5988\u5E27\u7684\u662F\u670D\u4E86\u9EBB\u86CB\u600E\u4E48\u4E00\u5929\u5929\u4F5C\u4E1A\u8FD9\u4E48\u591A\u7684\u3002\u6211\u4ED6\u5988\u5E27\u7684\u662F\u670D\u4E86\u9EBB\u86CB\u600E\u4E48\u4E00\u5929\u5929\u4F5C\u4E1A\u8FD9\u4E48\u591A\u7684\u3002\u6211\u4ED6\u5988\u5E27\u7684\u662F\u670D\u4E86\u9EBB\u86CB\u600E\u4E48\u4E00\u5929\u5929\u4F5C\u4E1A\u8FD9\u4E48\u591A\u7684\u3002\u6211\u4ED6\u5988\u5E27\u7684\u662F\u670D\u4E86\u9EBB\u86CB\u600E\u4E48\u4E00\u5929\u5929\u4F5C\u4E1A\u8FD9\u4E48\u591A\u7684\u3002\u6211\u4ED6\u5988\u5E27\u7684\u662F\u670D\u4E86"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 13c94ca6a7b191d4591460686efcab35, type: 2}
-  m_sharedMaterial: {fileID: 6277242281737497577, guid: 13c94ca6a7b191d4591460686efcab35, type: 2}
+  m_sharedMaterial: {fileID: 5802694236505231938, guid: 13c94ca6a7b191d4591460686efcab35, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1335,7 +1335,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 4
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
@@ -1352,7 +1352,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8815615162367632527}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -1583,7 +1583,7 @@ PrefabInstance:
     - target: {fileID: 4367624745131776704, guid: 8f8ac6bf5ee57d345bf7844e60c09a90, type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: 6277242281737497577, guid: 13c94ca6a7b191d4591460686efcab35, type: 2}
+      objectReference: {fileID: 5802694236505231938, guid: 13c94ca6a7b191d4591460686efcab35, type: 2}
     - target: {fileID: 4462002431645603127, guid: 8f8ac6bf5ee57d345bf7844e60c09a90, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1639,7 +1639,7 @@ PrefabInstance:
     - target: {fileID: 5253886921964767381, guid: 8f8ac6bf5ee57d345bf7844e60c09a90, type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: 6277242281737497577, guid: 13c94ca6a7b191d4591460686efcab35, type: 2}
+      objectReference: {fileID: 5802694236505231938, guid: 13c94ca6a7b191d4591460686efcab35, type: 2}
     - target: {fileID: 6444176693128171073, guid: 8f8ac6bf5ee57d345bf7844e60c09a90, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

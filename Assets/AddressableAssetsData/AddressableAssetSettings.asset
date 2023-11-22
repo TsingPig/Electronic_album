@@ -57,9 +57,23 @@ MonoBehaviour:
       - m_Id: 8f9f51f0d2c8dd84b97e6132abc53348
         m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
       - m_Id: ff985a08903192244ac64affc11920d4
-        m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/Android'
+        m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
       - m_Id: 5093d418913a82f4790539088745c35b
-        m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/Android'
+        m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
+      - m_Id: c0ae00116ff3ec94b91815507a8d6439
+        m_Value: ServerData/[BuildTarget]
+      - m_Id: e90e14fe30b4c7b489a946085b3728d1
+        m_Value: http://[PrivateIpAddress]:[HostingServicePort]
+    - m_InheritedParent: 
+      m_Id: f9f7346f16860604e96dacfb19085c31
+      m_ProfileName: Android
+      m_Values:
+      - m_Id: 8f9f51f0d2c8dd84b97e6132abc53348
+        m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
+      - m_Id: ff985a08903192244ac64affc11920d4
+        m_Value: D:\--UnityProject\Electronic_Album_git\Buid
+      - m_Id: 5093d418913a82f4790539088745c35b
+        m_Value: D:\--UnityProject\Electronic_Album_git\Buid
       - m_Id: c0ae00116ff3ec94b91815507a8d6439
         m_Value: ServerData/[BuildTarget]
       - m_Id: e90e14fe30b4c7b489a946085b3728d1

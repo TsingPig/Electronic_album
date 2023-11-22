@@ -447,7 +447,7 @@ MonoBehaviour:
   m_text: "\u5B63\u6DA6\u6C11"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 13c94ca6a7b191d4591460686efcab35, type: 2}
-  m_sharedMaterial: {fileID: 6277242281737497577, guid: 13c94ca6a7b191d4591460686efcab35, type: 2}
+  m_sharedMaterial: {fileID: 5802694236505231938, guid: 13c94ca6a7b191d4591460686efcab35, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -917,9 +917,9 @@ RectTransform:
   m_Father: {fileID: 6526248079899371696}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 482.125, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 482.125, y: -123.5}
   m_SizeDelta: {x: 964.25, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4900115604605146152
@@ -953,7 +953,7 @@ MonoBehaviour:
   m_text: "\u5417\u7684ICPC\u62FF\u4E86\u4E2A\u94F6\u724C\u3002\u3002\u3002\u4E0B\u6B21\u4E89\u53D6\u62FF\u91D1\u724C"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 13c94ca6a7b191d4591460686efcab35, type: 2}
-  m_sharedMaterial: {fileID: 6277242281737497577, guid: 13c94ca6a7b191d4591460686efcab35, type: 2}
+  m_sharedMaterial: {fileID: 5802694236505231938, guid: 13c94ca6a7b191d4591460686efcab35, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
