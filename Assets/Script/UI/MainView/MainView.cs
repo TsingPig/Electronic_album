@@ -3,12 +3,15 @@ using MVPFrameWork;
 using System;
 using System.Diagnostics;
 using TsingPigSDK;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
 [ParentInfo(FindType.FindWithName, ConstDef.CANVAS)]
 public class MainView : ViewBase<IMainPresenter>, IMainView
 {
+
+
     //private Text _txtRegisterInputAccount;
     //private Text _txtRegisterInputPassword;
     //private Text _txtRegisterInputSurePassWord;
@@ -41,6 +44,6 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
     //}
     protected override void OnCreate()
     {
-
+     
     }
 }

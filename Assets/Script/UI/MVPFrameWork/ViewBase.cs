@@ -83,7 +83,7 @@ namespace MVPFrameWork
             });
         }
 
-        public void Create(Action callback = null)
+        public async void Create(Action callback = null)
         {
 
             if(_created)
@@ -94,8 +94,9 @@ namespace MVPFrameWork
 
             ParseResInfo(out var assetPath, out var async);
             _resPath = assetPath;
-            var obj = Res.Load<GameObject>(_resPath);
-            Debug.Log("ViewBase Create" + obj);
+            var handle = Res<GameObject>.LoadAsync(_resPath);
+            await handle;
+            GameObject obj = handle.Result;
             
             OnGetResInfoCompleted(obj);
 

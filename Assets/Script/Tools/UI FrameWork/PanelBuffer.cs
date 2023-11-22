@@ -78,7 +78,7 @@ namespace TsingPigSDK
                 else
                 {
                     Log.Info("InstantiateSingleUI");
-                    GameObject uiAsset = Res.Load<GameObject>(type.Name);
+                    GameObject uiAsset = Res<GameObject>.Load(type.Name);
                     GameObject ui = GameObject.Instantiate(uiAsset, parent.transform);
                     ui.name = type.Name;
                     _dicUI.Add(type, ui);

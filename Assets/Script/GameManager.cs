@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using TsingPigSDK;
 using UIManager = MVPFrameWork.UIManager;
+using UnityEngine.AddressableAssets;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -14,6 +15,7 @@ public class GameManager : Singleton<GameManager>
     }
     private void Init()
     {
+        Addressables.InitializeAsync();
         UIRegister.RegisterAll();
     }
 

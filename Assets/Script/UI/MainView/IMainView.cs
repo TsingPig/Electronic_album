@@ -1,9 +1,11 @@
 using Michsky.MUIP;
 using MVPFrameWork;
+using UnityEngine;
 using UnityEngine.UI;
 
 public interface IMainView : IView
 {
+
     //Text TxtRegisterInputAccount { get; set; }
 
     //Text TxtRegisterInputPassWord { get; set; }
