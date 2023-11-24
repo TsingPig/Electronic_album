@@ -35,6 +35,8 @@ public class MySQLManager : Singleton<MySQLManager>
         string[] values = { "aaa", "aaa", "aaa" };
 
         _mySQLAccess.Insert("useraccount", columns, values);
+
+        //_mySQLAccess.ShowTables();
     }
     private void Init()
     {

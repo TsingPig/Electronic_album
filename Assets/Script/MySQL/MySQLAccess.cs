@@ -1,7 +1,8 @@
 using MySql.Data.MySqlClient;
 using System;
+using System.Collections.Generic;
 using System.Data;
-
+using System.Diagnostics;
 
 namespace TsingPigSDK
 {
@@ -46,8 +47,7 @@ namespace TsingPigSDK
         {
             try
             {
-                string mySqlString = string.Format("Database={0};Data Source={1};User Id={2};Password={3};port={4}"
-                    , databaseName, host, userName, password, port);
+                string mySqlString = string.Format("server = {0};port={1};database = {2};user = {3};password = {4};", host, port, databaseName, userName, password);
                 mySqlConnection = new MySqlConnection(mySqlString);
                 //if(mySqlConnection.State == ConnectionState.Closed)
                 mySqlConnection.Open();
@@ -143,8 +143,8 @@ namespace TsingPigSDK
                 throw new Exception("输入不正确：" + "要插入的列和值的数量不一致！");
             }
 
-            string query = $"INSERT INTO {tableName} ({string.Join(",", columns)}) VALUES ('{string.Join("','", values)}')";
-
+            string query = $"INSERT INTO  ```{tableName}```  ({string.Join(",", columns)}) VALUES ('{string.Join("','", values)}')";
+            Log.Info($"插入数据{query}");
             ExecuteNonQuery(query);
         }
 
@@ -167,6 +167,35 @@ namespace TsingPigSDK
                     throw new Exception("SQL:" + sqlString + "\n" + e.Message.ToString());
                 }
             }
+        }
+
+
+        /// <summary>
+        /// 显示Table列表
+        /// </summary>
+        /// <returns></returns>
+        public List<string> ShowTables()
+        {
+            string query = "SHOW TABLES";
+            DataSet result = QuerySet(query);
+
+            if(result != null && result.Tables.Count > 0)
+            {
+                List<string> tableNames = new List<string>();
+
+                foreach(DataRow row in result.Tables[0].Rows)
+                {
+                    tableNames.Add(row[0].ToString());
+                }
+
+                foreach(string tableName in tableNames)
+                {
+                    Log.Info(tableName);
+                }
+                return tableNames;
+            }
+
+            return null;
         }
 
     }
