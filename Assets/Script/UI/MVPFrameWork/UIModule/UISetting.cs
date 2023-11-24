@@ -11,8 +11,10 @@ namespace MVPFrameWork
     {
         public static IResourceLoader DefaultResoucesLoader = Singleton<ResManager>.Instance;
 
+
         public static ParentParam DefaultParentParam = ParentParam.Default;
     }
+
 
     internal static class NodeContainer
     {
