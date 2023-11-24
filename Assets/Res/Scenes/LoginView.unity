@@ -2485,11 +2485,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8c5332cf06308c43bc14d54e98b9f00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  host: 172.16.0.3
-  port: 3306
+  host: gz-cynosdbmysql-grp-nlpmzwov.sql.tencentcdb.com
+  port: 21462
   userName: Tsingpig2
   password: 123asd**
-  databaseName: useraccount
+  databaseName: electronic_album
 --- !u!1 &1285260224
 GameObject:
   m_ObjectHideFlags: 0
