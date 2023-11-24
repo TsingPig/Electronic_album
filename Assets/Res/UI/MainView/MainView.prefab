@@ -5688,7 +5688,7 @@ MonoBehaviour:
     windowObject: {fileID: 5295912175433614945}
     buttonObject: {fileID: 1631542762869614823}
     firstSelected: {fileID: 0}
-  currentWindowIndex: 0
+  currentWindowIndex: 1
   cullWindows: 1
   initializeButtons: 1
   onWindowChange:
@@ -10556,7 +10556,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5288815193716536056, guid: 07a5e75f8c3bb6446971bd251480584c, type: 3}
       propertyPath: m_Alpha
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5378220070635328820, guid: 07a5e75f8c3bb6446971bd251480584c, type: 3}
       propertyPath: m_AnchorMax.x
@@ -10811,7 +10811,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 796749779082292633, guid: 0c3f0088a493168438ab72e0c951fe6a, type: 3}
       propertyPath: m_Alpha
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1269193407681811434, guid: 0c3f0088a493168438ab72e0c951fe6a, type: 3}
       propertyPath: m_AnchorMax.y
