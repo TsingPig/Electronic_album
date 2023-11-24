@@ -89,19 +89,40 @@ namespace TsingPigSDK
             {
                 throw new Exception("输入不正确：" + "要查询的条件、条件操作符、条件值 的数量不一致！");
             }
-            string query = "Select " + items[0];
+
+            string query = $"SELECT `{items[0]}`";
             for(int i = 1; i < items.Length; i++)
             {
-                query += "," + items[i];
+                query += $", `{items[i]}`";
             }
 
-            query += " FROM " + tableName + " WHERE " + whereColumnName[0] + " " + operation[0] + " '" + value[0] + "'";
+            query += $" FROM ```{tableName}``` WHERE `{whereColumnName[0]}` {operation[0]} '{value[0]}'";
             for(int i = 1; i < whereColumnName.Length; i++)
             {
-                query += " and " + whereColumnName[i] + " " + operation[i] + " '" + value[i] + "'";
+                query += $" AND `{whereColumnName[i]}` {operation[i]} '{value[i]}'";
             }
-            return QuerySet(query);
+            DataSet result = QuerySet(query);
+            Log.LogQueryResult(result);
+            return result;
+        }
 
+        /// <summary>
+        /// 查询全部
+        /// </summary>
+        /// <param name="tableName"></param>
+        /// <param name="wildcard"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public DataSet Select(string tableName, string wildcard)
+        {
+            if(wildcard != "*")
+            {
+                throw new ArgumentException("Wildcard must be '*'.", nameof(wildcard));
+            }
+            string query = $"SELECT * FROM ```{tableName}```";
+            DataSet result = QuerySet(query);
+            Log.LogQueryResult(result);
+            return result;
         }
 
         /// <summary>
@@ -174,7 +195,7 @@ namespace TsingPigSDK
         /// 显示Table列表
         /// </summary>
         /// <returns></returns>
-        public List<string> ShowTables()
+        private List<string> ShowTables()
         {
             string query = "SHOW TABLES";
             DataSet result = QuerySet(query);
@@ -197,6 +218,7 @@ namespace TsingPigSDK
 
             return null;
         }
+
 
     }
 
