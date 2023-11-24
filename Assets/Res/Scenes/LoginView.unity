@@ -2438,6 +2438,7 @@ GameObject:
   m_Component:
   - component: {fileID: 962137852}
   - component: {fileID: 962137853}
+  - component: {fileID: 962137854}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2472,6 +2473,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8953031cfd4ca54fb5b9a434ef81940, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &962137854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 962137851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8c5332cf06308c43bc14d54e98b9f00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  host: 172.16.0.3
+  port: 3306
+  userName: Tsingpig2
+  password: 123asd**
+  databaseName: useraccount
 --- !u!1 &1285260224
 GameObject:
   m_ObjectHideFlags: 0
@@ -2507,7 +2525,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
 --- !u!114 &1285260226
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2634,8 +2652,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Start
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 13c94ca6a7b191d4591460686efcab35, type: 2}
-  m_sharedMaterial: {fileID: 5802694236505231938, guid: 13c94ca6a7b191d4591460686efcab35, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c4bd322654d21d74a9e1522f523faa0c, type: 2}
+  m_sharedMaterial: {fileID: -2968960263547407295, guid: c4bd322654d21d74a9e1522f523faa0c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

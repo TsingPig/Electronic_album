@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System.Data;
 using TsingPigSDK;
 using UnityEngine;
@@ -17,50 +18,24 @@ public class MySQLManager : Singleton<MySQLManager>
     //数据库名称
     public string databaseName;
     //封装好的数据库类
-    MySQLAccess mysql;
+    MySQLAccess _mySQLAccess;
 
 
     private void Start()
     {
-        mysql = new MySQLAccess(host, port, userName, password, databaseName);
+        _mySQLAccess = new MySQLAccess(host, port, userName, password, databaseName);
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    [Button("注册测试")]
+    public void Register()
     {
-        if(eventData.pointerPress.name == "loginButton")
-        {     //如果当前按下的按钮是注册按钮 
-            OnClickedLoginButton();
-        }
-    }
+        _mySQLAccess = new MySQLAccess(host, port, userName, password, databaseName);
 
-    /// <summary>
-    /// 按下登录按钮
-    /// </summary>
-    private void OnClickedLoginButton()
-    {
-        mysql.OpenSql();
-        string loginMsg = "";
-        DataSet ds = mysql.Select
-            ("useraccount", new string[] { "level" },
-            new string[] { "`" + "account" + "`", "`" + "password" + "`" },
-            new string[] { "=", "=" },
-            new string[] { });
-        if(ds != null)
-        {
-            DataTable table = ds.Tables[0];
-            if(table.Rows.Count > 0)
-            {
-                loginMsg = "登陆成功！";
-                Debug.Log("用户权限等级：" + table.Rows[0][0]);
-            }
-            else
-            {
-                loginMsg = "用户名或密码错误！";
-            }
-        }
-        mysql.CloseSql();
-    }
+        string[] columns = { "account", "nick_name", "password" };
+        string[] values = { "aaa", "aaa", "aaa" };
 
+        _mySQLAccess.Insert("useraccount", columns, values);
+    }
     private void Init()
     {
 
