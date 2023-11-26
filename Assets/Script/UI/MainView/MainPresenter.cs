@@ -7,58 +7,41 @@ using UnityEngine.UI;
 [Serializable]
 public class UserInformation
 {
-    public string account;
+    public string userName;
     public string nickName;
     public string iconPath;
 }
 
 public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
 {
+    #region UserInformation
     private static string FilePath => "Assets/Resources/UserInformation";
     private static string userDataFileName = "userData.json";
     private static string iconFolder = "icons";
+
 
     /// <summary>
     /// 检查本地是否有用户信息，如果有则自动登录
     /// </summary>
     /// <param name="userData"></param>
     /// <returns></returns>
-    public static bool TryAutoLogin(out UserInformation userData)
+    public UserInformation LoadUserInformation()
     {
-        string filePath = Path.Combine(FilePath, userDataFileName);
-
-        if(File.Exists(filePath))
+        UserInformation userInformation = null;
+        string filePath = Path.Combine("Assets/Resources/UserInformation", "userData.json");
+        if(GameManager.Instance.UserInformationCached)
         {
             string json = File.ReadAllText(filePath);
-            userData = JsonUtility.FromJson<UserInformation>(json);
-
+            userInformation = JsonUtility.FromJson<UserInformation>(json);
+            Debug.Log(json);
             // 加载头像
-            if(!string.IsNullOrEmpty(userData.iconPath))
-            {
-                userData.iconPath = Loadicon(userData.iconPath);
-            }
-
-            return true;
+            PresentUserInformation(userInformation);
         }
-
-        userData = null;
-        return false;
+        return userInformation;
     }
 
-    /// <summary>
-    /// 加载头像
-    /// </summary>
-    /// <param name="iconPath"></param>
-    /// <returns></returns>
-    private static string Loadicon(string iconPath)
-    {
-        if(File.Exists(iconPath))
-        {
-            return iconPath;
-        }
 
-        return null;
-    }
+
 
     /// <summary>
     /// 登录时调用，保存用户信息和头像到本地
@@ -70,7 +53,7 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
     {
         UserInformation userData = new UserInformation
         {
-            account = account,
+            userName = account,
             nickName = nickName,
             iconPath = SaveIcon(account, icon)
         };
@@ -83,8 +66,45 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
         Debug.Log($"缓存信息：账号：{account}   昵称：{nickName}   图像：{icon.name}");
     }
 
-    
-    // 保存头像到本地，并返回保存的路径
+    /// <summary>
+    /// 呈现视图层中的用户信息
+    /// </summary>
+    /// <param name="userInformation"></param>
+    private void PresentUserInformation(UserInformation userInformation)
+    {
+        _view.TxtUserName.text = userInformation.userName;
+        _view.TxtNickName.text = userInformation.nickName;
+        Texture2D texture = LoadIconTexture(userInformation.iconPath);
+        _view.BtnUserIcon.GetComponent<Image>().sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+    }
+
+
+    /// <summary>
+    /// 用户退出登录时调用，清除用户信息和头像文件
+    /// </summary>
+    public void ClearUserInformationCache()
+    {
+        string filePath = Path.Combine(FilePath, userDataFileName);
+        if(File.Exists(filePath))
+        {
+            File.Delete(filePath);
+        }
+
+        // 清除头像文件夹
+        string iconFolderPath = Path.Combine(FilePath, iconFolder);
+        if(Directory.Exists(iconFolderPath))
+        {
+            Directory.Delete(iconFolderPath, true);
+        }
+        Debug.Log("清除用户信息缓存");
+    }
+
+    /// <summary>
+    ///  保存头像到本地，并返回保存的路径
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="icon"></param>
+    /// <returns></returns>
     private string SaveIcon(string account, Texture2D icon)
     {
         string iconPath = Path.Combine(FilePath, iconFolder);
@@ -100,53 +120,18 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
         return iconPath;
     }
 
-
-
-    // 用户退出登录时调用，清除用户信息和头像文件
-    public void ClearUserData()
+    /// <summary>
+    /// 加载头像纹理
+    /// </summary>
+    /// <param name="iconPath"></param>
+    /// <returns></returns>
+    private Texture2D LoadIconTexture(string iconPath)
     {
-        string filePath = Path.Combine(FilePath, userDataFileName);
-        if(File.Exists(filePath))
-        {
-            File.Delete(filePath);
-        }
-
-        // 清除头像文件夹
-        string iconFolderPath = Path.Combine(FilePath, iconFolder);
-        if(Directory.Exists(iconFolderPath))
-        {
-            Directory.Delete(iconFolderPath, true);
-        }
+        byte[] fileData = File.ReadAllBytes(iconPath);
+        Texture2D texture = new Texture2D(200, 200);
+        texture.LoadImage(fileData);
+        return texture;
     }
-
-    // 在加载用户信息时调用，将头像赋值给Button的Image组件
-    public void SeticonImage(string iconPath)
-    {
-        if(_view.BtnUserIcon != null && !string.IsNullOrEmpty(iconPath))
-        {
-            Texture2D texture = LoadiconTexture(iconPath);
-            if(texture != null)
-            {
-                Image image = _view.BtnUserIcon.GetComponent<Image>();
-                if(image != null)
-                {
-                    image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
-                }
-            }
-        }
-    }
-
-    // 加载头像纹理
-    private Texture2D LoadiconTexture(string iconPath)
-    {
-        if(File.Exists(iconPath))
-        {
-            byte[] fileData = File.ReadAllBytes(iconPath);
-            Texture2D texture = new Texture2D(2, 2); // You may need to adjust the size as per your requirement
-            texture.LoadImage(fileData); // LoadImage automatically resizes the texture
-            return texture;
-        }
-
-        return null;
-    }
+    #endregion
 }
+
