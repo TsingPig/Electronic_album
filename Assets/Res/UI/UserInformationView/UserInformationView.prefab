@@ -1837,7 +1837,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8158584478756518722, guid: 3be31192c40a9e041870e56a8f50ed33, type: 3}
       propertyPath: m_Name
-      value: btnUpdate
+      value: btnEnterPhotoWall
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3be31192c40a9e041870e56a8f50ed33, type: 3}
@@ -1939,7 +1939,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8158584478756518722, guid: 3be31192c40a9e041870e56a8f50ed33, type: 3}
       propertyPath: m_Name
-      value: btnUpdate
+      value: btnUpdateNickName
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3be31192c40a9e041870e56a8f50ed33, type: 3}
@@ -2041,7 +2041,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8158584478756518722, guid: 3be31192c40a9e041870e56a8f50ed33, type: 3}
       propertyPath: m_Name
-      value: btnUpdate
+      value: btnUpdateUserIcon
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3be31192c40a9e041870e56a8f50ed33, type: 3}

@@ -5,18 +5,21 @@ using UnityEngine.UI;
 
 public interface IMainView : IView
 {
+    #region UserInformationView
 
-    //Text TxtRegisterInputAccount { get; set; }
+    Text TxtUserName { get; set; }
 
-    //Text TxtRegisterInputPassWord { get; set; }
+    Button BtnUserIcon { get; set; }
 
-    //Text TxtRegisterInputSurePassWord { get; set; }
+    Button BtnUpdateUserIcon { get; set; }
 
-    //Text TxtLoginInputAccount { get; set; }
+    Text TxtNickName { get; set; }
 
-    //Text TxtLoginInputPassWord { get; set; }
+    Button BtnUpdateNickName { get; set; }
 
-    //Toggle TglLoginChangePasswordState { get; set; }
+    Button BtnEnterPhotoWall { get; set; }
 
-    //ButtonManager BtnLogin { get; set; }
+    #endregion
+
+
 }
