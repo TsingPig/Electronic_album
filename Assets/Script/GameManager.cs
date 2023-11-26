@@ -1,17 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
-using UnityEngine;
+using System.IO;
 using TsingPigSDK;
-using UIManager = MVPFrameWork.UIManager;
 using UnityEngine.AddressableAssets;
+using UIManager = MVPFrameWork.UIManager;
 
 public class GameManager : Singleton<GameManager>
 {
-    public void A()
+    public bool UserInformationCached = false;
+    public void ApplicationEntry()
     {
-        UIManager.Instance.Enter(ViewId.LoginView);
-
+        string filePath = Path.Combine("Assets/Resources/UserInformation", "userData.json");
+        if(File.Exists(filePath))
+        {
+            UIManager.Instance.Enter(ViewId.MainView);
+            UserInformationCached = true;
+        }
+        else
+        {
+            UIManager.Instance.Enter(ViewId.LoginView);
+        }
     }
     private void Init()
     {

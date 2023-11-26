@@ -4055,7 +4055,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1400, y: 2500}
+  m_SizeDelta: {x: 1400, y: 2600}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5351857228196862859
 CanvasRenderer:
@@ -4770,7 +4770,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6907039065110741273}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -5116,7 +5116,7 @@ PrefabInstance:
     - target: {fileID: 3582488750705971875, guid: 0f1e5193296401945bcf0ec3fd0fac84, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: e288a317bcfd63942854f4648f7ea6f9, type: 3}
+      objectReference: {fileID: 21300000, guid: c8a8ff25f4aa3cc4c8ede6a3cf1dac92, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f1e5193296401945bcf0ec3fd0fac84, type: 3}
 --- !u!224 &4503983109783013379 stripped

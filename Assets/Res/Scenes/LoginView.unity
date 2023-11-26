@@ -2303,7 +2303,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 962137853}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: A
+        m_MethodName: ApplicationEntry
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

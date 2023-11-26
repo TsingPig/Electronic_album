@@ -1,22 +1,33 @@
 using Michsky.MUIP;
 using MVPFrameWork;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public interface IMainView : IView
 {
 
-    //Text TxtRegisterInputAccount { get; set; }
 
-    //Text TxtRegisterInputPassWord { get; set; }
+    #region TopPanel
+    ButtonManager BtnSetting {  get; set; }
 
-    //Text TxtRegisterInputSurePassWord { get; set; }
+    #endregion
 
-    //Text TxtLoginInputAccount { get; set; }
+    #region UserInformationView
 
-    //Text TxtLoginInputPassWord { get; set; }
+    TMP_Text TxtUserName { get; set; }
 
-    //Toggle TglLoginChangePasswordState { get; set; }
+    Button BtnUserIcon { get; set; }
 
-    //ButtonManager BtnLogin { get; set; }
+    Button BtnUpdateUserIcon { get; set; }
+
+    TMP_Text TxtNickName { get; set; }
+
+    Button BtnUpdateNickName { get; set; }
+
+    Button BtnEnterPhotoWall { get; set; }
+
+    #endregion
+
+
 }

@@ -1,49 +1,61 @@
 using Michsky.MUIP;
 using MVPFrameWork;
-using System;
-using System.Diagnostics;
+using TMPro;
 using TsingPigSDK;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 [ParentInfo(FindType.FindWithName, ConstDef.CANVAS)]
 public class MainView : ViewBase<IMainPresenter>, IMainView
 {
+    #region TopPanel
 
+    private ButtonManager _btnSetting;
+    public ButtonManager BtnSetting { get => _btnSetting; set => _btnSetting = value; }
+   
+    #endregion
+    
+    
+    
+    #region UserInformationView
 
-    //private Text _txtRegisterInputAccount;
-    //private Text _txtRegisterInputPassword;
-    //private Text _txtRegisterInputSurePassWord;
-    //private Text _txtLoginInputAccount;
-    //private Text _txtLoginInputPassword;
-    //private Toggle _tglLoginChangePasswordState;
-    //private ButtonManager _btnLogin;
+    private TMP_Text _txtUserName;
+    private Button _btnUserIcon;
+    private Button _btnUpdateUserIcon;
+    private TMP_Text _txtNickName;
+    private Button _btnUpdateNickName;
+    private Button _btnEnterPhotoWall;
 
-    //public Text TxtRegisterInputAccount { get => _txtRegisterInputAccount; set => _txtRegisterInputAccount = value; }
-    //public Text TxtRegisterInputPassWord { get => _txtRegisterInputPassword; set => _txtRegisterInputPassword = value; }
-    //public Text TxtRegisterInputSurePassWord { get => _txtRegisterInputSurePassWord; set => _txtRegisterInputSurePassWord = value; }
-    //public Text TxtLoginInputAccount { get => _txtLoginInputAccount; set => _txtLoginInputAccount = value; }
-    //public Text TxtLoginInputPassWord { get => _txtLoginInputPassword; set => _txtLoginInputPassword = value; }
-    //public Toggle TglLoginChangePasswordState { get => _tglLoginChangePasswordState; set => _tglLoginChangePasswordState = value; }
-    //public ButtonManager BtnLogin { get => _btnLogin; set => _btnLogin = value; }  
+    public TMP_Text TxtUserName { get => _txtUserName; set => _txtUserName = value; }
+    public Button BtnUserIcon { get => _btnUserIcon; set => _btnUserIcon = value; }
+    public Button BtnUpdateUserIcon { get => _btnUpdateUserIcon; set => _btnUpdateUserIcon = value; }
+    public TMP_Text TxtNickName { get => _txtNickName; set => _txtNickName = value; }
+    public Button BtnUpdateNickName { get => _btnUpdateNickName; set => _btnUpdateNickName = value; }
+    public Button BtnEnterPhotoWall { get => _btnEnterPhotoWall; set => _btnEnterPhotoWall = value; }
 
-    //protected override void OnCreate()
-    //{
+    #endregion
 
-    //    _txtRegisterInputAccount = _root.Find<Text>("Window Manager/Windows/Login/Content/inptAccount");
-    //    _txtRegisterInputPassword = _root.Find<Text>("Window Manager/Windows/Login/Content/inptPassword");
-    //    _txtRegisterInputSurePassWord = _root.Find<Text>("Window Manager/Windows/Login/Content/inptSurePassword");
-
-    //    _txtLoginInputAccount = _root.Find<Text>("Window Manager/Windows/Login/Register/inptAccount");
-    //    _txtLoginInputPassword = _root.Find<Text>("Window Manager/Windows/Login/Register/inptPassword");
-    //    _tglLoginChangePasswordState = _root.Find<Toggle>("Window Manager/Windows/Login/Register/tgglChangePasswordState");
-
-    //    _btnLogin = _root.Find<ButtonManager>("Window Manager/Windows/Login/btnLogin");
-    //    _btnLogin.onClick.AddListener(_presenter.OnLogin);
-    //}
     protected override void OnCreate()
     {
-     
+        #region TopPanel
+
+        _btnSetting = _root.Find<ButtonManager>("TopPanel/btnSetting");
+        _btnSetting.onClick.AddListener(_presenter.ClearUserInformationCache);
+
+        #endregion
+        #region UserInformationView
+
+        _txtUserName = _root.Find<TMP_Text>("Window Manager/Windows/UserInformationView/UserInformationPanel/UserName/txtUserName");
+        _btnUserIcon = _root.Find<Button>("Window Manager/Windows/UserInformationView/UserInformationPanel/UserIconItem/btnUserIcon");
+        _btnUpdateUserIcon = _root.Find<Button>("Window Manager/Windows/UserInformationView/UserInformationPanel/UserIconItem/btnUpdateUserIcon");
+        _txtNickName = _root.Find<TMP_Text>("Window Manager/Windows/UserInformationView/UserInformationPanel/NickNameItem/txtNickName");
+        _btnUpdateNickName = _root.Find<Button>("Window Manager/Windows/UserInformationView/UserInformationPanel/NickNameItem/btnUpdateNickName");
+        _btnEnterPhotoWall = _root.Find<Button>("Window Manager/Windows/UserInformationView/UserInformationPanel/UserPhotoWall/btnEnterPhotoWall");
+        //Texture2D texture = new Texture2D(128, 128);
+        //_presenter.SaveUserInformation("zzy", "÷Ï’˝—Ù", texture.RandomGenerate());
+        _presenter.LoadUserInformation();
+       
+        #endregion
     }
+
 }
