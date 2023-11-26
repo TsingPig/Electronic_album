@@ -7,6 +7,7 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
 {
     public void OnLogin()
     {
+        UIManager.Instance.Quit(ViewId.LoginView);
         UIManager.Instance.Enter(ViewId.MainView);
     }
 

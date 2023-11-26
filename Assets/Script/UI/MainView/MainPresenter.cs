@@ -97,6 +97,10 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
             Directory.Delete(iconFolderPath, true);
         }
         Debug.Log("清除用户信息缓存");
+        GameManager.Instance.UserInformationCached = false;
+        UIManager.Instance.Quit(ViewId.MainView);
+        UIManager.Instance.Enter(ViewId.LoginView);
+
     }
 
     /// <summary>
