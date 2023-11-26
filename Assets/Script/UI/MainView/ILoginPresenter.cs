@@ -5,10 +5,12 @@ using MVPFrameWork;
 
 public interface IMainPresenter : IPresenter
 {
-    //void OnLogin();
-
-    //void OnRegister();
-
-    //void OnSuperLogin();
+    #region UserInformation
+    void SaveUserInformation(string account, string nickName, Texture2D icon);
+    
+    
+    
+    
+    #endregion
 
 }

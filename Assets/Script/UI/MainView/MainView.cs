@@ -10,6 +10,7 @@ using UnityEngine.UI;
 [ParentInfo(FindType.FindWithName, ConstDef.CANVAS)]
 public class MainView : ViewBase<IMainPresenter>, IMainView
 {
+    #region UserInformationView
 
     private Text _txtUserName;
     private Button _btnUserIcon;
@@ -25,23 +26,22 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
     public Button BtnUpdateNickName { get => _btnUpdateNickName; set => _btnUpdateNickName = value; }
     public Button BtnEnterPhotoWall { get => _btnEnterPhotoWall; set => _btnEnterPhotoWall = value; }
 
+    #endregion
 
     protected override void OnCreate()
     {
+        #region UserInformationView
 
-        _txtRegisterInputAccount = _root.Find<Text>("Window Manager/Windows/Login/Content/inptAccount");
-        _txtRegisterInputPassword = _root.Find<Text>("Window Manager/Windows/Login/Content/inptPassword");
-        _txtRegisterInputSurePassWord = _root.Find<Text>("Window Manager/Windows/Login/Content/inptSurePassword");
-
-        _txtLoginInputAccount = _root.Find<Text>("Window Manager/Windows/Login/Register/inptAccount");
-        _txtLoginInputPassword = _root.Find<Text>("Window Manager/Windows/Login/Register/inptPassword");
-        _tglLoginChangePasswordState = _root.Find<Toggle>("Window Manager/Windows/Login/Register/tgglChangePasswordState");
-
-        _btnLogin = _root.Find<ButtonManager>("Window Manager/Windows/Login/btnLogin");
-        _btnLogin.onClick.AddListener(_presenter.OnLogin);
+        _txtUserName = _root.Find<Text>("Window Manager/Windows/UserInformationView/UserInformationPanel/UserName/txtUserName");
+        _btnUserIcon = _root.Find<Button>("Window Manager/Windows/UserInformationView/UserInformationPanel/UserIconItem/btnUserIcon");
+        _btnUserIcon = _root.Find<Button>("Window Manager/Windows/UserInformationView/UserInformationPanel/UserIconItem/btnUpdateUserIcon");
+        _txtNickName = _root.Find<Text>("Window Manager/Windows/UserInformationView/UserInformationPanel/NickNameItem/txtNickName");
+        _btnUpdateNickName = _root.Find<Button>("Window Manager/Windows/UserInformationView/UserInformationPanel/NickNameItem/btnUpdateNickName");
+        _btnEnterPhotoWall = _root.Find<Button>("Window Manager/Windows/UserInformationView/UserInformationPanel/UserPhotoWall/btnEnterPhotoWall");
+        Texture2D texture = new Texture2D(128, 128);
+        _presenter.SaveUserInformation("zzy", "÷Ï’˝—Ù", texture.RandomGenerate());
+        
+        #endregion
     }
-    protected override void OnCreate()
-    {
-     
-    }
+
 }
