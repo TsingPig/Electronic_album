@@ -32,12 +32,22 @@ public class MySQLManager : Singleton<MySQLManager>
         _mySQLAccess = new MySQLAccess(host, port, userName, password, databaseName);
 
         string[] columns = { "account", "nick_name", "password" };
-        string[] values = { "TsingPig", "青猪", "Tsingpig123asd**" };
+        string[] values = { "Tsing", "青猪", "Tsingpig123asd**" };
 
         _mySQLAccess.Insert("useraccount", columns, values);
 
 
         //_mySQLAccess.ShowTables();
+    }
+
+    public void Register(string account, string nick_name, string userPassword)
+    {
+        _mySQLAccess = new MySQLAccess(host, port, userName, password, databaseName);
+
+        string[] columns = { "account", "nick_name", "password" };
+        string[] values = { account, nick_name, userPassword };
+
+        _mySQLAccess.Insert("useraccount", columns, values);
     }
 
     [Button("查询全部")]
