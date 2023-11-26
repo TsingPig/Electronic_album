@@ -14,30 +14,16 @@ public class UserInformation
 
 public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
 {
-    private string FilePath => "Assets/Resources/UserInformation";
-    private const string userDataFileName = "userData.json";
-    private const string iconFolder = "icons";
+    private static string FilePath => "Assets/Resources/UserInformation";
+    private static string userDataFileName = "userData.json";
+    private static string iconFolder = "icons";
 
-    // 登录时调用，保存用户信息和头像到本地
-    public void SaveUserInformation(string account, string nickName, Texture2D icon)
-    {
-        UserInformation userData = new UserInformation
-        {
-            account = account,
-            nickName = nickName,
-            iconPath = SaveIcon(account, icon)
-        };
-
-        string json = JsonUtility.ToJson(userData);
-
-        // 保存到本地文件
-        string filePath = Path.Combine(FilePath, userDataFileName);
-        File.WriteAllText(filePath, json);
-        Debug.Log($"缓存信息：账号：{account}   昵称：{nickName}   图像：{icon.name}");
-    }
-
-    // 检查本地是否有用户信息，如果有则自动登录
-    public bool TryAutoLogin(out UserInformation userData)
+    /// <summary>
+    /// 检查本地是否有用户信息，如果有则自动登录
+    /// </summary>
+    /// <param name="userData"></param>
+    /// <returns></returns>
+    public static bool TryAutoLogin(out UserInformation userData)
     {
         string filePath = Path.Combine(FilePath, userDataFileName);
 
@@ -59,6 +45,45 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
         return false;
     }
 
+    /// <summary>
+    /// 加载头像
+    /// </summary>
+    /// <param name="iconPath"></param>
+    /// <returns></returns>
+    private static string Loadicon(string iconPath)
+    {
+        if(File.Exists(iconPath))
+        {
+            return iconPath;
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// 登录时调用，保存用户信息和头像到本地
+    /// </summary>
+    /// <param name="account">账号</param>
+    /// <param name="nickName">昵称</param>
+    /// <param name="icon">头像贴图</param>
+    public void SaveUserInformation(string account, string nickName, Texture2D icon)
+    {
+        UserInformation userData = new UserInformation
+        {
+            account = account,
+            nickName = nickName,
+            iconPath = SaveIcon(account, icon)
+        };
+
+        string json = JsonUtility.ToJson(userData);
+
+        // 保存到本地文件
+        string filePath = Path.Combine(FilePath, userDataFileName);
+        File.WriteAllText(filePath, json);
+        Debug.Log($"缓存信息：账号：{account}   昵称：{nickName}   图像：{icon.name}");
+    }
+
+    
     // 保存头像到本地，并返回保存的路径
     private string SaveIcon(string account, Texture2D icon)
     {
@@ -75,16 +100,7 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
         return iconPath;
     }
 
-    // 加载头像
-    private string Loadicon(string iconPath)
-    {
-        if(File.Exists(iconPath))
-        {
-            return iconPath;
-        }
 
-        return null;
-    }
 
     // 用户退出登录时调用，清除用户信息和头像文件
     public void ClearUserData()

@@ -4,7 +4,6 @@ using TsingPigSDK;
 
 namespace MVPFrameWork
 {
-
     public class UIModule : IUIModule
     {
         private Dictionary<int, IView> _uiDic = new Dictionary<int, IView>();
@@ -25,7 +24,7 @@ namespace MVPFrameWork
 
         public void Enter(int viewId, Action callback = null)
         {
-            Log.Info("UIModule Enter");
+            Log.Info("½øÈë£º", viewId.ToString());
             IView view = this[viewId];
             if(view == null)
             {
@@ -41,7 +40,7 @@ namespace MVPFrameWork
                 view.Show(callback);
             }
         }
-        
+
         public void Quit(int viewId, Action callback = null, bool destroy = false)
         {
             IView view = this[viewId];
@@ -61,7 +60,7 @@ namespace MVPFrameWork
                 callback?.Invoke();
             });
         }
-        
+
         public void Preload(int viewId, bool instantiate = true)
         {
             Log.Info("Preload");

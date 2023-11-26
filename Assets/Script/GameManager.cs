@@ -8,10 +8,16 @@ using UnityEngine.AddressableAssets;
 
 public class GameManager : Singleton<GameManager>
 {
-    public void A()
+    public void ApplicationEntry()
     {
-        UIManager.Instance.Enter(ViewId.LoginView);
-
+        if(MainPresenter.TryAutoLogin(out UserInformation userInformation))
+        {
+            UIManager.Instance.Enter(ViewId.MainView);
+        }
+        else
+        {
+            UIManager.Instance.Enter(ViewId.LoginView);
+        }
     }
     private void Init()
     {
