@@ -13,7 +13,7 @@ public interface ILoginView : IView
 
     TMP_Text TxtLoginInputAccount { get; set; }
 
-    TMP_Text TxtLoginInputPassWord { get; set; }
+    TMP_InputField TxtLoginInputPassWord { get; set; }
 
     Toggle TglLoginChangePasswordState { get; set; }
 

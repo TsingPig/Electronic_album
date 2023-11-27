@@ -1,4 +1,5 @@
 using Sirenix.OdinInspector;
+using System;
 using System.Data;
 using TsingPigSDK;
 using UnityEngine;
@@ -49,6 +50,33 @@ public class MySQLManager : Singleton<MySQLManager>
 
         _mySQLAccess.Insert("useraccount", columns, values);
     }
+
+    public bool Login(string account, string userPassword)
+    {
+
+        _mySQLAccess = new MySQLAccess(host, port, userName, password, databaseName);
+        string[] items = { "account", "password" };
+        string tablename = "useraccount";
+        string[] operation = { "=", "=" };
+        string[] whereColumns = { "account", "password" };
+        string[] value = { account, userPassword };
+        DataSet result = new DataSet();
+        result = _mySQLAccess.Select(tablename, items, whereColumns, operation, value);
+        // 检查是否返回了任何行
+        if (result != null && result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0 && result.Tables[0].Columns.Count > 1)
+        {
+            // 用户名和密码匹配，登录成功
+            return true;
+        }
+        else
+        {
+            // 用户名和密码不匹配，登录失败
+            //Console.WriteLine("登录失败：用户名或密码不正确。");
+            return false;
+        }
+
+    }
+
 
     [Button("查询全部")]
     public void QueryAll()

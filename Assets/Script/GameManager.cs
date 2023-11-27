@@ -11,7 +11,8 @@ public class GameManager : Singleton<GameManager>
         string filePath = Path.Combine("Assets/Resources/UserInformation", "userData.json");
         if(File.Exists(filePath))
         {
-            UIManager.Instance.Enter(ViewId.MainView);
+            UIManager.Instance.Enter(ViewId.LoginView);
+            // UIManager.Instance.Enter(ViewId.MainView);
             UserInformationCached = true;
         }
         else

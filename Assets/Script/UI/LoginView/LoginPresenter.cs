@@ -8,8 +8,15 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
 {
     public void OnLogin()
     {
-        UIManager.Instance.Quit(ViewId.LoginView);
-        UIManager.Instance.Enter(ViewId.MainView);
+        string LoginInputAccount = _view.TxtLoginInputAccount.text;
+        string LoginInputPassword = _view.TxtLoginInputPassWord.text;
+
+        if(MySQLManager.Instance.Login(LoginInputAccount, LoginInputPassword))
+        {
+            UIManager.Instance.Quit(ViewId.LoginView);
+            UIManager.Instance.Enter(ViewId.MainView);
+        }
+        
     }
 
     public void OnRegister()
@@ -21,6 +28,7 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
         if (RegisterInputPassWord.Equals(RegisterInputSurePassWord))
         {
             Debug.Log(2);
+            UIManager.Instance.Quit(ViewId.LoginView);
             UIManager.Instance.Enter(ViewId.MainView);
             MySQLManager.Instance.Register(RegisterInputAccount, RegisterInputAccount, RegisterInputPassWord);
         }

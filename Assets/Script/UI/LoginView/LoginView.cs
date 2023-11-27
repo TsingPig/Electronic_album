@@ -14,7 +14,7 @@ public class LoginView : ViewBase<ILoginPresenter>, ILoginView
     private TMP_InputField _txtRegisterInputPassword;
     private TMP_InputField _txtRegisterInputSurePassWord;
     private TMP_Text _txtLoginInputAccount;
-    private TMP_Text _txtLoginInputPassword;
+    private TMP_InputField _txtLoginInputPassword;
     private Toggle _tglLoginChangePasswordState;
     private ButtonManager _btnLogin;
     private ButtonManager _btnRegister;
@@ -23,7 +23,7 @@ public class LoginView : ViewBase<ILoginPresenter>, ILoginView
     public TMP_InputField TxtRegisterInputPassWord { get => _txtRegisterInputPassword; set => _txtRegisterInputPassword = value; }
     public TMP_InputField TxtRegisterInputSurePassWord { get => _txtRegisterInputSurePassWord; set => _txtRegisterInputSurePassWord = value; }
     public TMP_Text TxtLoginInputAccount { get => _txtLoginInputAccount; set => _txtLoginInputAccount = value; }
-    public TMP_Text TxtLoginInputPassWord { get => _txtLoginInputPassword; set => _txtLoginInputPassword = value; }
+    public TMP_InputField TxtLoginInputPassWord { get => _txtLoginInputPassword; set => _txtLoginInputPassword = value; }
     public Toggle TglLoginChangePasswordState { get => _tglLoginChangePasswordState; set => _tglLoginChangePasswordState = value; }
     public ButtonManager BtnLogin { get => _btnLogin; set => _btnLogin = value; }  
     public ButtonManager BtnRegister { get => _btnRegister; set => _btnRegister = value; }
@@ -35,8 +35,8 @@ public class LoginView : ViewBase<ILoginPresenter>, ILoginView
         _txtRegisterInputPassword = _root.Find<TMP_InputField>("Window Manager/Windows/Register/Content/inptPassword");
         _txtRegisterInputSurePassWord = _root.Find<TMP_InputField>("Window Manager/Windows/Register/Content/inptSurePassword");
 
-        _txtLoginInputAccount = _root.Find<TMP_Text>("Window Manager/Windows/Login/Content/inptAccount");
-        _txtLoginInputPassword = _root.Find<TMP_Text>("Window Manager/Windows/Login/Content/inptPassword");
+        _txtLoginInputAccount = _root.Find<TMP_Text>("Window Manager/Windows/Login/Content/inptAccount/Text Area/Text");
+        _txtLoginInputPassword = _root.Find<TMP_InputField>("Window Manager/Windows/Login/Content/inptPassword");
         _tglLoginChangePasswordState = _root.Find<Toggle>("Window Manager/Windows/Login/Content/tgglChangePasswordState");
         
         _btnLogin = _root.Find<ButtonManager>("Window Manager/Windows/Login/btnLogin");
