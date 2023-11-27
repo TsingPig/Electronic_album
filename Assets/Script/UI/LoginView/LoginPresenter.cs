@@ -16,6 +16,10 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
             UIManager.Instance.Quit(ViewId.LoginView);
             UIManager.Instance.Enter(ViewId.MainView);
         }
+        else
+        {
+            Debug.Log("ÕËºÅ»òÕßÃÜÂë´íÎó");
+        }
         
     }
 
