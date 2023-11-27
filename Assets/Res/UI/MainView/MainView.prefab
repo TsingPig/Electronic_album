@@ -9928,7 +9928,7 @@ RectTransform:
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &6167172511379625265
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -9945,7 +9945,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!1 &6167172511493913625
 GameObject:
   m_ObjectHideFlags: 0
@@ -10377,6 +10377,18 @@ PrefabInstance:
     - target: {fileID: 3760263003103549884, guid: 07a5e75f8c3bb6446971bd251480584c, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3760263003181468970, guid: 07a5e75f8c3bb6446971bd251480584c, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: bd74c5dcfd706b747baefb044c79f5f3, type: 3}
+    - target: {fileID: 4028147907474317895, guid: 07a5e75f8c3bb6446971bd251480584c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 39
+      objectReference: {fileID: 0}
+    - target: {fileID: 4028147907474317895, guid: 07a5e75f8c3bb6446971bd251480584c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 372
       objectReference: {fileID: 0}
     - target: {fileID: 4503983108702766528, guid: 07a5e75f8c3bb6446971bd251480584c, type: 3}
       propertyPath: m_AnchorMax.y

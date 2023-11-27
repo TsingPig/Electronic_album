@@ -40,6 +40,16 @@ public class MySQLManager : Singleton<MySQLManager>
         //_mySQLAccess.ShowTables();
     }
 
+    public void Register(string account, string nick_name, string userPassword)
+    {
+        _mySQLAccess = new MySQLAccess(host, port, userName, password, databaseName);
+
+        string[] columns = { "account", "nick_name", "password" };
+        string[] values = { account, nick_name, userPassword };
+
+        _mySQLAccess.Insert("useraccount", columns, values);
+    }
+
     [Button("²éÑ¯È«²¿")]
     public void QueryAll()
     {
