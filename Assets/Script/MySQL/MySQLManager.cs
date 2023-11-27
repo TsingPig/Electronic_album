@@ -32,7 +32,7 @@ public class MySQLManager : Singleton<MySQLManager>
         _mySQLAccess = new MySQLAccess(host, port, userName, password, databaseName);
 
         string[] columns = { "account", "nick_name", "password" };
-        string[] values = { "TsingPig", "«‡÷Ì", "Tsingpig123asd**" };
+        string[] values = { "Jrm", "ºæ¿œ ¶", "Tsingpig123asd**" };
 
         _mySQLAccess.Insert("useraccount", columns, values);
 

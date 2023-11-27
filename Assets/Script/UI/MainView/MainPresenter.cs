@@ -41,8 +41,6 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
     }
 
 
-
-
     /// <summary>
     /// 登录时调用，保存用户信息和头像到本地
     /// </summary>
