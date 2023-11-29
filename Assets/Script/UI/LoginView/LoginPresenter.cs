@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MVPFrameWork;
-using UnityEngine.UI;
+using UIManager = MVPFrameWork.UIManager;
+using TsingPigSDK;
 
 public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
 {
@@ -14,7 +15,13 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
         if(MySQLManager.Instance.Login(LoginInputAccount, LoginInputPassword))
         {
             UIManager.Instance.Quit(ViewId.LoginView);
+
+            Texture2D randomIcon = new Texture2D(200, 200);
+            randomIcon.RandomGenerate();
+            CacheManager.Instance.SaveUserInformation(LoginInputAccount, LoginInputAccount, randomIcon);
+            
             UIManager.Instance.Enter(ViewId.MainView);
+
         }
         else
         {
@@ -35,6 +42,7 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
             UIManager.Instance.Quit(ViewId.LoginView);
             UIManager.Instance.Enter(ViewId.MainView);
             MySQLManager.Instance.Register(RegisterInputAccount, RegisterInputAccount, RegisterInputPassWord);
+            
         }
         
     }

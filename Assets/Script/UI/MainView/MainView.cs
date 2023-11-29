@@ -53,6 +53,7 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
         _btnEnterPhotoWall = _root.Find<Button>("Window Manager/Windows/UserInformationView/UserInformationPanel/UserPhotoWall/btnEnterPhotoWall");
         //Texture2D texture = new Texture2D(128, 128);
         //_presenter.SaveUserInformation("zzy", "÷Ï’˝—Ù", texture.RandomGenerate());
+        
         _presenter.LoadUserInformation();
        
         #endregion

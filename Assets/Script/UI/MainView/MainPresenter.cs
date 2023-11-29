@@ -15,9 +15,6 @@ public class UserInformation
 public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
 {
     #region UserInformation
-    private static string FilePath => "Assets/Resources/UserInformation";
-    private static string userDataFileName = "userData.json";
-    private static string iconFolder = "icons";
 
 
     /// <summary>
@@ -28,8 +25,8 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
     public UserInformation LoadUserInformation()
     {
         UserInformation userInformation = null;
-        string filePath = Path.Combine("Assets/Resources/UserInformation", "userData.json");
-        if(GameManager.Instance.UserInformationCached)
+        string filePath = Path.Combine(CacheManager.CACHA_PATH, CacheManager.USER_DATA_FILE);
+        if(CacheManager.Instance.UserInformationCached)
         {
             string json = File.ReadAllText(filePath);
             userInformation = JsonUtility.FromJson<UserInformation>(json);
@@ -42,27 +39,29 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
 
 
     /// <summary>
-    /// 登录时调用，保存用户信息和头像到本地
+    /// 用户退出登录时调用，清除用户信息和头像文件
     /// </summary>
-    /// <param name="account">账号</param>
-    /// <param name="nickName">昵称</param>
-    /// <param name="icon">头像贴图</param>
-    public void SaveUserInformation(string account, string nickName, Texture2D icon)
+    public void ClearUserInformationCache()
     {
-        UserInformation userData = new UserInformation
+        string filePath = Path.Combine(CacheManager.CACHA_PATH, CacheManager.USER_DATA_FILE);
+        if(File.Exists(filePath))
         {
-            userName = account,
-            nickName = nickName,
-            iconPath = SaveIcon(account, icon)
-        };
+            File.Delete(filePath);
+        }
 
-        string json = JsonUtility.ToJson(userData);
+        // 清除头像文件夹
+        string iconFolderPath = Path.Combine(CacheManager.CACHA_PATH, CacheManager.ICON_FOLDER);
+        if(Directory.Exists(iconFolderPath))
+        {
+            Directory.Delete(iconFolderPath, true);
+        }
+        Debug.Log("清除用户信息缓存");
+        CacheManager.Instance.UserInformationCached = false;
+        MVPFrameWork.UIManager.Instance.Quit(ViewId.MainView);
+        MVPFrameWork.UIManager.Instance.Enter(ViewId.LoginView);
 
-        // 保存到本地文件
-        string filePath = Path.Combine(FilePath, userDataFileName);
-        File.WriteAllText(filePath, json);
-        Debug.Log($"缓存信息：账号：{account}   昵称：{nickName}   图像：{icon.name}");
     }
+
 
     /// <summary>
     /// 呈现视图层中的用户信息
@@ -72,55 +71,10 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
     {
         _view.TxtUserName.text = userInformation.userName;
         _view.TxtNickName.text = userInformation.nickName;
-        Texture2D texture = LoadIconTexture(userInformation.iconPath);
+        Texture2D texture =  LoadIconTexture(userInformation.iconPath);
         _view.BtnUserIcon.GetComponent<Image>().sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
     }
 
-
-    /// <summary>
-    /// 用户退出登录时调用，清除用户信息和头像文件
-    /// </summary>
-    public void ClearUserInformationCache()
-    {
-        string filePath = Path.Combine(FilePath, userDataFileName);
-        if(File.Exists(filePath))
-        {
-            File.Delete(filePath);
-        }
-
-        // 清除头像文件夹
-        string iconFolderPath = Path.Combine(FilePath, iconFolder);
-        if(Directory.Exists(iconFolderPath))
-        {
-            Directory.Delete(iconFolderPath, true);
-        }
-        Debug.Log("清除用户信息缓存");
-        GameManager.Instance.UserInformationCached = false;
-        UIManager.Instance.Quit(ViewId.MainView);
-        UIManager.Instance.Enter(ViewId.LoginView);
-
-    }
-
-    /// <summary>
-    ///  保存头像到本地，并返回保存的路径
-    /// </summary>
-    /// <param name="account"></param>
-    /// <param name="icon"></param>
-    /// <returns></returns>
-    private string SaveIcon(string account, Texture2D icon)
-    {
-        string iconPath = Path.Combine(FilePath, iconFolder);
-        if(!Directory.Exists(iconPath))
-        {
-            Directory.CreateDirectory(iconPath);
-        }
-
-        iconPath = Path.Combine(iconPath, account + ".png");
-        byte[] bytes = icon.EncodeToPNG();
-        File.WriteAllBytes(iconPath, bytes);
-
-        return iconPath;
-    }
 
     /// <summary>
     /// 加载头像纹理
@@ -134,6 +88,8 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
         texture.LoadImage(fileData);
         return texture;
     }
+
+
     #endregion
 }
 

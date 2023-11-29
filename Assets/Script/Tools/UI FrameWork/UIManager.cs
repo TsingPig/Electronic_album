@@ -1,5 +1,8 @@
 using System;
 using UnityEngine;
+using UIManager = MVPFrameWork.UIManager;
+
+
 namespace TsingPigSDK
 {
 
