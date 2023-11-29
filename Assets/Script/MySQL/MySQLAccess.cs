@@ -21,8 +21,6 @@ namespace TsingPigSDK
         //数据库名称
         private static string databaseName;
 
-        //string sqlCon = "server=localhost;user id=root;password=WANGshuai123...;data=userTable";
-
         /// <summary>
         /// 构造方法
         /// </summary>
@@ -218,7 +216,6 @@ namespace TsingPigSDK
 
             return null;
         }
-
 
     }
 

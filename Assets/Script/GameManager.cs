@@ -9,12 +9,20 @@ using UnityEngine.Networking;
 
 public class GameManager : Singleton<GameManager>
 {
+    public string filename;
+
     [Button("上传服务器测试")]
     public void UploadTest()
     {
         StartCoroutine(UploadFile());
     }
 
+    [Button("下载测试")]
+
+    public void DownLoadTest()
+    {
+        StartCoroutine(DownloadFile());
+    }
     IEnumerator UploadFile()
     {
         string filePath = "C:\\Users\\TsingPig\\Desktop\\IDLE\\1.jpg";
@@ -27,8 +35,6 @@ public class GameManager : Singleton<GameManager>
         www.downloadHandler = new DownloadHandlerBuffer(); // 禁用压缩
         yield return www.SendWebRequest();
 
-
-
         if(www.result == UnityWebRequest.Result.Success)
         {
             Debug.Log("File uploaded successfully");
@@ -38,6 +44,31 @@ public class GameManager : Singleton<GameManager>
             Debug.LogError("Error uploading file: " + www.error);
         }
     }
+
+
+
+    IEnumerator DownloadFile()
+    {
+        UnityWebRequest www = UnityWebRequest.Get("http://1.12.46.157:80/download/" + filename);
+
+        yield return www.SendWebRequest();
+
+        if(www.result == UnityWebRequest.Result.Success)
+        {
+            // 处理下载的文件数据
+            byte[] fileData = www.downloadHandler.data;
+            Debug.Log("File downloaded successfully");
+
+            // 保存文件到本地
+            string savePath = "Assets/Resources/file.jpg";
+            File.WriteAllBytes(savePath, fileData);
+        }
+        else
+        {
+            Debug.LogError("Error downloading file: " + www.error);
+        }
+    }
+
 
     private void Init()
     {
