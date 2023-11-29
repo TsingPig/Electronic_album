@@ -2,10 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MVPFrameWork;
-using UnityEngine.UI;
+using UIManager = MVPFrameWork.UIManager;
+using TsingPigSDK;
 
 public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
 {
+    public override void OnCreateCompleted()
+    {
+        Debug.Log("生成" + MySQLManager.Instance);
+    }
+
     public void OnLogin()
     {
         string LoginInputAccount = _view.TxtLoginInputAccount.text;
@@ -14,9 +20,19 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
         if(MySQLManager.Instance.Login(LoginInputAccount, LoginInputPassword))
         {
             UIManager.Instance.Quit(ViewId.LoginView);
+
+            Texture2D randomIcon = new Texture2D(200, 200);
+            randomIcon.RandomGenerate();
+            CacheManager.Instance.SaveUserInformation(LoginInputAccount, LoginInputAccount, randomIcon);
+
             UIManager.Instance.Enter(ViewId.MainView);
+
         }
-        
+        else
+        {
+            Debug.Log("账号或者密码错误");
+        }
+
     }
 
     public void OnRegister()
@@ -25,18 +41,19 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
         string RegisterInputPassWord = _view.TxtRegisterInputPassWord.text;
         string RegisterInputSurePassWord = _view.TxtRegisterInputSurePassWord.text;
 
-        if (RegisterInputPassWord.Equals(RegisterInputSurePassWord))
+        if(RegisterInputPassWord.Equals(RegisterInputSurePassWord))
         {
             Debug.Log(2);
             UIManager.Instance.Quit(ViewId.LoginView);
             UIManager.Instance.Enter(ViewId.MainView);
             MySQLManager.Instance.Register(RegisterInputAccount, RegisterInputAccount, RegisterInputPassWord);
+
         }
-        
+
     }
 
     public void OnSuperLogin()
     {
-        
+
     }
 }

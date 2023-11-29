@@ -6,13 +6,17 @@ using MVPFrameWork;
 public interface IMainPresenter : IPresenter
 {
     #region UserInformation
-    UserInformation LoadUserInformation();
 
-    void SaveUserInformation(string account, string nickName, Texture2D icon);
+    UserInformation LoadUserInformation();
 
     void ClearUserInformationCache();
 
-    
+    //void PresentUserInformation(UserInformation userInformation);
+
+
+    //void ClearUserInformationCache();
+
+
     #endregion
 
 }

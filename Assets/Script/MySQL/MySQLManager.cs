@@ -1,60 +1,37 @@
 using Sirenix.OdinInspector;
-using System;
 using System.Data;
 using TsingPigSDK;
-using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class MySQLManager : Singleton<MySQLManager>
 {
+    private MySQLAccess _mySQLAccess;
 
-    //IP地址
-    public string host;
-    //端口号
-    public string port;
-    //用户名
-    public string userName;
-    //密码
-    public string password;
-    //数据库名称
-    public string databaseName;
-    //封装好的数据库类
-    MySQLAccess _mySQLAccess;
-
-
-    private void Start()
+    private void Init()
     {
-        _mySQLAccess = new MySQLAccess(host, port, userName, password, databaseName);
+        _mySQLAccess = new MySQLAccess("gz-cynosdbmysql-grp-nlpmzwov.sql.tencentcdb.com", "21462", "Tsingpig2", "123asd**", "electronic_album");
     }
 
-    [Button("注册测试")]
-    public void Register()
-    {
-        _mySQLAccess = new MySQLAccess(host, port, userName, password, databaseName);
-
-        string[] columns = { "account", "nick_name", "password" };
-        string[] values = { "Jrm", "季老师", "Tsingpig123asd**" };
-
-        _mySQLAccess.Insert("useraccount", columns, values);
-
-
-        //_mySQLAccess.ShowTables();
-    }
-
+    /// <summary>
+    /// 向数据库注册账号
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="nick_name"></param>
+    /// <param name="userPassword"></param>
     public void Register(string account, string nick_name, string userPassword)
     {
-        _mySQLAccess = new MySQLAccess(host, port, userName, password, databaseName);
-
         string[] columns = { "account", "nick_name", "password" };
         string[] values = { account, nick_name, userPassword };
-
         _mySQLAccess.Insert("useraccount", columns, values);
     }
 
+    /// <summary>
+    /// 向数据库尝试登录账号
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="userPassword"></param>
+    /// <returns>是否成功登录</returns>
     public bool Login(string account, string userPassword)
     {
-
-        _mySQLAccess = new MySQLAccess(host, port, userName, password, databaseName);
         string[] items = { "account", "password" };
         string tablename = "useraccount";
         string[] operation = { "=", "=" };
@@ -63,7 +40,7 @@ public class MySQLManager : Singleton<MySQLManager>
         DataSet result = new DataSet();
         result = _mySQLAccess.Select(tablename, items, whereColumns, operation, value);
         // 检查是否返回了任何行
-        if (result != null && result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0 && result.Tables[0].Columns.Count > 1)
+        if(result != null && result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0 && result.Tables[0].Columns.Count > 1)
         {
             // 用户名和密码匹配，登录成功
             return true;
@@ -74,20 +51,6 @@ public class MySQLManager : Singleton<MySQLManager>
             //Console.WriteLine("登录失败：用户名或密码不正确。");
             return false;
         }
-
-    }
-
-
-    [Button("查询全部")]
-    public void QueryAll()
-    {
-
-        _mySQLAccess = new MySQLAccess(host, port, userName, password, databaseName);
-        _mySQLAccess.Select("useraccount", "*");
-
-    }
-    private void Init()
-    {
 
     }
 
