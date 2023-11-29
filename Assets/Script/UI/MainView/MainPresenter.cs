@@ -16,6 +16,10 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
 {
     #region UserInformation
 
+    public override void OnCreateCompleted()
+    {
+        LoadUserInformation();
+    }
 
     /// <summary>
     /// 检查本地是否有用户信息，如果有则自动登录

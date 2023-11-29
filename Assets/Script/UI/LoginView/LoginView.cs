@@ -43,5 +43,7 @@ public class LoginView : ViewBase<ILoginPresenter>, ILoginView
         _btnRegister = _root.Find<ButtonManager>("Window Manager/Windows/Register/btnRegister");
         _btnLogin.onClick.AddListener(_presenter.OnLogin);
         _btnRegister.onClick.AddListener(_presenter.OnRegister);
+
+
     }
 }

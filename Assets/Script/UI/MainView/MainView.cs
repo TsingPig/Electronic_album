@@ -54,7 +54,7 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
         //Texture2D texture = new Texture2D(128, 128);
         //_presenter.SaveUserInformation("zzy", "÷Ï’˝—Ù", texture.RandomGenerate());
         
-        _presenter.LoadUserInformation();
+        //_presenter.LoadUserInformation();
        
         #endregion
     }

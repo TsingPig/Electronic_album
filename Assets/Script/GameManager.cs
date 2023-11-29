@@ -9,8 +9,8 @@ public class GameManager : Singleton<GameManager>
     {
         Addressables.InitializeAsync();
         UIRegister.RegisterAll();
-        Debug.Log("生成：" + MySQLManager.Instance);
         Debug.Log("生成：" + CacheManager.Instance);
+        //Debug.Log("生成：" + MySQLManager.Instance);
     }
 
     private new void Awake()

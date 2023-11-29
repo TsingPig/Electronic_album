@@ -80,6 +80,7 @@ public class CacheManager : Singleton<CacheManager>
 
         return iconPath;
     }
+
     private new void Awake()
     {
         base.Awake();
