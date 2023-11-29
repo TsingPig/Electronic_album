@@ -51,10 +51,6 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
         _txtNickName = _root.Find<TMP_Text>("Window Manager/Windows/UserInformationView/UserInformationPanel/NickNameItem/txtNickName");
         _btnUpdateNickName = _root.Find<Button>("Window Manager/Windows/UserInformationView/UserInformationPanel/NickNameItem/btnUpdateNickName");
         _btnEnterPhotoWall = _root.Find<Button>("Window Manager/Windows/UserInformationView/UserInformationPanel/UserPhotoWall/btnEnterPhotoWall");
-        //Texture2D texture = new Texture2D(128, 128);
-        //_presenter.SaveUserInformation("zzy", "÷Ï’˝—Ù", texture.RandomGenerate());
-        
-        //_presenter.LoadUserInformation();
        
         #endregion
     }
