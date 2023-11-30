@@ -113,6 +113,10 @@ public class CacheManager : Singleton<CacheManager>
         }
     }
 
+    public void UpdateIcon(Texture2D updateIcon)
+    {
+        SaveIcon(UserName, updateIcon);
+    }
 
     /// <summary>
     ///  保存头像到本地，并返回保存的路径

@@ -1,6 +1,7 @@
 using MVPFrameWork;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -86,7 +87,7 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
         {
 
             _view.TxtNickName.text = updatedNickName;
-            
+
             CacheManager.Instance.UpdateNickName(updatedNickName);
 
 
@@ -98,6 +99,43 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
             Debug.LogWarning("昵称不可为空");
         }
     }
+
+
+    public void UpdateUserIcon()
+    {
+        Texture2D icon = null;
+        NativeGallery.Permission permission = NativeGallery.GetImageFromGallery((path) =>
+        {
+            Debug.Log("图片路径: " + path);
+            if(path != null)
+            {
+                try
+                {
+                    icon = LoadIconTexture(path);
+                    if(icon != null)
+                    {
+                        _view.BtnUserIcon.image.sprite = Sprite.Create(icon, new Rect(0, 0, icon.width, icon.height), new Vector2(0.5f, 0.5f));
+
+                        Debug.Log("头像更新成功");
+
+                        CacheManager.Instance.UpdateIcon(icon);
+                    }
+                    else
+                    {
+                        Debug.Log($"Cannot load image from {path}");
+                    }
+                } catch(Exception e)
+                {
+                    Debug.LogError($"Error loading image: {e.Message}");
+                }
+            }
+        });
+
+        Debug.Log("权限结果：" + permission);
+
+    }
+
+
 
     /// <summary>
     /// 呈现视图层中的用户信息
@@ -124,6 +162,7 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
         texture.LoadImage(fileData);
         return texture;
     }
+
 
 
     #endregion
