@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MVPFrameWork;
 using TMPro;
+using System;
 
 public interface IMainPresenter : IPresenter
 {
@@ -21,6 +22,12 @@ public interface IMainPresenter : IPresenter
     /// 确认更新
     /// </summary>
     void SureUpdateNickName();
+
+    /// <summary>
+    /// 更新用户头像
+    /// </summary>
+    /// <param name="icon"></param>
+    void UpdateUserIcon();
 
     #endregion
 
