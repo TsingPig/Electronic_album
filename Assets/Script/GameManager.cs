@@ -55,11 +55,9 @@ public class GameManager : Singleton<GameManager>
 
         if(www.result == UnityWebRequest.Result.Success)
         {
-            // 处理下载的文件数据
             byte[] fileData = www.downloadHandler.data;
             Debug.Log("File downloaded successfully");
 
-            // 保存文件到本地
             string savePath = "Assets/Resources/file.jpg";
             File.WriteAllBytes(savePath, fileData);
         }

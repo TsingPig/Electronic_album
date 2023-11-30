@@ -7,8 +7,8 @@ using UIManager = MVPFrameWork.UIManager;
 public class CacheManager : Singleton<CacheManager>
 {
 
-    public static string CACHA_PATH => Application.persistentDataPath;
-    //public const string CACHA_PATH = "Assets/Resources/UserInformation";
+    //public static string CACHA_PATH => Application.persistentDataPath;
+    public const string CACHA_PATH = "Assets/Resources/UserInformation";
     public const string USER_DATA_FILE = "userData.json";
     public const string ICON_FOLDER = "icons";
 

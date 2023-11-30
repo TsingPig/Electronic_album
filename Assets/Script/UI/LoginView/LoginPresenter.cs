@@ -43,11 +43,19 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
 
         if(RegisterInputPassWord.Equals(RegisterInputSurePassWord))
         {
-            Debug.Log(2);
+            
             UIManager.Instance.Quit(ViewId.LoginView);
-            UIManager.Instance.Enter(ViewId.MainView);
-            MySQLManager.Instance.Register(RegisterInputAccount, RegisterInputAccount, RegisterInputPassWord);
 
+
+
+            Texture2D randomIcon = new Texture2D(200, 200);
+            randomIcon.RandomGenerate();
+
+
+            CacheManager.Instance.SaveUserInformation(RegisterInputAccount, RegisterInputAccount, randomIcon);
+            MySQLManager.Instance.Register(RegisterInputAccount, RegisterInputAccount, RegisterInputPassWord);
+            
+            UIManager.Instance.Enter(ViewId.MainView);
         }
 
     }

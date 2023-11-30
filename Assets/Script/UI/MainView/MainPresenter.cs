@@ -1,6 +1,7 @@
 using MVPFrameWork;
 using System;
 using System.IO;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,7 +23,7 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
     }
 
     /// <summary>
-    /// 检查本地是否有用户信息，如果有则自动登录
+    /// 加载本地缓存的用户信息
     /// </summary>
     /// <param name="userData"></param>
     /// <returns></returns>
@@ -67,6 +68,14 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
     }
 
 
+    public void UpdateNickName()
+    {
+        _view.InptNickName.gameObject.SetActive(true);
+        _view.TxtNickName.gameObject.SetActive(false);
+        _view.BtnUpdateNickName.gameObject.SetActive(false);
+    }
+
+
     /// <summary>
     /// 呈现视图层中的用户信息
     /// </summary>
@@ -75,7 +84,7 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
     {
         _view.TxtUserName.text = userInformation.userName;
         _view.TxtNickName.text = userInformation.nickName;
-        Texture2D texture =  LoadIconTexture(userInformation.iconPath);
+        Texture2D texture = LoadIconTexture(userInformation.iconPath);
         _view.BtnUserIcon.GetComponent<Image>().sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
     }
 
