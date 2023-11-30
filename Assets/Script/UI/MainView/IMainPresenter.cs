@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MVPFrameWork;
+using TMPro;
 
 public interface IMainPresenter : IPresenter
 {
@@ -11,11 +12,15 @@ public interface IMainPresenter : IPresenter
 
     void ClearUserInformationCache();
 
-    //void PresentUserInformation(UserInformation userInformation);
+    /// <summary>
+    /// 更新昵称
+    /// </summary>
+    void UpdateNickName();
 
-
-    //void ClearUserInformationCache();
-
+    /// <summary>
+    /// 确认更新
+    /// </summary>
+    void SureUpdateNickName();
 
     #endregion
 

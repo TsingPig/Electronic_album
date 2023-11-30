@@ -12,11 +12,11 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
 
     private ButtonManager _btnSetting;
     public ButtonManager BtnSetting { get => _btnSetting; set => _btnSetting = value; }
-   
+
     #endregion
-    
-    
-    
+
+
+
     #region UserInformationView
 
     private TMP_Text _txtUserName;
@@ -25,6 +25,8 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
     private TMP_Text _txtNickName;
     private Button _btnUpdateNickName;
     private Button _btnEnterPhotoWall;
+    private TMP_InputField _inptNickName;
+    private Button _btnSureUpdateNickName;
 
     public TMP_Text TxtUserName { get => _txtUserName; set => _txtUserName = value; }
     public Button BtnUserIcon { get => _btnUserIcon; set => _btnUserIcon = value; }
@@ -32,6 +34,8 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
     public TMP_Text TxtNickName { get => _txtNickName; set => _txtNickName = value; }
     public Button BtnUpdateNickName { get => _btnUpdateNickName; set => _btnUpdateNickName = value; }
     public Button BtnEnterPhotoWall { get => _btnEnterPhotoWall; set => _btnEnterPhotoWall = value; }
+    public TMP_InputField InptNickName { get => _inptNickName; set => _inptNickName = value; }
+    public Button BtnSureUpdateNickName { get => _btnSureUpdateNickName; set => _btnSureUpdateNickName = value; }
 
     #endregion
 
@@ -51,11 +55,11 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
         _txtNickName = _root.Find<TMP_Text>("Window Manager/Windows/UserInformationView/UserInformationPanel/NickNameItem/txtNickName");
         _btnUpdateNickName = _root.Find<Button>("Window Manager/Windows/UserInformationView/UserInformationPanel/NickNameItem/btnUpdateNickName");
         _btnEnterPhotoWall = _root.Find<Button>("Window Manager/Windows/UserInformationView/UserInformationPanel/UserPhotoWall/btnEnterPhotoWall");
-        //Texture2D texture = new Texture2D(128, 128);
-        //_presenter.SaveUserInformation("zzy", "÷Ï’˝—Ù", texture.RandomGenerate());
-        
-        //_presenter.LoadUserInformation();
-       
+        _inptNickName = _root.Find<TMP_InputField>("Window Manager/Windows/UserInformationView/UserInformationPanel/NickNameItem/inptNickName");
+        _btnSureUpdateNickName = _root.Find<Button>("Window Manager/Windows/UserInformationView/UserInformationPanel/NickNameItem/inptNickName/btnSureUpdateNickName");
+
+        _btnUpdateNickName.onClick.AddListener(_presenter.UpdateNickName);
+        _btnSureUpdateNickName.onClick.AddListener(_presenter.SureUpdateNickName);
         #endregion
     }
 
