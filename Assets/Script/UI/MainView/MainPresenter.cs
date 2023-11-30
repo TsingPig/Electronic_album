@@ -75,6 +75,29 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
         _view.BtnUpdateNickName.gameObject.SetActive(false);
     }
 
+    public void SureUpdateNickName()
+    {
+        _view.InptNickName.gameObject.SetActive(false);
+        _view.TxtNickName.gameObject.SetActive(true);
+        _view.BtnUpdateNickName.gameObject.SetActive(true);
+
+        string updatedNickName = _view.InptNickName.text;
+        if(updatedNickName != string.Empty)
+        {
+
+            _view.TxtNickName.text = updatedNickName;
+            
+            CacheManager.Instance.UpdateNickName(updatedNickName);
+
+
+            Debug.Log($"昵称更新为：{updatedNickName}");
+
+        }
+        else
+        {
+            Debug.LogWarning("昵称不可为空");
+        }
+    }
 
     /// <summary>
     /// 呈现视图层中的用户信息

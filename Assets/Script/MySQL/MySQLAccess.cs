@@ -167,6 +167,25 @@ namespace TsingPigSDK
             ExecuteNonQuery(query);
         }
 
+
+        /// <summary>
+        /// 更新数据
+        /// </summary>
+        /// <param name="tableName">表名</param>
+        /// <param name="columnToUpdate">要更新的列名</param>
+        /// <param name="newValue">新的值</param>
+        /// <param name="whereColumnName">条件列名</param>
+        /// <param name="operation">条件操作符</param>
+        /// <param name="value">条件值</param>
+        public void Update(string tableName, string columnToUpdate, string newValue,
+                           string whereColumnName, string operation, string value)
+        {
+            string update = $"UPDATE ```{tableName}``` SET `{columnToUpdate}` = '{newValue}' WHERE `{whereColumnName}` {operation} '{value}'";
+            ExecuteNonQuery(update);
+            Log.Info($"更新数据: {update}");
+        }
+
+
         /// <summary>
         /// 执行非查询SQL语句
         /// </summary>

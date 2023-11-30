@@ -21,9 +21,11 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
         {
             UIManager.Instance.Quit(ViewId.LoginView);
 
+            string NickName = MySQLManager.Instance.GetNickName(LoginInputAccount);
+
             Texture2D randomIcon = new Texture2D(200, 200);
             randomIcon.RandomGenerate();
-            CacheManager.Instance.SaveUserInformation(LoginInputAccount, LoginInputAccount, randomIcon);
+            CacheManager.Instance.SaveUserInformation(LoginInputAccount, NickName, randomIcon);
 
             UIManager.Instance.Enter(ViewId.MainView);
 

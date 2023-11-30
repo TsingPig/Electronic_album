@@ -17,6 +17,11 @@ public interface IMainPresenter : IPresenter
     /// </summary>
     void UpdateNickName();
 
+    /// <summary>
+    /// 确认更新
+    /// </summary>
+    void SureUpdateNickName();
+
     #endregion
 
 }

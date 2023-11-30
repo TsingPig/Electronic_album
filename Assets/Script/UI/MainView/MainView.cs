@@ -59,6 +59,7 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
         _btnSureUpdateNickName = _root.Find<Button>("Window Manager/Windows/UserInformationView/UserInformationPanel/NickNameItem/inptNickName/btnSureUpdateNickName");
 
         _btnUpdateNickName.onClick.AddListener(_presenter.UpdateNickName);
+        _btnSureUpdateNickName.onClick.AddListener(_presenter.SureUpdateNickName);
         #endregion
     }
 
