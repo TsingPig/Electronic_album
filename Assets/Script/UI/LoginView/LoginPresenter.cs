@@ -66,4 +66,18 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
     {
 
     }
+
+    public void ChangePasswordState(bool value)
+    {
+
+        if (value)
+        {
+            _view.TxtLoginInputPassWord.inputType = TMPro.TMP_InputField.InputType.Standard;
+        }
+        else
+        {
+            _view.TxtLoginInputPassWord.inputType = TMPro.TMP_InputField.InputType.Password;
+        }
+
+    }
 }
