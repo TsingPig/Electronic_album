@@ -54,6 +54,49 @@ public class MySQLManager : Singleton<MySQLManager>
 
     }
 
+    /// <summary>
+    /// 修改指定账号的昵称
+    /// </summary>
+    /// <param name="account">账号</param>
+    /// <param name="newNickName">新昵称</param>
+    public void UpdateNickName(string account, string newNickName)
+    {
+        string tableName = "useraccount";
+        string columnToUpdate = "nick_name";
+        string conditionColumn = "account";
+        string conditionValue = account;
+
+        _mySQLAccess.Update(tableName, columnToUpdate, newNickName, conditionColumn, "=", conditionValue);
+    }
+
+
+    /// <summary>
+    /// 查询指定账号的昵称
+    /// </summary>
+    /// <param name="account">要查询昵称的账号</param>
+    /// <returns>账号对应的昵称</returns>
+    public string GetNickName(string account)
+    {
+        string tableName = "useraccount";
+        string[] items = { "nick_name" };
+        string[] whereColumns = { "account" };
+        string[] operation = { "=" };
+        string[] values = { account };
+
+        DataSet result = _mySQLAccess.Select(tableName, items, whereColumns, operation, values);
+
+        if(result != null && result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0)
+        {
+            // 返回查询到的昵称
+            return result.Tables[0].Rows[0]["nick_name"].ToString();
+        }
+        else
+        {
+            // 没有找到对应账号的昵称
+            return null;
+        }
+    }
+
     private new void Awake()
     {
         base.Awake();

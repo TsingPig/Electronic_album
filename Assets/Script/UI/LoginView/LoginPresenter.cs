@@ -10,6 +10,7 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
     public override void OnCreateCompleted()
     {
         Debug.Log("生成" + MySQLManager.Instance);
+        Debug.Log("生成" + ServerManager.Instance);
     }
 
     public void OnLogin()
@@ -21,11 +22,16 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
         {
             UIManager.Instance.Quit(ViewId.LoginView);
 
+            string NickName = MySQLManager.Instance.GetNickName(LoginInputAccount);
+
             Texture2D randomIcon = new Texture2D(200, 200);
             randomIcon.RandomGenerate();
-            CacheManager.Instance.SaveUserInformation(LoginInputAccount, LoginInputAccount, randomIcon);
 
+            CacheManager.Instance.SaveUserInformation(LoginInputAccount, NickName, randomIcon);
             UIManager.Instance.Enter(ViewId.MainView);
+
+            //从服务器下载头像数据
+            ServerManager.Instance.DownLoadUserIcon(LoginInputAccount);
 
         }
         else
@@ -43,17 +49,39 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
 
         if(RegisterInputPassWord.Equals(RegisterInputSurePassWord))
         {
-            Debug.Log(2);
+
             UIManager.Instance.Quit(ViewId.LoginView);
-            UIManager.Instance.Enter(ViewId.MainView);
+
+
+
+            Texture2D randomIcon = new Texture2D(200, 200);
+            randomIcon.RandomGenerate();
+
+
+            CacheManager.Instance.SaveUserInformation(RegisterInputAccount, RegisterInputAccount, randomIcon);
             MySQLManager.Instance.Register(RegisterInputAccount, RegisterInputAccount, RegisterInputPassWord);
 
+            UIManager.Instance.Enter(ViewId.MainView);
         }
 
     }
 
     public void OnSuperLogin()
     {
+
+    }
+
+    public void ChangePasswordState(bool value)
+    {
+
+        if(value)
+        {
+            _view.TxtLoginInputPassWord.inputType = TMPro.TMP_InputField.InputType.Standard;
+        }
+        else
+        {
+            _view.TxtLoginInputPassWord.inputType = TMPro.TMP_InputField.InputType.Password;
+        }
 
     }
 }

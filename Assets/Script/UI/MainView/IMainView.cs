@@ -9,7 +9,7 @@ public interface IMainView : IView
 
 
     #region TopPanel
-    ButtonManager BtnSetting {  get; set; }
+    ButtonManager BtnSetting { get; set; }
 
     #endregion
 
@@ -26,6 +26,16 @@ public interface IMainView : IView
     Button BtnUpdateNickName { get; set; }
 
     Button BtnEnterPhotoWall { get; set; }
+
+    /// <summary>
+    /// 输入更新后的昵称
+    /// </summary>
+    TMP_InputField InptNickName { get; set; }
+
+    /// <summary>
+    /// 确认更新昵称
+    /// </summary>
+    Button BtnSureUpdateNickName { get; set; }
 
     #endregion
 

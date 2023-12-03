@@ -19,6 +19,7 @@ public class LoginView : ViewBase<ILoginPresenter>, ILoginView
     private ButtonManager _btnLogin;
     private ButtonManager _btnRegister;
 
+
     public TMP_Text TxtRegisterInputAccount { get => _txtRegisterInputAccount; set => _txtRegisterInputAccount = value; }
     public TMP_InputField TxtRegisterInputPassWord { get => _txtRegisterInputPassword; set => _txtRegisterInputPassword = value; }
     public TMP_InputField TxtRegisterInputSurePassWord { get => _txtRegisterInputSurePassWord; set => _txtRegisterInputSurePassWord = value; }
@@ -38,6 +39,7 @@ public class LoginView : ViewBase<ILoginPresenter>, ILoginView
         _txtLoginInputAccount = _root.Find<TMP_Text>("Window Manager/Windows/Login/Content/inptAccount/Text Area/Text");
         _txtLoginInputPassword = _root.Find<TMP_InputField>("Window Manager/Windows/Login/Content/inptPassword");
         _tglLoginChangePasswordState = _root.Find<Toggle>("Window Manager/Windows/Login/Content/tgglChangePasswordState");
+        _tglLoginChangePasswordState.onValueChanged.AddListener((bool value) => _presenter.ChangePasswordState(value));
         
         _btnLogin = _root.Find<ButtonManager>("Window Manager/Windows/Login/btnLogin");
         _btnRegister = _root.Find<ButtonManager>("Window Manager/Windows/Register/btnRegister");
