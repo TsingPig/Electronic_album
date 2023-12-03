@@ -11,4 +11,6 @@ public interface ILoginPresenter : IPresenter
 
     void OnSuperLogin();
 
+    void ChangePasswordState(bool value);
+
 }
