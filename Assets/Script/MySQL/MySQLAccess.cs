@@ -99,6 +99,7 @@ namespace TsingPigSDK
             {
                 query += $" AND `{whereColumnName[i]}` {operation[i]} '{value[i]}'";
             }
+            
             DataSet result = QuerySet(query);
             Log.LogQueryResult(result);
             return result;
