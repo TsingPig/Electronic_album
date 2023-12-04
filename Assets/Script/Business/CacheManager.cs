@@ -9,8 +9,21 @@ public class CacheManager : Singleton<CacheManager>
 
     //public static string CACHA_PATH => Application.persistentDataPath;
     public const string CACHA_PATH = "Assets/Resources/UserInformation";
-    public const string USER_DATA_FILE = "userData.json";
-    public const string ICON_FOLDER = "icons";
+    public static string USER_DATA_FILE => CACHA_PATH + "/userData.json";
+    public static string ICON_PATH => CACHA_PATH + "/icons";
+
+    /// <summary>
+    /// 加载头像纹理
+    /// </summary>
+    /// <param name="iconPath"></param>
+    /// <returns></returns>
+    public static Texture2D LoadIconTexture(string iconPath)
+    {
+        byte[] fileData = File.ReadAllBytes(iconPath);
+        Texture2D texture = new Texture2D(200, 200);
+        texture.LoadImage(fileData);
+        return texture;
+    }
 
     /// <summary>
     /// 用户信息是否缓存
@@ -21,7 +34,7 @@ public class CacheManager : Singleton<CacheManager>
     {
         get
         {
-            string filePath = Path.Combine(CACHA_PATH, USER_DATA_FILE);
+            string filePath = USER_DATA_FILE;
 
             if(File.Exists(filePath))
             {
@@ -33,12 +46,21 @@ public class CacheManager : Singleton<CacheManager>
         }
     }
 
+    public Texture2D UserIcon
+    {
+        get
+        {
+            return LoadIconTexture(ICON_PATH);
+        }
+    }
+
+
     /// <summary>
     /// 程序入口，首先判断是否存在缓存的账号信息。是则直接自动登录。
     /// </summary>
     public void ApplicationEntry()
     {
-        string filePath = Path.Combine(CACHA_PATH, USER_DATA_FILE);
+        string filePath =USER_DATA_FILE;
         if(File.Exists(filePath))
         {
             UIManager.Instance.Enter(ViewId.MainView);
@@ -71,9 +93,31 @@ public class CacheManager : Singleton<CacheManager>
         string json = JsonUtility.ToJson(userData);
 
         // 保存到本地文件
-        string filePath = Path.Combine(CACHA_PATH, USER_DATA_FILE);
-        File.WriteAllText(filePath, json);
+        File.WriteAllText(USER_DATA_FILE, json);
         Debug.Log($"缓存信息：账号：{account}   昵称：{nickName}   图像：{icon.name}");
+    }
+
+
+    /// <summary>
+    /// 登录时调用，保存用户信息和头像到本地
+    /// </summary>
+    /// <param name="account">账号</param>
+    /// <param name="nickName">昵称</param>
+    /// <param name="icon">头像贴图</param>
+    public void SaveUserInformation(string account, string nickName)
+    {
+        UserInformationCached = true;
+
+        UserInformation userData = new UserInformation
+        {
+            userName = account,
+            nickName = nickName,
+            iconPath = Path.Combine(ICON_PATH, account + ".jpg")
+        };
+
+        string json = JsonUtility.ToJson(userData);
+        // 保存到本地文件
+        File.WriteAllText(USER_DATA_FILE, json);
     }
 
     /// <summary>
@@ -84,7 +128,7 @@ public class CacheManager : Singleton<CacheManager>
     {
         if(UserInformationCached)
         {
-            string filePath = Path.Combine(CACHA_PATH, USER_DATA_FILE);
+            string filePath = USER_DATA_FILE;
 
             if(File.Exists(filePath))
             {
@@ -113,6 +157,53 @@ public class CacheManager : Singleton<CacheManager>
         }
     }
 
+    /// <summary>
+    /// 更新头像缓存
+    /// </summary>
+    /// <param name="updateIcon"></param>
+    public void UpdateIcon(Texture2D updateIcon)
+    {
+        SaveIcon(UserName, updateIcon);
+    }
+
+
+    /// <summary>
+    /// 用户退出登录时调用，清除用户信息和头像文件
+    /// </summary>
+
+    public void ClearUserInformationCache()
+    {
+        if(File.Exists(USER_DATA_FILE))
+        {
+            File.Delete(USER_DATA_FILE);
+        }
+
+        // 清除头像文件夹
+        if(Directory.Exists(ICON_PATH))
+        {
+            Directory.Delete(ICON_PATH, true);
+        }
+        Debug.Log("清除用户信息缓存");
+        UserInformationCached = false;
+
+
+    }
+
+
+    /// <summary>
+    /// 以字节流形式保存头像到本地。
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="bytes"></param>
+    public void SaveIcon(string account, byte[] bytes)
+    {
+        if(!Directory.Exists(ICON_PATH))
+        {
+            Directory.CreateDirectory(ICON_PATH);
+        }
+        string fileName = Path.Combine(ICON_PATH, account + ".jpg");
+        File.WriteAllBytes(fileName, bytes);
+    }
 
     /// <summary>
     ///  保存头像到本地，并返回保存的路径
@@ -122,17 +213,16 @@ public class CacheManager : Singleton<CacheManager>
     /// <returns></returns>
     private string SaveIcon(string account, Texture2D icon)
     {
-        string iconPath = Path.Combine(CACHA_PATH, ICON_FOLDER);
-        if(!Directory.Exists(iconPath))
+        if(!Directory.Exists(ICON_PATH))
         {
-            Directory.CreateDirectory(iconPath);
+            Directory.CreateDirectory(ICON_PATH);
         }
 
-        iconPath = Path.Combine(iconPath, account + ".png");
+        string fileName = Path.Combine(ICON_PATH, account + ".jpg");
         byte[] bytes = icon.EncodeToPNG();
-        File.WriteAllBytes(iconPath, bytes);
+        File.WriteAllBytes(fileName, bytes);
 
-        return iconPath;
+        return fileName;
     }
 
     private new void Awake()

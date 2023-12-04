@@ -60,6 +60,9 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
 
         _btnUpdateNickName.onClick.AddListener(_presenter.UpdateNickName);
         _btnSureUpdateNickName.onClick.AddListener(_presenter.SureUpdateNickName);
+
+        _btnUserIcon.onClick.AddListener(_presenter.UpdateUserIcon) ;
+
         #endregion
     }
 
