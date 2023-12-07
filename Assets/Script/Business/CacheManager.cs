@@ -1,4 +1,6 @@
+using System.Drawing;
 using System.IO;
+using System.Security.Principal;
 using TsingPigSDK;
 using UnityEngine;
 using UIManager = MVPFrameWork.UIManager;
@@ -60,7 +62,7 @@ public class CacheManager : Singleton<CacheManager>
     /// </summary>
     public void ApplicationEntry()
     {
-        string filePath =USER_DATA_FILE;
+        string filePath = USER_DATA_FILE;
         if(File.Exists(filePath))
         {
             UIManager.Instance.Enter(ViewId.MainView);
@@ -157,15 +159,6 @@ public class CacheManager : Singleton<CacheManager>
         }
     }
 
-    /// <summary>
-    /// 更新头像缓存
-    /// </summary>
-    /// <param name="updateIcon"></param>
-    public void UpdateIcon(Texture2D updateIcon)
-    {
-        SaveIcon(UserName, updateIcon);
-    }
-
 
     /// <summary>
     /// 用户退出登录时调用，清除用户信息和头像文件
@@ -206,6 +199,24 @@ public class CacheManager : Singleton<CacheManager>
     }
 
     /// <summary>
+    /// 更新头像：缓存+服务器
+    /// </summary>
+    /// <param name="updateIcon"></param>
+    public void UpdateIcon(Texture2D updateIcon)
+    {
+        if(!Directory.Exists(ICON_PATH))
+        {
+            Directory.CreateDirectory(ICON_PATH);
+        }
+
+        string fileName = Path.Combine(ICON_PATH, UserName + ".jpg");
+        byte[] bytes = updateIcon.EncodeToPNG();
+        ServerManager.Instance.UploadUserIcon(UserName, bytes);
+        File.WriteAllBytes(fileName, bytes);
+    }
+
+
+    /// <summary>
     ///  保存头像到本地，并返回保存的路径
     /// </summary>
     /// <param name="account"></param>
@@ -220,6 +231,7 @@ public class CacheManager : Singleton<CacheManager>
 
         string fileName = Path.Combine(ICON_PATH, account + ".jpg");
         byte[] bytes = icon.EncodeToPNG();
+
         File.WriteAllBytes(fileName, bytes);
 
         return fileName;
