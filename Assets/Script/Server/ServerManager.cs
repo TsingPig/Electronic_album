@@ -51,9 +51,10 @@ public class ServerManager : Singleton<ServerManager>
 
     IEnumerator DownloadFile(string account, Action<string, byte[]> callback)
     {
-        string fileName = "usericon.jpg";
 
-        UnityWebRequest www = UnityWebRequest.Get($"http://1.12.46.157:80/download/123/" + fileName);
+        string fileName = RestrictedStringToLettersOrNumbers(account) + "/usericon.jpg";
+
+        UnityWebRequest www = UnityWebRequest.Get($"http://1.12.46.157:80/download/" + fileName);
 
         yield return www.SendWebRequest();
 
@@ -68,8 +69,27 @@ public class ServerManager : Singleton<ServerManager>
         }
         else
         {
-            Debug.LogError($"Error downloading file:{fileName} " + www.error);
+            Debug.LogError($"ÍøÂçÇëÇó´íÎó: {fileName} " + www.error);
         }
+    }
+
+
+    /// <summary>
+    /// ·µ»ØÖ»°üº¬ºÏ·¨×Ö·û£¨×ÖÄ¸/Êý×Ö£©µÄ×Ö·û´®
+    /// </summary>
+    /// <param name="str"></param>
+    /// <returns></returns>
+    private string RestrictedStringToLettersOrNumbers(string str)
+    {
+        string restrictedString = string.Empty;
+        foreach(char ch in str)
+        {
+            if(char.IsLetterOrDigit(ch))
+            {
+                restrictedString += ch;
+            }
+        }
+        return restrictedString;
     }
 
     private void Init()
