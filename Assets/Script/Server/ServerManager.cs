@@ -51,7 +51,7 @@ public class ServerManager : Singleton<ServerManager>
 
     IEnumerator DownloadFile(string account, Action<string, byte[]> callback)
     {
-        string fileName = "usericon.jpg";
+        string fileName = "ydy/usericon.jpg";
 
         UnityWebRequest www = UnityWebRequest.Get($"http://1.12.46.157:80/download/" + fileName);
 
