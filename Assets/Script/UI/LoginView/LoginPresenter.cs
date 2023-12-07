@@ -4,7 +4,6 @@ using UnityEngine;
 using MVPFrameWork;
 using UIManager = MVPFrameWork.UIManager;
 using TsingPigSDK;
-using TMPro;
 
 public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
 {
@@ -84,14 +83,5 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
             _view.TxtLoginInputPassWord.inputType = TMPro.TMP_InputField.InputType.Password;
         }
 
-    }
-
-    public void ClearInformation(TMP_InputField info)
-    {
-        if(info == null) 
-        { 
-            return;
-        }
-        info.text = "";
     }
 }

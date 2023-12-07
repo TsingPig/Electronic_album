@@ -1,6 +1,5 @@
 using Sirenix.OdinInspector;
 using System.Data;
-using System.Diagnostics;
 using TsingPigSDK;
 
 public class MySQLManager : Singleton<MySQLManager>
@@ -40,7 +39,6 @@ public class MySQLManager : Singleton<MySQLManager>
         string[] value = { account, userPassword };
         DataSet result = new DataSet();
         result = _mySQLAccess.Select(tablename, items, whereColumns, operation, value);
-
         // 检查是否返回了任何行
         if(result != null && result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0 && result.Tables[0].Columns.Count > 1)
         {

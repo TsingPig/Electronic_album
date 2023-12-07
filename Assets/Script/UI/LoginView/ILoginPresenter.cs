@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MVPFrameWork;
-using TMPro;
 
 public interface ILoginPresenter : IPresenter
 {
@@ -14,5 +13,4 @@ public interface ILoginPresenter : IPresenter
 
     void ChangePasswordState(bool value);
 
-    void ClearInformation(TMP_InputField info);
 }
