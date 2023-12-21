@@ -94,7 +94,7 @@ namespace TsingPigSDK
                 query += $", `{items[i]}`";
             }
 
-            query += $" FROM ```{tableName}``` WHERE `{whereColumnName[0]}` {operation[0]} '{value[0]}'";
+            query += $" FROM `{tableName}` WHERE `{whereColumnName[0]}` {operation[0]} '{value[0]}'";
             for(int i = 1; i < whereColumnName.Length; i++)
             {
                 query += $" AND `{whereColumnName[i]}` {operation[i]} '{value[i]}'";
@@ -117,7 +117,7 @@ namespace TsingPigSDK
             {
                 throw new ArgumentException("Wildcard must be '*'.", nameof(wildcard));
             }
-            string query = $"SELECT * FROM ```{tableName}```";
+            string query = $"SELECT * FROM `{tableName}`";
             DataSet result = QuerySet(query);
             Log.LogQueryResult(result);
             return result;
@@ -162,7 +162,7 @@ namespace TsingPigSDK
                 throw new Exception("输入不正确：" + "要插入的列和值的数量不一致！");
             }
 
-            string query = $"INSERT INTO  ```{tableName}```  ({string.Join(",", columns)}) VALUES ('{string.Join("','", values)}')";
+            string query = $"INSERT INTO  `{tableName}`  ({string.Join(",", columns)}) VALUES ('{string.Join("','", values)}')";
             Log.Info($"插入数据{query}");
             ExecuteNonQuery(query);
         }
@@ -180,7 +180,7 @@ namespace TsingPigSDK
         public void Update(string tableName, string columnToUpdate, string newValue,
                            string whereColumnName, string operation, string value)
         {
-            string update = $"UPDATE ```{tableName}``` SET `{columnToUpdate}` = '{newValue}' WHERE `{whereColumnName}` {operation} '{value}'";
+            string update = $"UPDATE `{tableName}` SET `{columnToUpdate}` = '{newValue}' WHERE `{whereColumnName}` {operation} '{value}'";
             ExecuteNonQuery(update);
             Log.Info($"更新数据: {update}");
         }
