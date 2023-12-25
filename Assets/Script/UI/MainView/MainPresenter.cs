@@ -32,7 +32,7 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
     public UserInformation LoadUserInformation()
     {
         UserInformation userInformation = null;
-       // string filePath = Path.Combine(CacheManager.CACHA_PATH, CacheManager.USER_DATA_FILE);
+        // string filePath = Path.Combine(CacheManager.CACHA_PATH, CacheManager.USER_DATA_FILE);
         if(CacheManager.Instance.UserInformationCached)
         {
             string json = File.ReadAllText(CacheManager.USER_DATA_FILE);
@@ -141,6 +141,15 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
 
 
 
+
+    #endregion
+
+    #region AlbumView
+
+    public void EnterAlbumCreateView()
+    {
+        UIManager.Instance.Enter(ViewId.AlbumCreateView);
+    }
 
     #endregion
 }

@@ -5,15 +5,15 @@ using UnityEngine.UI;
 
 public interface ILoginView : IView
 {
-    TMP_InputField TxtRegisterInputAccount { get; set; }
+    TMP_InputField InptRegisterInputAccount { get; set; }
 
-    TMP_InputField TxtRegisterInputPassWord { get; set; }
+    TMP_InputField InptRegisterInputPassWord { get; set; }
 
-    TMP_InputField TxtRegisterInputSurePassWord { get; set; }
+    TMP_InputField InptRegisterInputSurePassWord { get; set; }
 
-    TMP_InputField TxtLoginInputAccount { get; set; }
+    TMP_InputField InptLoginInputAccount { get; set; }
 
-    TMP_InputField TxtLoginInputPassWord { get; set; }
+    TMP_InputField InptLoginInputPassWord { get; set; }
 
     Toggle TglLoginChangePasswordState { get; set; }
 

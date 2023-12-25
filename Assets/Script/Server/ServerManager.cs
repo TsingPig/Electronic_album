@@ -33,6 +33,38 @@ public class ServerManager : Singleton<ServerManager>
         StartCoroutine(DownloadFile(account, "usericon.jpg", CacheManager.Instance.SaveIcon));
     }
 
+
+    public void CreateAlbum(string account, string albumName, Action<string> callback = null)
+    {
+        StartCoroutine(CreateAlbumCoroutine(account, albumName, callback));
+    }
+
+    IEnumerator CreateAlbumCoroutine(string account, string albumName, Action<string> callback)
+    {
+        // 创建一个表单数据对象
+        WWWForm form = new WWWForm();
+
+        // 将数据作为 JSON 字符串添加到表单
+        string jsonData = JsonUtility.ToJson(new { album_name = albumName });
+        form.AddField("album_name", albumName);
+        form.AddField("json", jsonData, System.Text.Encoding.UTF8);
+
+        UnityWebRequest www = UnityWebRequest.Post($"http://1.12.46.157:80/createAlbum/{account}", form);
+
+        yield return www.SendWebRequest();
+
+        if(www.result == UnityWebRequest.Result.Success)
+        {
+            Debug.Log("Album created successfully");
+            callback?.Invoke("Album created successfully");
+        }
+        else
+        {
+            Debug.LogError($"Error creating album: {www.error}");
+            callback?.Invoke($"Error creating album: {www.error}");
+        }
+    }
+
     /// <summary>
     /// 向服务器上传文件
     /// </summary>
@@ -125,4 +157,6 @@ public class ServerManager : Singleton<ServerManager>
         base.Awake();
         Init();
     }
+
+
 }

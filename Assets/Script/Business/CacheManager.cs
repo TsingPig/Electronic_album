@@ -32,7 +32,7 @@ public class CacheManager : Singleton<CacheManager>
     /// </summary>
     public bool UserInformationCached = false;
 
-    private string UserName
+    public string UserName
     {
         get
         {

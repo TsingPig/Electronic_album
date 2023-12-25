@@ -10,11 +10,11 @@ using UnityEngine.UI;
 [ParentInfo(FindType.FindWithName, ConstDef.CANVAS)]
 public class LoginView : ViewBase<ILoginPresenter>, ILoginView
 {
-    private TMP_InputField _txtRegisterInputAccount;
-    private TMP_InputField _txtRegisterInputPassword;
-    private TMP_InputField _txtRegisterInputSurePassWord;
-    private TMP_InputField _txtLoginInputAccount;
-    private TMP_InputField _txtLoginInputPassword;
+    private TMP_InputField _inptRegisterInputAccount;
+    private TMP_InputField _inptRegisterInputPassword;
+    private TMP_InputField _inptRegisterInputSurePassWord;
+    private TMP_InputField _inptLoginInputAccount;
+    private TMP_InputField _inptLoginInputPassword;
     private Toggle _tglLoginChangePasswordState;
     private ButtonManager _btnLogin;
     private ButtonManager _btnRegister;
@@ -25,11 +25,11 @@ public class LoginView : ViewBase<ILoginPresenter>, ILoginView
     private ButtonManager _btnLoginInputPassWordClear;
 
 
-    public TMP_InputField TxtRegisterInputAccount { get => _txtRegisterInputAccount; set => _txtRegisterInputAccount = value; }
-    public TMP_InputField TxtRegisterInputPassWord { get => _txtRegisterInputPassword; set => _txtRegisterInputPassword = value; }
-    public TMP_InputField TxtRegisterInputSurePassWord { get => _txtRegisterInputSurePassWord; set => _txtRegisterInputSurePassWord = value; }
-    public TMP_InputField TxtLoginInputAccount { get => _txtLoginInputAccount; set => _txtLoginInputAccount = value; }
-    public TMP_InputField TxtLoginInputPassWord { get => _txtLoginInputPassword; set => _txtLoginInputPassword = value; }
+    public TMP_InputField InptRegisterInputAccount { get => _inptRegisterInputAccount; set => _inptRegisterInputAccount = value; }
+    public TMP_InputField InptRegisterInputPassWord { get => _inptRegisterInputPassword; set => _inptRegisterInputPassword = value; }
+    public TMP_InputField InptRegisterInputSurePassWord { get => _inptRegisterInputSurePassWord; set => _inptRegisterInputSurePassWord = value; }
+    public TMP_InputField InptLoginInputAccount { get => _inptLoginInputAccount; set => _inptLoginInputAccount = value; }
+    public TMP_InputField InptLoginInputPassWord { get => _inptLoginInputPassword; set => _inptLoginInputPassword = value; }
     public Toggle TglLoginChangePasswordState { get => _tglLoginChangePasswordState; set => _tglLoginChangePasswordState = value; }
     public ButtonManager BtnLogin { get => _btnLogin; set => _btnLogin = value; }  
     public ButtonManager BtnRegister { get => _btnRegister; set => _btnRegister = value; }
@@ -43,12 +43,12 @@ public class LoginView : ViewBase<ILoginPresenter>, ILoginView
     protected override void OnCreate()
     {
 
-        _txtRegisterInputAccount = _root.Find<TMP_InputField>("Window Manager/Windows/Register/Content/inptAccount");
-        _txtRegisterInputPassword = _root.Find<TMP_InputField>("Window Manager/Windows/Register/Content/inptPassword");
-        _txtRegisterInputSurePassWord = _root.Find<TMP_InputField>("Window Manager/Windows/Register/Content/inptSurePassword");
+        _inptRegisterInputAccount = _root.Find<TMP_InputField>("Window Manager/Windows/Register/Content/inptAccount");
+        _inptRegisterInputPassword = _root.Find<TMP_InputField>("Window Manager/Windows/Register/Content/inptPassword");
+        _inptRegisterInputSurePassWord = _root.Find<TMP_InputField>("Window Manager/Windows/Register/Content/inptSurePassword");
 
-        _txtLoginInputAccount = _root.Find<TMP_InputField>("Window Manager/Windows/Login/Content/inptAccount");
-        _txtLoginInputPassword = _root.Find<TMP_InputField>("Window Manager/Windows/Login/Content/inptPassword");
+        _inptLoginInputAccount = _root.Find<TMP_InputField>("Window Manager/Windows/Login/Content/inptAccount");
+        _inptLoginInputPassword = _root.Find<TMP_InputField>("Window Manager/Windows/Login/Content/inptPassword");
         _tglLoginChangePasswordState = _root.Find<Toggle>("Window Manager/Windows/Login/Content/tgglChangePasswordState");
         _tglLoginChangePasswordState.onValueChanged.AddListener((bool value) => _presenter.ChangePasswordState(value));
         
@@ -64,11 +64,11 @@ public class LoginView : ViewBase<ILoginPresenter>, ILoginView
         _btnLoginInputPassWordClear = _root.Find<ButtonManager>("Window Manager/Windows/Login/Content/inptPassword/Clear");
 
 
-        _btnRegisterInputAccountClear.onClick.AddListener(delegate { _presenter.ClearInformation(TxtRegisterInputAccount); });
-        _btnRegisterInputPasswordClear.onClick.AddListener(delegate { _presenter.ClearInformation(TxtRegisterInputPassWord); });
-        _btnRegisterInputSurePassWordClear.onClick.AddListener(delegate { _presenter.ClearInformation(TxtRegisterInputSurePassWord); });
-        _btnLoginInputAccountClear.onClick.AddListener(delegate { _presenter.ClearInformation(TxtLoginInputAccount); });
-        _btnLoginInputPassWordClear.onClick.AddListener(delegate { _presenter.ClearInformation(TxtLoginInputPassWord); });
+        _btnRegisterInputAccountClear.onClick.AddListener(delegate { _presenter.ClearInformation(InptRegisterInputAccount); });
+        _btnRegisterInputPasswordClear.onClick.AddListener(delegate { _presenter.ClearInformation(InptRegisterInputPassWord); });
+        _btnRegisterInputSurePassWordClear.onClick.AddListener(delegate { _presenter.ClearInformation(InptRegisterInputSurePassWord); });
+        _btnLoginInputAccountClear.onClick.AddListener(delegate { _presenter.ClearInformation(InptLoginInputAccount); });
+        _btnLoginInputPassWordClear.onClick.AddListener(delegate { _presenter.ClearInformation(InptLoginInputPassWord); });
 
     }
 }

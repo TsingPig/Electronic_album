@@ -16,8 +16,8 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
 
     public void OnLogin()
     {
-        string LoginInputAccount = _view.TxtLoginInputAccount.text;
-        string LoginInputPassword = _view.TxtLoginInputPassWord.text;
+        string LoginInputAccount = _view.InptLoginInputAccount.text;
+        string LoginInputPassword = _view.InptLoginInputPassWord.text;
 
         if(MySQLManager.Instance.Login(LoginInputAccount, LoginInputPassword))
         {
@@ -44,9 +44,9 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
 
     public void OnRegister()
     {
-        string RegisterInputAccount = _view.TxtRegisterInputAccount.text;
-        string RegisterInputPassWord = _view.TxtRegisterInputPassWord.text;
-        string RegisterInputSurePassWord = _view.TxtRegisterInputSurePassWord.text;
+        string RegisterInputAccount = _view.InptRegisterInputAccount.text;
+        string RegisterInputPassWord = _view.InptRegisterInputPassWord.text;
+        string RegisterInputSurePassWord = _view.InptRegisterInputSurePassWord.text;
 
         if(RegisterInputPassWord.Equals(RegisterInputSurePassWord))
         {
@@ -77,11 +77,11 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
 
         if(value)
         {
-            _view.TxtLoginInputPassWord.inputType = TMPro.TMP_InputField.InputType.Standard;
+            _view.InptLoginInputPassWord.inputType = TMPro.TMP_InputField.InputType.Standard;
         }
         else
         {
-            _view.TxtLoginInputPassWord.inputType = TMPro.TMP_InputField.InputType.Password;
+            _view.InptLoginInputPassWord.inputType = TMPro.TMP_InputField.InputType.Password;
         }
 
     }

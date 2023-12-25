@@ -46,6 +46,22 @@ app.post('/upload', upload.single('file'), (req, res) => {
   res.send('File uploaded!');
 });
 
+
+app.post('/createAlbum/:account', (req, res) => {
+    const account = req.params.account;
+    const album_name = req.body.album_name;
+    const albumPath = path.join(__dirname, 'uploads', account, 'album_name');
+    
+    console.log(album_name);
+    // 检查文件夹是否存在，如果不存在，则创建它
+    if (!fs.existsSync(albumPath)) {
+      fs.mkdirSync(albumPath, { recursive: true });
+      res.send('Album created successfully!');
+    } else {
+      res.send('Album already exists.');
+    }
+  });
+  
 // 处理文件下载
 app.get('/download/:account/:filename', (req, res) => {
   const account = req.params.account;
@@ -69,5 +85,3 @@ app.get('/download/:account/:filename', (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-
-这段代码的逻辑是什么样的

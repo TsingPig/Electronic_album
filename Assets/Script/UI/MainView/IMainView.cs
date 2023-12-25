@@ -39,5 +39,9 @@ public interface IMainView : IView
 
     #endregion
 
+    #region AlbumView
 
+    ButtonManager BtnCreateAlbum { get; }
+
+    #endregion
 }

@@ -39,6 +39,12 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
 
     #endregion
 
+    #region AlbumView
+    private ButtonManager _btnCreateAlbum;
+    public ButtonManager BtnCreateAlbum => _btnCreateAlbum;
+
+    #endregion
+
     protected override void OnCreate()
     {
         #region TopPanel
@@ -47,6 +53,7 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
         _btnSetting.onClick.AddListener(_presenter.ClearUserInformationCache);
 
         #endregion
+
         #region UserInformationView
 
         _txtUserName = _root.Find<TMP_Text>("Window Manager/Windows/UserInformationView/UserInformationPanel/UserName/txtUserName");
@@ -61,8 +68,13 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
         _btnUpdateNickName.onClick.AddListener(_presenter.UpdateNickName);
         _btnSureUpdateNickName.onClick.AddListener(_presenter.SureUpdateNickName);
 
-        _btnUserIcon.onClick.AddListener(_presenter.UpdateUserIcon) ;
+        _btnUserIcon.onClick.AddListener(_presenter.UpdateUserIcon);
 
+        #endregion
+
+        #region AlbumView
+        _btnCreateAlbum = _root.Find<ButtonManager>("Window Manager/Windows/AlbumView/ScrollbarView/Viewport/Content/CreateItem/btnCreateAlbum");
+        _btnCreateAlbum.onClick.AddListener(_presenter.EnterAlbumCreateView);
         #endregion
     }
 
