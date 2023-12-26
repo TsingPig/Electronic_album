@@ -42,23 +42,20 @@ public class ServerManager : Singleton<ServerManager>
     IEnumerator CreateAlbumCoroutine(string account, string albumName, Action<string> callback)
     {
         // 创建一个表单数据对象
-        WWWForm form = new WWWForm();
-        form.AddField("album_name", albumName);
-
-        UnityWebRequest www = UnityWebRequest.Post($"http://1.12.46.157:80/createAlbum/{account}/{albumName}", form);
-
-        yield return www.SendWebRequest();
-
-        if(www.result == UnityWebRequest.Result.Success)
+        using(UnityWebRequest www = UnityWebRequest.Post($"http://1.12.46.157:80/createAlbum/{account}/{albumName}", ""))
         {
-            Debug.Log("Album created successfully");
-            callback?.Invoke("Album created successfully");
+            yield return www.SendWebRequest();
+
+            if(www.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log($"相册：\"{albumName}\" 创建成功");
+            }
+            else
+            {
+                Debug.Log($"Error creating album: {www.error}");
+            }
         }
-        else
-        {
-            Debug.LogError($"Error creating album: {www.error}");
-            callback?.Invoke($"Error creating album: {www.error}");
-        }
+
     }
 
     /// <summary>
