@@ -2,9 +2,9 @@ using MVPFrameWork;
 
 public static class ViewId
 {
-    public const int LoginView = 0x1000;
-    public const int MainView = 0x1001;
-    public const int AlbumCreateView = 0x1002;
+    public const int LoginView = 1000;
+    public const int MainView = 1001;
+    public const int AlbumCreateView = 1002;
 }
 
 public static class ConstDef
@@ -20,8 +20,10 @@ public static class UIRegister
     {
         Container.Regist<ILoginPresenter, LoginPresenter>();
         Container.Regist<IView, LoginView>(ViewId.LoginView);
+
         Container.Regist<IMainPresenter, MainPresenter>();
         Container.Regist<IView, MainView>(ViewId.MainView);
+
         Container.Regist<IAlbumCreatePresenter, AlbumCreatePresenter>();
         Container.Regist<IView, AlbumCreateView>(ViewId.AlbumCreateView);
     }

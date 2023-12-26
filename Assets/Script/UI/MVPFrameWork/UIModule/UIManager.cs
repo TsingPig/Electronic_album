@@ -21,7 +21,6 @@ namespace MVPFrameWork
 
         public void Enter(int viewId, Action callback = null)
         {
-            Debug.Log("Enter" + viewId);
             _module.Enter(viewId, callback);
         }
         public void Quit(int viewId, Action callback = null)

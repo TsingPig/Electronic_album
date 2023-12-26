@@ -1,5 +1,8 @@
 
 using System;
+using System.Collections;
+using System.Threading;
+using System.Threading.Tasks;
 using TsingPigSDK;
 using UnityEngine;
 
@@ -28,13 +31,42 @@ namespace MVPFrameWork
             }
             set
             {
-                _rootCanvasIsActive = value;
-                _rootCanvas.alpha = value ? 1f : 0f;
-                _rootCanvas.blocksRaycasts = value;
-                _rootCanvas.interactable = value;
+                CanvasAlpha(!value, 0.5f, () =>
+                {
+                    _rootCanvasIsActive = value;
+                    _rootCanvas.blocksRaycasts = value;
+                    _rootCanvas.interactable = value;
+                });
+
+                //_rootCanvasIsActive = value;
+                //_rootCanvas.alpha = value ? 1f : 0f;
+                //_rootCanvas.blocksRaycasts = value;
+                //_rootCanvas.interactable = value;
             }
         }
 
+
+        /// 控制面板Alpha值动画淡入淡出
+        /// </summary>
+        /// <param name="fade">为真表示淡出，否则表示淡入</param>
+        /// <param name="swiftTime">淡入淡出时间</param>
+        private async void CanvasAlpha(bool fade, float swiftTime, Action callback = null)
+        {
+            float startAlpha = fade ? 1f : 0f;
+            float targetAlpha = fade ? 0f : 1f;
+
+            float elapsedTime = 0f;
+
+            while(elapsedTime < swiftTime)
+            {
+                _rootCanvas.alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / swiftTime);
+                elapsedTime += Time.deltaTime;
+                await Task.Yield();
+            }
+
+            _rootCanvas.alpha = targetAlpha;
+            callback?.Invoke();
+        }
         public IPresenter Presenter
         {
             get
@@ -97,8 +129,9 @@ namespace MVPFrameWork
             var handle = Res<GameObject>.LoadAsync(_resPath);
             await handle;
             GameObject obj = handle.Result;
-            
+
             OnGetResInfoCompleted(obj);
+            callback?.Invoke();
 
             //if(async)
             //{
@@ -179,12 +212,10 @@ namespace MVPFrameWork
 
         public void Destroy()
         {
-            /*
+            Debug.Log("ViewBase Destory");
             OnDestroy();
             Presenter = null;
             UnityEngine.Object.DestroyImmediate(_root.gameObject);
-            Singleton<ResManager>.Instance.Unload(_resPath);
-            */
         }
 
         protected abstract void OnCreate();

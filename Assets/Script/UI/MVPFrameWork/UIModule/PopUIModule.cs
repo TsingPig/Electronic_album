@@ -49,10 +49,12 @@ namespace MVPFrameWork
             {
                 if(value.active)
                 {
+
                     value.active = false;
                     _viewDic[viewId] = value;
                     _uiModule?.Quit(viewId, delegate
                     {
+                        Log.Info($"{viewId}");
                         callback?.Invoke();
                     });
                 }
