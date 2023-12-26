@@ -15,6 +15,4 @@ public interface ILoginPresenter : IPresenter
     void ChangePasswordState(bool value);
 
     void ClearInformation(TMP_InputField info);
-
-    
 }
