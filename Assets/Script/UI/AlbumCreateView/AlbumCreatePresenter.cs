@@ -15,7 +15,7 @@ public class AlbumCreatePresenter : PresenterBase<IAlbumCreateView>, IAlbumCreat
     public void CreateAlbum()
     {
         Debug.Log($"{_view.InptAlbumName.text} {_view.DropDownAlbumType.selectedText}");
-        ServerManager.Instance.CreateAlbum(CacheManager.Instance.UserName, _view.InptAlbumName.text);
+        ServerManager.Instance.CreateAlbumFolder(CacheManager.Instance.UserName, _view.InptAlbumName.text);
         UIManager.Instance.Quit(ViewId.AlbumCreateView);
 
     }

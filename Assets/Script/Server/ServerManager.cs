@@ -6,9 +6,23 @@ using TsingPigSDK;
 using UnityEngine.Networking;
 using System.IO;
 using System;
+using static System.Net.WebRequestMethods;
 
 public class ServerManager : Singleton<ServerManager>
 {
+    /// <summary>
+    /// 公网ip
+    /// </summary>
+    public string host = "http://1.12.46.157";
+    public int post = 80;
+
+    /// <summary>
+    /// 公网url
+    /// </summary>
+    public string url => $"{host}:{post}";
+
+    private string _account = CacheManager.Instance.UserName;
+
     /// <summary>
     /// 头像下载完成后，更新用户显示
     /// </summary>
@@ -30,35 +44,48 @@ public class ServerManager : Singleton<ServerManager>
     /// <param name="account"></param>
     public void DownLoadUserIcon(string account)
     {
-        StartCoroutine(DownloadFile(account, "usericon.jpg", CacheManager.Instance.SaveIcon));
+        string filePath = $"{RestrictedStringToLettersOrNumbers(account)}/usericon.jpg";
+        StartCoroutine(DownloadFile(filePath, CacheManager.Instance.SaveIcon));
     }
 
-
-    public void CreateAlbum(string account, string albumName, Action<string> callback = null)
+    /// <summary>
+    /// 为用户创建空相册文件夹
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="folderName"></param>
+    /// <param name="callback"></param>
+    public void CreateAlbumFolder(string account, string folderName, Action<string> callback = null)
     {
-        StartCoroutine(CreateAlbumCoroutine(account, albumName, callback));
+        StartCoroutine(CreateEmptyFolder($"{account}/{folderName}", callback));
     }
 
-    IEnumerator CreateAlbumCoroutine(string account, string albumName, Action<string> callback)
+
+    /// <summary>
+    /// 创建空文件夹
+    /// </summary>
+    /// <param name="account">用户账号</param>
+    /// <param name="folderName">相册名</param>
+    /// <param name="callback">回调</param>
+    /// <returns></returns>
+    IEnumerator CreateEmptyFolder(string folderPath, Action<string> callback)
     {
         // 创建一个表单数据对象
-        WWWForm form = new WWWForm();
-        form.AddField("album_name", albumName);
-
-        UnityWebRequest www = UnityWebRequest.Post($"http://1.12.46.157:80/createAlbum/{account}/{albumName}", form);
-
-        yield return www.SendWebRequest();
-
-        if(www.result == UnityWebRequest.Result.Success)
+        using(UnityWebRequest www = UnityWebRequest.Post($"{url}/createEmptyFolder/{folderPath}", ""))
         {
-            Debug.Log("Album created successfully");
-            callback?.Invoke("Album created successfully");
+            yield return www.SendWebRequest();
+
+            if(www.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log($"文件夹创建成功：{folderPath}");
+                callback?.Invoke(www.result.ToString());
+            }
+            else
+            {
+                Debug.LogError($"Error creating album: {www.error}");
+                callback?.Invoke(www.error);
+            }
         }
-        else
-        {
-            Debug.LogError($"Error creating album: {www.error}");
-            callback?.Invoke($"Error creating album: {www.error}");
-        }
+
     }
 
     /// <summary>
@@ -77,7 +104,7 @@ public class ServerManager : Singleton<ServerManager>
         // 添加文件数据到表单
         form.AddBinaryData("file", bytes, fileName, "image/jpg");
 
-        using(UnityWebRequest www = UnityWebRequest.Post("http://1.12.46.157/upload", form))
+        using(UnityWebRequest www = UnityWebRequest.Post($"{host}/upload", form))
         {
             www.downloadHandler = new DownloadHandlerBuffer(); // 禁用压缩
             yield return www.SendWebRequest();
@@ -100,12 +127,10 @@ public class ServerManager : Singleton<ServerManager>
     /// <param name="fileName"></param>
     /// <param name="callback"></param>
     /// <returns></returns>
-    IEnumerator DownloadFile(string account, string fileName, Action<string, byte[]> callback)
+    IEnumerator DownloadFile(string filePath, Action<byte[]> callback)
     {
 
-        string filePath = RestrictedStringToLettersOrNumbers(account) + "/" + fileName;
-
-        UnityWebRequest www = UnityWebRequest.Get($"http://1.12.46.157:80/download/" + filePath);
+        UnityWebRequest www = UnityWebRequest.Get($"{url}/download/{filePath}");
 
         yield return www.SendWebRequest();
 
@@ -113,14 +138,13 @@ public class ServerManager : Singleton<ServerManager>
         {
             byte[] fileData = www.downloadHandler.data;
 
-            Debug.Log("文件下载成功");
-
-            callback?.Invoke(account, fileData);
+            Debug.Log($"文件下载成功：{filePath}");
+            callback?.Invoke(fileData);
             DownLoadUserIcon_Event?.Invoke();
         }
         else
         {
-            Debug.LogError($"网络请求错误: {fileName} " + www.error);
+            Debug.LogError($"网络请求错误: {url}/download/{filePath} {www.error}");
         }
     }
 
