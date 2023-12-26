@@ -188,13 +188,13 @@ public class CacheManager : Singleton<CacheManager>
     /// </summary>
     /// <param name="account"></param>
     /// <param name="bytes"></param>
-    public void SaveIcon(string account, byte[] bytes)
+    public void SaveIcon(byte[] bytes)
     {
         if(!Directory.Exists(ICON_PATH))
         {
             Directory.CreateDirectory(ICON_PATH);
         }
-        string fileName = Path.Combine(ICON_PATH, account + ".jpg");
+        string fileName = Path.Combine(ICON_PATH, UserName + ".jpg");
         File.WriteAllBytes(fileName, bytes);
     }
 
