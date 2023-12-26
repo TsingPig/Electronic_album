@@ -43,13 +43,9 @@ public class ServerManager : Singleton<ServerManager>
     {
         // 创建一个表单数据对象
         WWWForm form = new WWWForm();
-
-        // 将数据作为 JSON 字符串添加到表单
-        string jsonData = JsonUtility.ToJson(new { album_name = albumName });
         form.AddField("album_name", albumName);
-        form.AddField("json", jsonData, System.Text.Encoding.UTF8);
 
-        UnityWebRequest www = UnityWebRequest.Post($"http://1.12.46.157:80/createAlbum/{account}", form);
+        UnityWebRequest www = UnityWebRequest.Post($"http://1.12.46.157:80/createAlbum/{account}/{albumName}", form);
 
         yield return www.SendWebRequest();
 

@@ -52,7 +52,7 @@ app.post('/createAlbum/:account', (req, res) => {
     const album_name = req.body.album_name;
     const albumPath = path.join(__dirname, 'uploads', account, 'album_name');
     
-    console.log(album_name);
+    console.log(album_name + account);
     // 检查文件夹是否存在，如果不存在，则创建它
     if (!fs.existsSync(albumPath)) {
       fs.mkdirSync(albumPath, { recursive: true });
