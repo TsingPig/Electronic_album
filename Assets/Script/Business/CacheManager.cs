@@ -1,3 +1,4 @@
+using System;
 using System.Drawing;
 using System.IO;
 using System.Security.Principal;
@@ -8,6 +9,7 @@ using UIManager = MVPFrameWork.UIManager;
 
 public class CacheManager : Singleton<CacheManager>
 {
+    private UserInformation _userInform;
 
     //public static string CACHA_PATH => Application.persistentDataPath;
     public const string CACHA_PATH = "Assets/Resources/UserInformation";
@@ -31,6 +33,18 @@ public class CacheManager : Singleton<CacheManager>
     /// 用户信息是否缓存
     /// </summary>
     public bool UserInformationCached = false;
+
+    public UserInformation UserInform
+    {
+        get { return _userInform; }
+        set
+        {
+            _userInform = value;
+            UserInformUpdate_Event?.Invoke();
+        }
+    }
+
+    public Func<UserInformation> UserInformUpdate_Event = null;
 
     public string UserName
     {
@@ -92,6 +106,8 @@ public class CacheManager : Singleton<CacheManager>
             iconPath = SaveIcon(account, icon)
         };
 
+        UserInform = userData;
+
         string json = JsonUtility.ToJson(userData);
 
         // 保存到本地文件
@@ -100,27 +116,28 @@ public class CacheManager : Singleton<CacheManager>
     }
 
 
-    /// <summary>
-    /// 登录时调用，保存用户信息和头像到本地
-    /// </summary>
-    /// <param name="account">账号</param>
-    /// <param name="nickName">昵称</param>
-    /// <param name="icon">头像贴图</param>
-    public void SaveUserInformation(string account, string nickName)
-    {
-        UserInformationCached = true;
+    ///// <summary>
+    ///// 登录时调用，保存用户信息和头像到本地
+    ///// </summary>
+    ///// <param name="account">账号</param>
+    ///// <param name="nickName">昵称</param>
+    ///// <param name="icon">头像贴图</param>
+    //public void SaveUserInformation(string account, string nickName)
+    //{
+    //    UserInformationCached = true;
 
-        UserInformation userData = new UserInformation
-        {
-            userName = account,
-            nickName = nickName,
-            iconPath = Path.Combine(ICON_PATH, account + ".jpg")
-        };
+    //    UserInformation userData = new UserInformation
+    //    {
+    //        userName = account,
+    //        nickName = nickName,
+    //        iconPath = Path.Combine(ICON_PATH, account + ".jpg")
+    //    };
 
-        string json = JsonUtility.ToJson(userData);
-        // 保存到本地文件
-        File.WriteAllText(USER_DATA_FILE, json);
-    }
+    //    string json = JsonUtility.ToJson(userData);
+    //    // 保存到本地文件
+    //    File.WriteAllText(USER_DATA_FILE, json);
+    //}
+
 
     /// <summary>
     /// 修改缓存中的昵称
@@ -140,6 +157,8 @@ public class CacheManager : Singleton<CacheManager>
                 userData.nickName = updateNickName;
 
                 string updateJson = JsonUtility.ToJson(userData);
+
+                UserInform = userData;
 
                 File.WriteAllText(filePath, updateJson);
 
@@ -178,6 +197,7 @@ public class CacheManager : Singleton<CacheManager>
         }
         Debug.Log("清除用户信息缓存");
         UserInformationCached = false;
+        UserInform = null;
 
 
     }

@@ -50,19 +50,15 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
 
         if(RegisterInputPassWord.Equals(RegisterInputSurePassWord))
         {
+            if(MySQLManager.Instance.Register(RegisterInputAccount, RegisterInputAccount, RegisterInputPassWord))
+            {
+                Texture2D randomIcon = new Texture2D(200, 200);
+                randomIcon.RandomGenerate();
+                CacheManager.Instance.SaveUserInformation(RegisterInputAccount, RegisterInputAccount, randomIcon);
+                UIManager.Instance.Quit(ViewId.LoginView);
+                UIManager.Instance.Enter(ViewId.MainView);
+            }
 
-            UIManager.Instance.Quit(ViewId.LoginView);
-
-
-
-            Texture2D randomIcon = new Texture2D(200, 200);
-            randomIcon.RandomGenerate();
-
-
-            CacheManager.Instance.SaveUserInformation(RegisterInputAccount, RegisterInputAccount, randomIcon);
-            MySQLManager.Instance.Register(RegisterInputAccount, RegisterInputAccount, RegisterInputPassWord);
-
-            UIManager.Instance.Enter(ViewId.MainView);
         }
 
     }
@@ -88,8 +84,8 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
 
     public void ClearInformation(TMP_InputField info)
     {
-        if(info == null) 
-        { 
+        if(info == null)
+        {
             return;
         }
         info.text = "";

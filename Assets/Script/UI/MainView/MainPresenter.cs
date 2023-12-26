@@ -22,6 +22,7 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
     {
         LoadUserInformation();
         ServerManager.Instance.DownLoadUserIcon_Event += LoadUserInformation;
+        CacheManager.Instance.UserInformUpdate_Event += LoadUserInformation;
     }
 
     /// <summary>
@@ -31,13 +32,15 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
     /// <returns></returns>
     public UserInformation LoadUserInformation()
     {
-        UserInformation userInformation = null;
+        UserInformation userInformation = CacheManager.Instance.UserInform;
+
         // string filePath = Path.Combine(CacheManager.CACHA_PATH, CacheManager.USER_DATA_FILE);
+
         if(CacheManager.Instance.UserInformationCached)
         {
-            string json = File.ReadAllText(CacheManager.USER_DATA_FILE);
-            userInformation = JsonUtility.FromJson<UserInformation>(json);
-            Debug.Log(json);
+            //string json = File.ReadAllText(CacheManager.USER_DATA_FILE);
+            //userInformation = JsonUtility.FromJson<UserInformation>(json);
+            //Debug.Log(json);
             // º”‘ÿÕ∑œÒ
             PresentUserInformation(userInformation);
         }
