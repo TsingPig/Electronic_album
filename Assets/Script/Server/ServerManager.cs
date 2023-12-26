@@ -21,8 +21,6 @@ public class ServerManager : Singleton<ServerManager>
     /// </summary>
     public string url => $"{host}:{post}";
 
-    private string _account = CacheManager.Instance.UserName;
-
     /// <summary>
     /// 头像下载完成后，更新用户显示
     /// </summary>

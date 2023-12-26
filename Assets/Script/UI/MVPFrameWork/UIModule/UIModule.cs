@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using TsingPigSDK;
 
 namespace MVPFrameWork
@@ -12,7 +13,7 @@ namespace MVPFrameWork
         {
             get
             {
-                IView value = null;
+                IView value;
                 _uiDic.TryGetValue(viewId, out value);
                 return value;
             }
@@ -24,13 +25,22 @@ namespace MVPFrameWork
 
         public void Enter(int viewId, Action callback = null)
         {
-            Log.Info("Ω¯»Î£∫", viewId.ToString());
             IView view = this[viewId];
             if(view == null)
             {
+                Log.Info("Enter£∫", viewId.ToString());
+
                 view = Container.Resolve<IView>(viewId);
+
+                if (view == null)
+                {
+                    Log.Error($"{viewId}Ω‚Œˆ ß∞‹");
+                }
+
                 view?.Create(delegate
                 {
+                    Log.Info(viewId.ToString() + "UIModule Enter");
+
                     this[viewId] = view;
                     view?.Show(callback);
                 });
@@ -51,8 +61,11 @@ namespace MVPFrameWork
 
             view.Hide(delegate
             {
+                Log.Info(viewId.ToString() + "UIModule Quit");
+
                 if(destroy)
                 {
+
                     view.Destroy();
                     _uiDic.Remove(viewId);
                 }

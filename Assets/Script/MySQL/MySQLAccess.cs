@@ -50,11 +50,12 @@ namespace TsingPigSDK
                 //if(mySqlConnection.State == ConnectionState.Closed)
                 mySqlConnection.Open();
 
-            } catch(Exception e)
+            }
+            catch(Exception e)
             {
                 throw new Exception("服务器连接失败，请重新检查MySql服务是否打开。" + e.Message.ToString());
             }
-                
+
         }
 
         /// <summary>
@@ -137,10 +138,12 @@ namespace TsingPigSDK
                 {
                     MySqlDataAdapter mySqlAdapter = new MySqlDataAdapter(sqlString, mySqlConnection);
                     mySqlAdapter.Fill(ds);
-                } catch(Exception e)
+                }
+                catch(Exception e)
                 {
                     throw new Exception("SQL:" + sqlString + "/n" + e.Message.ToString());
-                } finally
+                }
+                finally
                 {
                 }
                 return ds;
@@ -155,16 +158,28 @@ namespace TsingPigSDK
         /// <param name="tableName">表名</param>
         /// <param name="columns">要插入的列名</param>
         /// <param name="values">要插入的值</param>
-        public void Insert(string tableName, string[] columns, string[] values)
+        /// <returns>是否成功注册</returns>
+        public bool Insert(string tableName, string[] columns, string[] values)
         {
-            if(columns.Length != values.Length)
+            try
             {
-                throw new Exception("输入不正确：" + "要插入的列和值的数量不一致！");
+                if(columns.Length != values.Length)
+                {
+                    Log.Error("输入不正确：" + "要插入的列和值的数量不一致！");
+                    return false;
+                }
+
+                string query = $"INSERT INTO  `{tableName}`  ({string.Join(",", columns)}) VALUES ('{string.Join("','", values)}')";
+                Log.Info($"插入数据{query}");
+                ExecuteNonQuery(query);
+                return true;
+            }
+            catch(Exception ex)
+            {
+                Log.Error(ex.Message);
+                return false;
             }
 
-            string query = $"INSERT INTO  `{tableName}`  ({string.Join(",", columns)}) VALUES ('{string.Join("','", values)}')";
-            Log.Info($"插入数据{query}");
-            ExecuteNonQuery(query);
         }
 
 
@@ -200,7 +215,8 @@ namespace TsingPigSDK
                     {
                         cmd.ExecuteNonQuery();
                     }
-                } catch(Exception e)
+                }
+                catch(Exception e)
                 {
                     throw new Exception("SQL:" + sqlString + "\n" + e.Message.ToString());
                 }

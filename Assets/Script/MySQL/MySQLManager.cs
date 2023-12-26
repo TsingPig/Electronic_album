@@ -17,11 +17,12 @@ public class MySQLManager : Singleton<MySQLManager>
     /// <param name="account"></param>
     /// <param name="nick_name"></param>
     /// <param name="userPassword"></param>
-    public void Register(string account, string nick_name, string userPassword)
+    /// <returns>ÊÇ·ñ³É¹¦×¢²á</returns>
+    public bool Register(string account, string nick_name, string userPassword)
     {
         string[] columns = { "account", "nick_name", "password" };
         string[] values = { account, nick_name, userPassword };
-        _mySQLAccess.Insert("useraccount", columns, values);
+        return _mySQLAccess.Insert("useraccount", columns, values);
     }
 
     /// <summary>

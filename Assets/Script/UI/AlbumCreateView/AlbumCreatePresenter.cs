@@ -11,6 +11,7 @@ public class AlbumCreatePresenter : PresenterBase<IAlbumCreateView>, IAlbumCreat
     public void Quit()
     {
         UIManager.Instance.Quit(ViewId.AlbumCreateView);
+        Debug.Log("Quit AlbumCreateView");
     }
     public void CreateAlbum()
     {
