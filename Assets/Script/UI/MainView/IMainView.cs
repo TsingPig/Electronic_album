@@ -1,5 +1,6 @@
 using Michsky.MUIP;
 using MVPFrameWork;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -45,5 +46,6 @@ public interface IMainView : IView
 
     GridLayoutGroup GridAlbumContent { get; }
 
+    List<ButtonManager> BtnEnterAlbums { get; }
     #endregion
 }

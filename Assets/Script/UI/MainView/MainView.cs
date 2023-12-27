@@ -1,5 +1,6 @@
 using Michsky.MUIP;
 using MVPFrameWork;
+using System.Collections.Generic;
 using TMPro;
 using TsingPigSDK;
 using UnityEngine;
@@ -40,10 +41,13 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
     #endregion
 
     #region AlbumView
+
     private ButtonManager _btnCreateAlbum;
     private GridLayoutGroup _gridAlbumContent;
+    private List<ButtonManager> _btnEnterAlbums;
     public ButtonManager BtnCreateAlbum => _btnCreateAlbum;
     public GridLayoutGroup GridAlbumContent => _gridAlbumContent;
+    public List<ButtonManager> BtnEnterAlbums => _btnEnterAlbums;
 
     #endregion
 
@@ -79,6 +83,7 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
         _btnCreateAlbum.onClick.AddListener(_presenter.EnterAlbumCreateView);
 
         _gridAlbumContent = _root.Find<GridLayoutGroup>("Window Manager/Windows/AlbumView/ScrollbarView/Viewport/Content");
+        
         #endregion
     }
 

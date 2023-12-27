@@ -7,6 +7,7 @@ using UnityEngine.Networking;
 using System.IO;
 using System;
 using static System.Net.WebRequestMethods;
+using Newtonsoft.Json.Serialization;
 
 public class ServerManager : Singleton<ServerManager>
 {
@@ -57,7 +58,8 @@ public class ServerManager : Singleton<ServerManager>
     /// <param name="callback"></param>
     public void CreateAlbumFolder(string account, string folderName, Action<string> callback = null)
     {
-        StartCoroutine(CreateEmptyFolder($"{account}/{folderName}", callback));
+        //StartCoroutine(CreateEmptyFolder($"{account}/{folderName}", callback));
+        StartCoroutine(GetPhotos($"{account}/{folderName}"));
     }
 
     public void GetAlbumFolder(string account)
@@ -178,7 +180,7 @@ public class ServerManager : Singleton<ServerManager>
                         Debug.Log("Folder Name: " + folder);
                     }
                 }
-                
+
                 callback?.Invoke(folderList);
 
                 Debug.Log("folderPath get successfully");
@@ -189,6 +191,36 @@ public class ServerManager : Singleton<ServerManager>
             }
         }
 
+    }
+
+    IEnumerator GetPhotos(string albumName)
+    {
+        using(UnityWebRequest www = UnityWebRequest.Get($"{url}/get_photos/{albumName}/all"))
+        {
+            www.downloadHandler = new DownloadHandlerBuffer();
+            yield return www.SendWebRequest();
+
+            if(www.result == UnityWebRequest.Result.Success)
+            {
+
+                string jsonResponse = www.downloadHandler.text;
+                PhotoList folderList = JsonUtility.FromJson<PhotoList>(jsonResponse);
+
+                if(folderList != null && folderList.photos != null)
+                {
+                    foreach(string folder in folderList.photos)
+                    {
+                        Debug.Log("Folder Name: " + folder);
+                    }
+                }
+
+                Debug.Log("folderPath get successfully");
+            }
+            else
+            {
+                Debug.LogError("Error get folderPath: " + www.error);
+            }
+        }
     }
 
     /// <summary>
@@ -224,7 +256,13 @@ public class ServerManager : Singleton<ServerManager>
     public class FolderList
     {
         public string[] folders;
-    }
 
+    }
+    [System.Serializable]
+    public class PhotoList
+    {
+        public string[] photos;
+
+    }
 
 }
