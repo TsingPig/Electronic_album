@@ -1,6 +1,7 @@
 from flask import Flask, request, send_file
 from werkzeug.utils import secure_filename
 import os
+import json
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
@@ -42,6 +43,23 @@ def download_file(account, filename):
         return send_file(file_path)
     else:
         return 'File not found', 404
+    
+# 输入用户名，返回对应用户名下的相册列表
+@app.route('/get_folders/<account>', methods=['GET'])
+def get_albums(account):
+    album_path = os.path.join(app.config['UPLOAD_FOLDER'], account)
+    if os.path.exists(album_path):
+        folders = {'folders': []}
+        # 遍历用户目录下的所有文件夹
+        for folder in os.listdir(album_path):
+            # 如果是文件夹，将其加入folders字典中
+            if os.path.isdir(os.path.join(album_path, folder)):
+                folders['folders'].append(folder)
+    
+        print(folders['folders'])
+        return json.dumps(folders)
+    else:
+        return 'Account not found', 404
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port)
