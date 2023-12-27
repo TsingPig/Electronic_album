@@ -16,8 +16,8 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
 
     public void OnLogin()
     {
-        string LoginInputAccount = _view.InptLoginInputAccount.text;
-        string LoginInputPassword = _view.InptLoginInputPassWord.text;
+        string LoginInputAccount = RestrictedStringToLettersOrNumbers(_view.InptLoginInputAccount.text);
+        string LoginInputPassword = RestrictedStringToLettersOrNumbers(_view.InptLoginInputPassWord.text);
 
         if(MySQLManager.Instance.Login(LoginInputAccount, LoginInputPassword))
         {
@@ -44,9 +44,9 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
 
     public void OnRegister()
     {
-        string RegisterInputAccount = _view.InptRegisterInputAccount.text;
-        string RegisterInputPassWord = _view.InptRegisterInputPassWord.text;
-        string RegisterInputSurePassWord = _view.InptRegisterInputSurePassWord.text;
+        string RegisterInputAccount = RestrictedStringToLettersOrNumbers(_view.InptRegisterInputAccount.text);
+        string RegisterInputPassWord = RestrictedStringToLettersOrNumbers(_view.InptRegisterInputPassWord.text);
+        string RegisterInputSurePassWord = RestrictedStringToLettersOrNumbers(_view.InptRegisterInputSurePassWord.text);
 
         if(RegisterInputPassWord.Equals(RegisterInputSurePassWord))
         {
@@ -89,5 +89,23 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
             return;
         }
         info.text = "";
+    }
+
+    /// <summary>
+    /// 返回只包含合法字符（字母/数字）的字符串
+    /// </summary>
+    /// <param name="str"></param>
+    /// <returns></returns>
+    private string RestrictedStringToLettersOrNumbers(string str)
+    {
+        string restrictedString = string.Empty;
+        foreach(char ch in str)
+        {
+            if(char.IsLetterOrDigit(ch))
+            {
+                restrictedString += ch;
+            }
+        }
+        return restrictedString;
     }
 }
