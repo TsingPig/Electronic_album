@@ -19,6 +19,9 @@ class MemoryManager:
         # 位图显示页面分配情况
         self.bitmap = [0] * num_pages
 
+        self.cnt_access_memory = 0  # 访问内存次数
+        self.cnt_page_fault = 0  # 缺页次数
+
 
 
     def allocate_memory(self, num_pages):

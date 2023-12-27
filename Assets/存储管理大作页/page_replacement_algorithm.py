@@ -2,7 +2,7 @@ class PageReplacementAlgorithm:
     def __init__(self):
         pass
 
-    def replace_page(self, memory, page_to_load, page_to_replace):
+    def replace_page(self, memory_manager, page_to_load, page_to_replace):
         pass
 
 
