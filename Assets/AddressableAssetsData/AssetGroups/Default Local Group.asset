@@ -32,6 +32,10 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - default
+  - m_GUID: 0f1e5193296401945bcf0ec3fd0fac84
+    m_Address: AlbumItem
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 8376ae8e59f31754e9161a4f4bbee900, type: 2}
   m_SchemaSet:

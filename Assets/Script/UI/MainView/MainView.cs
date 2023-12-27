@@ -41,7 +41,9 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
 
     #region AlbumView
     private ButtonManager _btnCreateAlbum;
+    private GridLayoutGroup _gridAlbumContent;
     public ButtonManager BtnCreateAlbum => _btnCreateAlbum;
+    public GridLayoutGroup GridAlbumContent => _gridAlbumContent;
 
     #endregion
 
@@ -75,6 +77,8 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
         #region AlbumView
         _btnCreateAlbum = _root.Find<ButtonManager>("Window Manager/Windows/AlbumView/ScrollbarView/Viewport/Content/CreateItem/btnCreateAlbum");
         _btnCreateAlbum.onClick.AddListener(_presenter.EnterAlbumCreateView);
+
+        _gridAlbumContent = _root.Find<GridLayoutGroup>("Window Manager/Windows/AlbumView/ScrollbarView/Viewport/Content");
         #endregion
     }
 

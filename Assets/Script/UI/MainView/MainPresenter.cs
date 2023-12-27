@@ -3,8 +3,11 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using TMPro;
+using TsingPigSDK;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
+using static UnityEngine.UI.Image;
 
 [Serializable]
 public class UserInformation
@@ -16,6 +19,7 @@ public class UserInformation
 
 public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
 {
+
     #region UserInformation
 
     public override void OnCreateCompleted()
@@ -42,7 +46,12 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
             //userInformation = JsonUtility.FromJson<UserInformation>(json);
             //Debug.Log(json);
             // 加载头像
+
+            // 加载用户信息
             PresentUserInformation(userInformation);
+
+            // 异步加载相册列表
+            ServerManager.Instance.GetAlbumFolder(CacheManager.Instance.UserName, PresenterAlbumList);
         }
         return userInformation;
     }
@@ -53,6 +62,15 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
     /// </summary>
     public void ClearUserInformationCache()
     {
+        // 从索引 1 开始删除子物体
+        for(int i = _view.GridAlbumContent.transform.childCount - 1; i > 0; i--)
+        {
+            // 获取子物体的 Transform 组件
+            Transform childTransform = _view.GridAlbumContent.transform.GetChild(i);
+
+            // 销毁子物体
+            GameObject.Destroy(childTransform.gameObject);
+        }
 
         CacheManager.Instance.ClearUserInformationCache();
         MVPFrameWork.UIManager.Instance.Quit(ViewId.MainView);
@@ -116,7 +134,8 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
                     {
                         Debug.Log($"Cannot load image from {path}");
                     }
-                } catch(Exception e)
+                }
+                catch(Exception e)
                 {
                     Debug.LogError($"Error loading image: {e.Message}");
                 }
@@ -141,7 +160,16 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
         _view.BtnUserIcon.GetComponent<Image>().sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
     }
 
+    private async void PresenterAlbumList(ServerManager.FolderList albumList)
+    {
+        GameObject obj = await Res<GameObject>.LoadAsync(StrDef.ALBUM_ITEM_DATA_PATH);
+        foreach(var item in albumList.folders)
+        {
 
+            GameObject instantiatedObject = GameObject.Instantiate(obj, _view.GridAlbumContent.transform);
+            instantiatedObject.name = item;
+        }
+    }
 
 
 
@@ -151,7 +179,7 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
 
     public void EnterAlbumCreateView()
     {
-        UIManager.Instance.Enter(ViewId.AlbumCreateView);
+        MVPFrameWork.UIManager.Instance.Enter(ViewId.AlbumCreateView);
     }
 
     #endregion

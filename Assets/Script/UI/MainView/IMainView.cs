@@ -43,5 +43,7 @@ public interface IMainView : IView
 
     ButtonManager BtnCreateAlbum { get; }
 
+    GridLayoutGroup GridAlbumContent { get; }
+
     #endregion
 }

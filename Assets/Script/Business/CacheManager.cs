@@ -15,7 +15,7 @@ public class CacheManager : Singleton<CacheManager>
     public const string CACHA_PATH = "Assets/Resources/UserInformation";
     public static string USER_DATA_FILE => CACHA_PATH + "/userData.json";
     public static string ICON_PATH => CACHA_PATH + "/icons";
-
+    
     /// <summary>
     /// º”‘ÿÕ∑œÒŒ∆¿Ì
     /// </summary>
@@ -36,7 +36,18 @@ public class CacheManager : Singleton<CacheManager>
 
     public UserInformation UserInform
     {
-        get { return _userInform; }
+        get
+        {
+            if(_userInform == null)
+            {
+                if(UserInformationCached)
+                {
+                    string json = File.ReadAllText(USER_DATA_FILE);
+                    _userInform = JsonUtility.FromJson<UserInformation>(json);
+                }
+            }
+            return _userInform;
+        }
         set
         {
             _userInform = value;

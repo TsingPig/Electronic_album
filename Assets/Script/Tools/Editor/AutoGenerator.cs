@@ -8,7 +8,7 @@ namespace TsingPigSDK
 
     public class AutoGenerator : Editor
     {
-        private const string fileName = "Str_Def";
+        private const string fileName = "StrDef";
 
         [MenuItem("我的工具/Prefab名配置 #W")]
         public static void AddressableAutoGen()
@@ -22,7 +22,7 @@ namespace TsingPigSDK
 
                 string codeLine = $"    public const string {Split(objectName)}_DATA_PATH = \"{objectName}\";";
 
-                string scriptPath = $"Assets/Script/Configs/{fileName}.cs";
+                string scriptPath = $"Assets/Script/Config/{fileName}.cs";
 
                 if (!File.Exists(scriptPath))
                 {

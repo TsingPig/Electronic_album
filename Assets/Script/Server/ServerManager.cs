@@ -26,6 +26,8 @@ public class ServerManager : Singleton<ServerManager>
     /// </summary>
     public Func<UserInformation> DownLoadUserIcon_Event;
 
+
+
     /// <summary>
     /// 向服务器上传头像
     /// </summary>
@@ -57,6 +59,10 @@ public class ServerManager : Singleton<ServerManager>
         StartCoroutine(CreateEmptyFolder($"{account}/{folderName}", callback));
     }
 
+    public void GetAlbumFolder(string account, Action<FolderList> callback = null)
+    {
+        StartCoroutine(GetFolders(account, callback));
+    }
 
     /// <summary>
     /// 创建空文件夹
@@ -146,6 +152,43 @@ public class ServerManager : Singleton<ServerManager>
         }
     }
 
+    /// <summary>
+    ///  获得某个文件夹路径下的所有文件夹
+    /// </summary>
+    /// <param name="folderPath"></param>
+    /// <returns></returns>
+    IEnumerator GetFolders(string folderPath, Action<FolderList> callback = null)
+    {
+        using(UnityWebRequest www = UnityWebRequest.Get($"{url}/get_folders/{folderPath}"))
+        {
+            www.downloadHandler = new DownloadHandlerBuffer();
+            yield return www.SendWebRequest();
+
+            if(www.result == UnityWebRequest.Result.Success)
+            {
+
+                string jsonResponse = www.downloadHandler.text;
+                FolderList folderList = JsonUtility.FromJson<FolderList>(jsonResponse);
+
+                if(folderList != null && folderList.folders != null)
+                {
+                    foreach(string folder in folderList.folders)
+                    {
+                        Debug.Log("Folder Name: " + folder);
+                    }
+                }
+                
+                callback?.Invoke(folderList);
+
+                Debug.Log("folderPath get successfully");
+            }
+            else
+            {
+                Debug.LogError("Error get folderPath: " + www.error);
+            }
+        }
+
+    }
 
     /// <summary>
     /// 返回只包含合法字符（字母/数字）的字符串
@@ -174,6 +217,12 @@ public class ServerManager : Singleton<ServerManager>
     {
         base.Awake();
         Init();
+    }
+
+    [System.Serializable]
+    public class FolderList
+    {
+        public string[] folders;
     }
 
 
