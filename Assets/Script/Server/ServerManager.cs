@@ -26,6 +26,7 @@ public class ServerManager : Singleton<ServerManager>
     /// </summary>
     public Func<UserInformation> DownLoadUserIcon_Event;
 
+    public Action<FolderList> UpdateAlbum_Event;
 
 
     /// <summary>
@@ -59,9 +60,9 @@ public class ServerManager : Singleton<ServerManager>
         StartCoroutine(CreateEmptyFolder($"{account}/{folderName}", callback));
     }
 
-    public void GetAlbumFolder(string account, Action<FolderList> callback = null)
+    public void GetAlbumFolder(string account)
     {
-        StartCoroutine(GetFolders(account, callback));
+        StartCoroutine(GetFolders(account, UpdateAlbum_Event));
     }
 
     /// <summary>

@@ -24,9 +24,12 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
 
     public override void OnCreateCompleted()
     {
-        LoadUserInformation();
         ServerManager.Instance.DownLoadUserIcon_Event += LoadUserInformation;
         CacheManager.Instance.UserInformUpdate_Event += LoadUserInformation;
+        ServerManager.Instance.UpdateAlbum_Event += PresenterAlbumList;
+
+        LoadUserInformation();
+
     }
 
     /// <summary>
@@ -51,7 +54,7 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
             PresentUserInformation(userInformation);
 
             // 异步加载相册列表
-            ServerManager.Instance.GetAlbumFolder(CacheManager.Instance.UserName, PresenterAlbumList);
+            ServerManager.Instance.GetAlbumFolder(CacheManager.Instance.UserName);
         }
         return userInformation;
     }
@@ -62,22 +65,13 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
     /// </summary>
     public void ClearUserInformationCache()
     {
-        // 从索引 1 开始删除子物体
-        for(int i = _view.GridAlbumContent.transform.childCount - 1; i > 0; i--)
-        {
-            // 获取子物体的 Transform 组件
-            Transform childTransform = _view.GridAlbumContent.transform.GetChild(i);
 
-            // 销毁子物体
-            GameObject.Destroy(childTransform.gameObject);
-        }
-
+        ClearAlbumList();
         CacheManager.Instance.ClearUserInformationCache();
         MVPFrameWork.UIManager.Instance.Quit(ViewId.MainView);
         MVPFrameWork.UIManager.Instance.Enter(ViewId.LoginView);
 
     }
-
 
     public void UpdateNickName()
     {
@@ -109,7 +103,6 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
             Debug.LogWarning("昵称不可为空");
         }
     }
-
 
     public void UpdateUserIcon()
     {
@@ -147,7 +140,6 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
     }
 
 
-
     /// <summary>
     /// 呈现视图层中的用户信息
     /// </summary>
@@ -160,8 +152,22 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
         _view.BtnUserIcon.GetComponent<Image>().sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
     }
 
+    #endregion
+
+    #region AlbumView
+
+    public void EnterAlbumCreateView()
+    {
+        MVPFrameWork.UIManager.Instance.Enter(ViewId.AlbumCreateView);
+    }
+
+    /// <summary>
+    /// 渲染相册列表项
+    /// </summary>
+    /// <param name="albumList"></param>
     private async void PresenterAlbumList(ServerManager.FolderList albumList)
     {
+        ClearAlbumList();
         GameObject obj = await Res<GameObject>.LoadAsync(StrDef.ALBUM_ITEM_DATA_PATH);
         foreach(var item in albumList.folders)
         {
@@ -172,16 +178,17 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
     }
 
 
-
-    #endregion
-
-    #region AlbumView
-
-    public void EnterAlbumCreateView()
+    /// <summary>
+    ///  清空相册列表UI
+    /// </summary>
+    private void ClearAlbumList()
     {
-        MVPFrameWork.UIManager.Instance.Enter(ViewId.AlbumCreateView);
+        for(int i = _view.GridAlbumContent.transform.childCount - 1; i > 0; i--)
+        {
+            Transform childTransform = _view.GridAlbumContent.transform.GetChild(i);
+            GameObject.Destroy(childTransform.gameObject);
+        }
     }
-
     #endregion
 }
 
