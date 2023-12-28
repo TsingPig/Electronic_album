@@ -4,6 +4,8 @@ namespace MVPFrameWork
     {
         IView View { get; set; }
 
+        IModel Model { get; set; }
+
         void Install();
 
         void Uninstall();

@@ -13,7 +13,9 @@ public class AlbumItem : ItemBase
     protected override void OnClick()
     {
         base.OnClick();
-        MVPFrameWork.UIManager.Instance.Enter(ViewId.PhotoView);
+        PhotoModel model = new PhotoModel();
+        model.SetName(AlbumTitle.text);
+        MVPFrameWork.UIManager.Instance.Enter(ViewId.PhotoView, model);
         Debug.Log("OnClick");
     }
 

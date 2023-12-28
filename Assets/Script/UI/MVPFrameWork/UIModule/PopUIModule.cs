@@ -22,6 +22,18 @@ namespace MVPFrameWork
             _uiModule = new UIModule();
         }
 
+
+        public void Enter(int viewId, IModel model)
+        {
+            _viewDic.TryGetValue(viewId, out var value);
+            if(!value.active)
+            {
+                value.active = true;
+                _viewDic[viewId] = value;
+                _uiModule?.Enter(viewId, model);
+            }
+
+        }
         public void Enter(int viewId, Action callback = null)
         {
             _viewDic.TryGetValue(viewId, out var value);

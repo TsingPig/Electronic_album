@@ -8,9 +8,9 @@ public class CacheManager : Singleton<CacheManager>
 {
     private UserInformation _userInform;
 
-    public static string CACHA_PATH => Application.persistentDataPath;
+    //public static string CACHA_PATH => Application.persistentDataPath;
 
-    //public const string CACHA_PATH = "Assets/Resources/UserInformation";
+    public const string CACHA_PATH = "Assets/Resources/UserInformation";
 
     public static string USER_DATA_FILE => CACHA_PATH + "/userData.json";
 

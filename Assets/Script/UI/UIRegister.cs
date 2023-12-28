@@ -28,5 +28,7 @@ public static class UIRegister
 
         Container.Regist<IPhotoPresenter, PhotoPresenter>();
         Container.Regist<IView, PhotoView>(ViewId.PhotoView);
+        Container.Regist<IPhotoModel, PhotoModel>();
+
     }
 }

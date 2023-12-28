@@ -4,6 +4,8 @@ namespace MVPFrameWork
     {
         protected TView _view;
 
+        protected IModel _model;
+
         public IView View
         {
             get
@@ -15,6 +17,8 @@ namespace MVPFrameWork
                 _view = value as TView;
             }
         }
+
+        public IModel Model { get => _model; set => _model = value; }
 
         public virtual void Install()
         {
@@ -47,5 +51,8 @@ namespace MVPFrameWork
         public virtual void OnHideCompleted()
         {
         }
+
+        public virtual void ConfigModel()
+        { }
     }
 }

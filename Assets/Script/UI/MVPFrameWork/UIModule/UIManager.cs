@@ -18,6 +18,12 @@ namespace MVPFrameWork
             Init();
         }
 
+        public void Enter(int viewId, IModel model)
+        {
+            _module.Enter(viewId, model);
+        }
+
+
         public void Enter(int viewId, Action callback = null)
         {
             _module.Enter(viewId, callback);
