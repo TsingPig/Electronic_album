@@ -1,5 +1,6 @@
 using System;
 using TsingPigSDK;
+using UnityEngine;
 
 namespace MVPFrameWork
 {
@@ -20,6 +21,7 @@ namespace MVPFrameWork
 
         public void Enter(int viewId, IModel model)
         {
+            Debug.Log("UIManager Enter");
             _module.Enter(viewId, model);
         }
 

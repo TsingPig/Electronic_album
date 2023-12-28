@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPresenter
 {
-    public override void OnCreateCompleted()
+    public override void OnShowCompleted()
     {
         base.OnCreateCompleted();
         _view.TxtAlbumName.text = _model.AlbumName;

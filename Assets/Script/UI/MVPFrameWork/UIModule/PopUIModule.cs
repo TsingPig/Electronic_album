@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using TsingPigSDK;
+using UnityEngine;
 
 namespace MVPFrameWork
 {
@@ -26,8 +27,11 @@ namespace MVPFrameWork
         public void Enter(int viewId, IModel model)
         {
             _viewDic.TryGetValue(viewId, out var value);
+            Debug.Log(" Enter(int viewId, IModel model)");
+
             if(!value.active)
             {
+                Debug.Log("!value.active");
                 value.active = true;
                 _viewDic[viewId] = value;
                 _uiModule?.Enter(viewId, model);

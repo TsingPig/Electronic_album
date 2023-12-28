@@ -15,7 +15,9 @@ public class AlbumItem : ItemBase
         base.OnClick();
         PhotoModel model = new PhotoModel(); 
         model.SetModel(AlbumTitle.text);
-
+        
+        Debug.Log("1");
+        
         MVPFrameWork.UIManager.Instance.Enter(ViewId.PhotoView, model);
     }
 

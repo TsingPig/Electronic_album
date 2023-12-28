@@ -46,6 +46,8 @@ namespace MVPFrameWork
             }
             else
             {
+                view.Presenter.Model = model;
+                view.Show();
             }
         }
 
