@@ -1,13 +1,14 @@
 using MVPFrameWork;
 using UnityEngine;
 
-public class PhotoPresenter : PresenterBase<IPhotoView>, IPhotoPresenter
+public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPresenter
 {
-
     public override void OnCreateCompleted()
     {
         base.OnCreateCompleted();
-        Debug.Log((Model as IPhotoModel).Name);
+        _view.TxtAlbumName.text = _model.AlbumName;
+        //Debug.Log(_model.AlbumName);
+        //Debug.Log((Model as IPhotoModel).Name); µÈ¼ÛÐ´·¨
     }
 
     public void Quit()

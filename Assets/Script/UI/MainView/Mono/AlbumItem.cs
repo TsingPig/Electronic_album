@@ -13,10 +13,10 @@ public class AlbumItem : ItemBase
     protected override void OnClick()
     {
         base.OnClick();
-        PhotoModel model = new PhotoModel();
-        model.SetName(AlbumTitle.text);
+        PhotoModel model = new PhotoModel(); 
+        model.SetModel(AlbumTitle.text);
+
         MVPFrameWork.UIManager.Instance.Enter(ViewId.PhotoView, model);
-        Debug.Log("OnClick");
     }
 
     private void Start()
