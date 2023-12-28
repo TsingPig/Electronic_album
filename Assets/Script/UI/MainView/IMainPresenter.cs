@@ -32,6 +32,7 @@ public interface IMainPresenter : IPresenter
     #endregion
 
     #region AlbumView
+
     void EnterAlbumCreateView();
 
     #endregion

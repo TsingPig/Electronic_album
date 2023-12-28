@@ -26,6 +26,9 @@ public class ServerManager : Singleton<ServerManager>
     /// </summary>
     public Func<UserInformation> DownLoadUserIcon_Event;
 
+    /// <summary>
+    /// 更新相册列表后回调事件
+    /// </summary>
     public Action<FolderList> UpdateAlbum_Event;
 
 
@@ -64,6 +67,7 @@ public class ServerManager : Singleton<ServerManager>
     {
         StartCoroutine(GetFolders(account, UpdateAlbum_Event));
     }
+
 
     /// <summary>
     /// 创建空文件夹

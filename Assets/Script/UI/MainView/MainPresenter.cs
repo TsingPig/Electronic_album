@@ -19,18 +19,18 @@ public class UserInformation
 
 public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
 {
-
-    #region UserInformation
-
     public override void OnCreateCompleted()
     {
         ServerManager.Instance.DownLoadUserIcon_Event += LoadUserInformation;
         CacheManager.Instance.UserInformUpdate_Event += LoadUserInformation;
         ServerManager.Instance.UpdateAlbum_Event += PresenterAlbumList;
-
         LoadUserInformation();
 
     }
+
+    #region UserInformation
+
+    #region Public
 
     /// <summary>
     /// 加载本地缓存的用户信息
@@ -73,6 +73,9 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
 
     }
 
+    /// <summary>
+    /// 更新昵称
+    /// </summary>
     public void UpdateNickName()
     {
         _view.InptNickName.gameObject.SetActive(true);
@@ -80,6 +83,9 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
         _view.BtnUpdateNickName.gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// 确认更新
+    /// </summary>
     public void SureUpdateNickName()
     {
         _view.InptNickName.gameObject.SetActive(false);
@@ -104,6 +110,10 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
         }
     }
 
+    /// <summary>
+    /// 更新用户头像
+    /// </summary>
+    /// <param name="icon"></param>
     public void UpdateUserIcon()
     {
         Texture2D icon = null;
@@ -139,7 +149,9 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
 
     }
 
+    #endregion
 
+    #region Private
     /// <summary>
     /// 呈现视图层中的用户信息
     /// </summary>
@@ -154,12 +166,21 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
 
     #endregion
 
+    #endregion
+
     #region AlbumView
 
+    #region Public
     public void EnterAlbumCreateView()
     {
         MVPFrameWork.UIManager.Instance.Enter(ViewId.AlbumCreateView);
     }
+
+
+
+    #endregion
+
+    #region Private
 
     /// <summary>
     /// 渲染相册列表项
@@ -171,9 +192,10 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
         GameObject obj = await Res<GameObject>.LoadAsync(StrDef.ALBUM_ITEM_DATA_PATH);
         foreach(var item in albumList.folders)
         {
-
             GameObject instantiatedObject = GameObject.Instantiate(obj, _view.GridAlbumContent.transform);
             instantiatedObject.name = item;
+
+            AlbumItem albumItem = instantiatedObject.GetComponent<AlbumItem>();
         }
     }
 
@@ -189,6 +211,10 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
             GameObject.Destroy(childTransform.gameObject);
         }
     }
+
+    #endregion
+
+
     #endregion
 }
 

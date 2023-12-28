@@ -5,6 +5,7 @@ public static class ViewId
     public const int LoginView = 1000;
     public const int MainView = 1001;
     public const int AlbumCreateView = 1002;
+    public const int PhotoView = 1003;
 }
 
 public static class ConstDef
