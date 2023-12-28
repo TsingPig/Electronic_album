@@ -3,15 +3,21 @@ using UnityEngine;
 
 public abstract class ItemBase : MonoBehaviour
 {
-    protected ButtonManager _btnItem;
+    private ButtonManager _btnItem;
+
+    protected ButtonManager BtnItem
+    {
+        get => _btnItem;
+        set
+        {
+            _btnItem = value;
+            _btnItem.onClick.AddListener(OnClick);
+        }
+    }
 
     protected virtual void OnClick()
     {
 
-    }
-    protected virtual void Start()
-    {
-        _btnItem.onClick.AddListener(OnClick);
     }
 
 }

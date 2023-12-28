@@ -1,5 +1,6 @@
 using Michsky.MUIP;
 using TMPro;
+using UnityEngine;
 
 /// <summary>
 /// 相册列表项的点击事件
@@ -14,14 +15,14 @@ public class AlbumItem : ItemBase
     {
         base.OnClick();
         MVPFrameWork.UIManager.Instance.Enter(ViewId.PhotoView);
+        Debug.Log("OnClick");
     }
 
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
         AlbumTitle.text = gameObject.name;
 
-        _btnItem = BtnEnterManager;
+        BtnItem = BtnEnterManager;
     }
 
 }

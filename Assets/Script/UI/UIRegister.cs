@@ -27,5 +27,9 @@ public static class UIRegister
 
         Container.Regist<IAlbumCreatePresenter, AlbumCreatePresenter>();
         Container.Regist<IView, AlbumCreateView>(ViewId.AlbumCreateView);
+
+
+        Container.Regist<IPhotoPresenter, PhotoPresenter>();
+        Container.Regist<IView, PhotoView>(ViewId.PhotoView);
     }
 }
