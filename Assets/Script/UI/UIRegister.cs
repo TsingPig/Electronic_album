@@ -11,9 +11,7 @@ public static class ViewId
 public static class ConstDef
 {
     public const string CANVAS = "Canvas";
-
 }
-
 
 public static class UIRegister
 {
@@ -27,7 +25,6 @@ public static class UIRegister
 
         Container.Regist<IAlbumCreatePresenter, AlbumCreatePresenter>();
         Container.Regist<IView, AlbumCreateView>(ViewId.AlbumCreateView);
-
 
         Container.Regist<IPhotoPresenter, PhotoPresenter>();
         Container.Regist<IView, PhotoView>(ViewId.PhotoView);

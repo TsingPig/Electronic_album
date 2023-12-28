@@ -1,8 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
-using UnityEngine.Events;
+﻿using System.Collections;
 using TMPro;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace Michsky.MUIP
 {
@@ -12,17 +12,20 @@ namespace Michsky.MUIP
     {
         // Content
         public Sprite icon;
+
         public string title = "Notification Title";
         [TextArea] public string description = "Notification description";
 
         // Resources
         public Animator notificationAnimator;
+
         public Image iconObj;
         public TextMeshProUGUI titleObj;
         public TextMeshProUGUI descriptionObj;
 
         // Settings
         public bool enableTimer = true;
+
         public float timer = 3f;
         public bool useCustomContent = false;
         public bool useStacking = false;
@@ -32,19 +35,23 @@ namespace Michsky.MUIP
 
         // Events
         public UnityEvent onOpen;
+
         public UnityEvent onClose;
 
-        public enum StartBehaviour { None, Disable }
-        public enum CloseBehaviour { None, Disable, Destroy }
+        public enum StartBehaviour
+        { None, Disable }
 
-        void Awake()
+        public enum CloseBehaviour
+        { None, Disable, Destroy }
+
+        private void Awake()
         {
             isOn = false;
 
-            if (useCustomContent == false) { UpdateUI(); }
-            if (notificationAnimator == null) { notificationAnimator = gameObject.GetComponent<Animator>(); }
-            if (startBehaviour == StartBehaviour.Disable) { gameObject.SetActive(false); }
-            if (useStacking == true)
+            if(useCustomContent == false) { UpdateUI(); }
+            if(notificationAnimator == null) { notificationAnimator = gameObject.GetComponent<Animator>(); }
+            if(startBehaviour == StartBehaviour.Disable) { gameObject.SetActive(false); }
+            if(useStacking == true)
             {
                 try
                 {
@@ -52,14 +59,13 @@ namespace Michsky.MUIP
                     stacking.notifications.Add(this);
                     stacking.enableUpdating = true;
                 }
-
                 catch { Debug.LogError("<b>[Notification]</b> 'Stacking' is enabled but 'Notification Stacking' cannot be found in parent.", this); }
             }
         }
 
         public void Open()
         {
-            if (isOn == true)
+            if(isOn == true)
                 return;
 
             gameObject.SetActive(true);
@@ -71,12 +77,12 @@ namespace Michsky.MUIP
             notificationAnimator.Play("In");
             onOpen.Invoke();
 
-            if (enableTimer == true) { StartCoroutine("StartTimer"); }
+            if(enableTimer == true) { StartCoroutine("StartTimer"); }
         }
 
         public void Close()
         {
-            if (isOn == false)
+            if(isOn == false)
                 return;
 
             isOn = false;
@@ -87,17 +93,20 @@ namespace Michsky.MUIP
         }
 
         // Obsolete
-        public void OpenNotification() { Open(); }
-        public void CloseNotification() { Close(); }
+        public void OpenNotification()
+        { Open(); }
+
+        public void CloseNotification()
+        { Close(); }
 
         public void UpdateUI()
         {
-            if (iconObj != null) { iconObj.sprite = icon; }
-            if (titleObj != null) { titleObj.text = title; }
-            if (descriptionObj != null) { descriptionObj.text = description; }
+            if(iconObj != null) { iconObj.sprite = icon; }
+            if(titleObj != null) { titleObj.text = title; }
+            if(descriptionObj != null) { descriptionObj.text = description; }
         }
 
-        IEnumerator StartTimer()
+        private IEnumerator StartTimer()
         {
             yield return new WaitForSeconds(timer);
 
@@ -105,12 +114,12 @@ namespace Michsky.MUIP
             StartCoroutine("DisableNotification");
         }
 
-        IEnumerator DisableNotification()
+        private IEnumerator DisableNotification()
         {
             yield return new WaitForSeconds(1f);
 
-            if (closeBehaviour == CloseBehaviour.Disable) { gameObject.SetActive(false); isOn = false; }
-            else if (closeBehaviour == CloseBehaviour.Destroy) { Destroy(gameObject); }
+            if(closeBehaviour == CloseBehaviour.Disable) { gameObject.SetActive(false); isOn = false; }
+            else if(closeBehaviour == CloseBehaviour.Destroy) { Destroy(gameObject); }
         }
     }
 }

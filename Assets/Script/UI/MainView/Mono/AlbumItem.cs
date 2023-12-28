@@ -10,7 +10,6 @@ public class AlbumItem : ItemBase
     public TMP_Text AlbumTitle;
     public ButtonManager BtnEnterManager;
 
-
     protected override void OnClick()
     {
         base.OnClick();
@@ -24,5 +23,4 @@ public class AlbumItem : ItemBase
 
         BtnItem = BtnEnterManager;
     }
-
 }

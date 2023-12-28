@@ -17,7 +17,5 @@ namespace MVPFrameWork
         void OnHideStart();
 
         void OnHideCompleted();
-
     }
 }
-

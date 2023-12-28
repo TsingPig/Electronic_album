@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+
 namespace TsingPigSDK
 {
     public static class Res<T>
@@ -15,6 +15,7 @@ namespace TsingPigSDK
         {
             Addressables.Release(handle);
         }
+
         public static T Load(string path)
         {
             AsyncOperationHandle<T> handle = Addressables.LoadAssetAsync<T>(path + "1");

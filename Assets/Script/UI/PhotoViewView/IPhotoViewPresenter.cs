@@ -1,2 +1,4 @@
 using MVPFrameWork;
-public interface IPhotoViewPresenter : IPresenter {}
+
+public interface IPhotoViewPresenter : IPresenter
+{ }

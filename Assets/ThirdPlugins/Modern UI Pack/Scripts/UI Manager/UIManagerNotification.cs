@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 namespace Michsky.MUIP
 {
@@ -9,37 +9,39 @@ namespace Michsky.MUIP
     {
         [Header("Settings")]
         [SerializeField] private UIManager UIManagerAsset;
+
         [HideInInspector] public bool overrideColors = false;
         [HideInInspector] public bool overrideFonts = false;
 
         [Header("Resources")]
         [SerializeField] private Image background;
+
         [SerializeField] private Image icon;
         [SerializeField] private TextMeshProUGUI title;
         [SerializeField] private TextMeshProUGUI description;
 
-        void Awake()
+        private void Awake()
         {
-            if (UIManagerAsset == null) { UIManagerAsset = Resources.Load<UIManager>("MUIP Manager"); }
+            if(UIManagerAsset == null) { UIManagerAsset = Resources.Load<UIManager>("MUIP Manager"); }
 
             this.enabled = true;
 
-            if (UIManagerAsset.enableDynamicUpdate == false)
+            if(UIManagerAsset.enableDynamicUpdate == false)
             {
                 UpdateNotification();
                 this.enabled = false;
             }
         }
 
-        void Update()
+        private void Update()
         {
-            if (UIManagerAsset == null) { return; }
-            if (UIManagerAsset.enableDynamicUpdate == true) { UpdateNotification(); }
+            if(UIManagerAsset == null) { return; }
+            if(UIManagerAsset.enableDynamicUpdate == true) { UpdateNotification(); }
         }
 
-        void UpdateNotification()
+        private void UpdateNotification()
         {
-            if (overrideColors == false)
+            if(overrideColors == false)
             {
                 background.color = UIManagerAsset.notificationBackgroundColor;
                 icon.color = UIManagerAsset.notificationIconColor;
@@ -47,7 +49,7 @@ namespace Michsky.MUIP
                 description.color = UIManagerAsset.notificationDescriptionColor;
             }
 
-            if (overrideFonts == false)
+            if(overrideFonts == false)
             {
                 title.font = UIManagerAsset.notificationTitleFont;
                 title.fontSize = UIManagerAsset.notificationTitleFontSize;

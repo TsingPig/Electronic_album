@@ -1,8 +1,8 @@
 ﻿using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using TMPro;
 
 namespace Michsky.MUIP
 {
@@ -11,45 +11,47 @@ namespace Michsky.MUIP
     {
         [Header("Content")]
         [TextArea] public string description;
+
         public float delay;
 
         [Header("Resources")]
         public GameObject tooltipRect;
+
         public TextMeshProUGUI descriptionText;
 
         [Header("Settings")]
         public bool forceToUpdate = false;
+
         public bool useIn3D = false;
 
-        TooltipManager tpManager;
+        private TooltipManager tpManager;
         [HideInInspector] public Animator tooltipAnimator;
 
-        void Start()
+        private void Start()
         {
-            if (tooltipRect == null || descriptionText == null)
+            if(tooltipRect == null || descriptionText == null)
             {
                 try
                 {
                     tooltipRect = GameObject.Find("Tooltip Rect");
                     descriptionText = tooltipRect.transform.GetComponentInChildren<TextMeshProUGUI>();
                 }
-
                 catch { Debug.LogError("<b>[Tooltip Content]</b> Tooltip Rect is missing.", this); return; }
             }
 
-            if (tooltipRect != null)
+            if(tooltipRect != null)
             {
                 tpManager = tooltipRect.GetComponentInParent<TooltipManager>();
                 tooltipAnimator = tooltipRect.GetComponentInParent<Animator>();
             }
 
-            if (tpManager.contentLE == null)
+            if(tpManager.contentLE == null)
                 tpManager.contentLE = descriptionText.GetComponent<LayoutElement>();
         }
 
         private void ProcessEnter()
         {
-            if (tooltipRect == null)
+            if(tooltipRect == null)
                 return;
 
             descriptionText.text = description;
@@ -60,41 +62,48 @@ namespace Michsky.MUIP
             tooltipAnimator.gameObject.SetActive(false);
             tooltipAnimator.gameObject.SetActive(true);
 
-            if (delay == 0) { tooltipAnimator.Play("In"); }
+            if(delay == 0) { tooltipAnimator.Play("In"); }
             else { StartCoroutine("ShowTooltip"); }
 
-            if (forceToUpdate == true)
+            if(forceToUpdate == true)
                 StartCoroutine("UpdateLayoutPosition");
         }
 
         private void ProcessExit()
         {
-            if (tooltipRect == null)
+            if(tooltipRect == null)
                 return;
 
-            if (delay != 0)
+            if(delay != 0)
             {
                 StopCoroutine("ShowTooltip");
 
-                if (tooltipAnimator.GetCurrentAnimatorStateInfo(0).IsName("In"))
+                if(tooltipAnimator.GetCurrentAnimatorStateInfo(0).IsName("In"))
                     tooltipAnimator.Play("Out");
             }
-
             else { tooltipAnimator.Play("Out"); }
 
             tpManager.allowUpdating = false;
         }
 
-        public void OnPointerEnter(PointerEventData eventData) { ProcessEnter(); }
-        public void OnPointerExit(PointerEventData eventData) { ProcessExit(); }
-        public void OnMouseEnter() { if (useIn3D == true) { ProcessEnter(); } }
-        public void OnMouseExit() { if (useIn3D == true) { ProcessExit(); } }
+        public void OnPointerEnter(PointerEventData eventData)
+        { ProcessEnter(); }
 
-        public void CheckForContentWidth() { LayoutElementCreator(); StartCoroutine("CalculateContentWidth"); }
+        public void OnPointerExit(PointerEventData eventData)
+        { ProcessExit(); }
+
+        public void OnMouseEnter()
+        { if(useIn3D == true) { ProcessEnter(); } }
+
+        public void OnMouseExit()
+        { if(useIn3D == true) { ProcessExit(); } }
+
+        public void CheckForContentWidth()
+        { LayoutElementCreator(); StartCoroutine("CalculateContentWidth"); }
 
         private void LayoutElementCreator()
         {
-            if (tpManager.contentLE == null)
+            if(tpManager.contentLE == null)
             {
                 descriptionText.gameObject.AddComponent<LayoutElement>();
                 tpManager.contentLE = descriptionText.GetComponent<LayoutElement>();
@@ -104,26 +113,26 @@ namespace Michsky.MUIP
             tpManager.contentLE.enabled = false;
         }
 
-        IEnumerator CalculateContentWidth()
+        private IEnumerator CalculateContentWidth()
         {
             yield return new WaitForSecondsRealtime(0.05f);
             float tempWidth = descriptionText.GetComponent<RectTransform>().sizeDelta.x;
-     
-            if (tempWidth >= tpManager.preferredWidth + 1)
+
+            if(tempWidth >= tpManager.preferredWidth + 1)
                 tpManager.contentLE.enabled = true;
 
             LayoutRebuilder.ForceRebuildLayoutImmediate(tpManager.contentLE.gameObject.GetComponent<RectTransform>());
             tpManager.contentLE.preferredWidth = tpManager.preferredWidth;
         }
 
-        IEnumerator ShowTooltip()
+        private IEnumerator ShowTooltip()
         {
             yield return new WaitForSeconds(delay);
             tooltipAnimator.Play("In");
             StopCoroutine("ShowTooltip");
         }
 
-        IEnumerator UpdateLayoutPosition()
+        private IEnumerator UpdateLayoutPosition()
         {
             yield return new WaitForSecondsRealtime(0.05f);
             LayoutRebuilder.ForceRebuildLayoutImmediate(tooltipAnimator.gameObject.GetComponent<RectTransform>());

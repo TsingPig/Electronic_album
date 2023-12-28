@@ -5,6 +5,7 @@ namespace TsingPigSDK
     public abstract class BasePanel
     {
         public UIType UIType { get; protected set; }
+
         public GameObject PanelObject
         {
             get
@@ -12,6 +13,7 @@ namespace TsingPigSDK
                 return UIManager.Instance.GetSingleUI(UIType);
             }
         }
+
         public BasePanel()
         {
             UIType = new UIType(this.GetType().Name);
@@ -21,20 +23,20 @@ namespace TsingPigSDK
         {
             Debug.Log($"打开{UIType.Name}面板");
         }
+
         public virtual void OnPause()
         {
             PanelObject.GetComponent<CanvasGroup>().interactable = false;
         }
+
         public virtual void OnResume()
         {
             PanelObject.GetComponent<CanvasGroup>().interactable = true;
-
         }
+
         public virtual void OnExit()
         {
-
         }
-
     }
 }
 
@@ -43,7 +45,6 @@ namespace TsingPigSDK
 //    static readonly string path = Str_Def.MainPanel;
 //    public MainPanel() : base(new UIType(path))
 //    {
-
 //    }
 //    /*
 //     对于A a = new B();调用a中虚方法时，
@@ -68,7 +69,6 @@ namespace TsingPigSDK
 //    }
 //    public override void OnEntry()
 //    {
-
 //        UIManager.Instance.GetOrAddComponentInChilden
 //           <Button>("Cancel").onClick.AddListener(() =>
 //           {
@@ -77,7 +77,6 @@ namespace TsingPigSDK
 //        UIManager.Instance.GetOrAddComponentInChilden
 //           <Button>("Continue").onClick.AddListener(() =>
 //           {
-
 //               _continueEvent.Invoke();
 //           });
 //        UIManager.Instance.GetOrAddComponentInChilden

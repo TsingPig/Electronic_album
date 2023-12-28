@@ -1,11 +1,6 @@
 using Michsky.MUIP;
 using MVPFrameWork;
-using System;
-using System.Diagnostics;
 using TMPro;
-using TsingPigSDK;
-using UnityEngine.Events;
-using UnityEngine.UI;
 
 [ParentInfo(FindType.FindWithName, ConstDef.CANVAS)]
 public class AlbumCreateView : ViewBase<IAlbumCreatePresenter>, IAlbumCreateView
@@ -16,8 +11,11 @@ public class AlbumCreateView : ViewBase<IAlbumCreatePresenter>, IAlbumCreateView
     private ButtonManager _btnQuit;
 
     public TMP_InputField InptAlbumName => _inptAlbumName;
+
     public CustomDropdown DropDownAlbumType => _dropDownAlbumType;
+
     public ButtonManager BtnCreateAlbum => _btnCreateAlbum;
+
     public ButtonManager BtnQuit => _btnQuit;
 
     protected override void OnCreate()
@@ -29,6 +27,5 @@ public class AlbumCreateView : ViewBase<IAlbumCreatePresenter>, IAlbumCreateView
 
         _btnCreateAlbum.onClick.AddListener(_presenter.CreateAlbum);
         _btnQuit.onClick.AddListener(_presenter.Quit);
-
     }
 }

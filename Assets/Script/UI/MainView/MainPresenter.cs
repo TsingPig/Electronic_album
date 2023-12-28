@@ -1,13 +1,8 @@
 using MVPFrameWork;
 using System;
-using System.IO;
-using System.Threading.Tasks;
-using TMPro;
 using TsingPigSDK;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
-using static UnityEngine.UI.Image;
 
 [Serializable]
 public class UserInformation
@@ -25,7 +20,6 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
         CacheManager.Instance.UserInformUpdate_Event += LoadUserInformation;
         ServerManager.Instance.UpdateAlbum_Event += PresenterAlbumList;
         LoadUserInformation();
-
     }
 
     #region UserInformation
@@ -59,18 +53,15 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
         return userInformation;
     }
 
-
     /// <summary>
     /// 用户退出登录时调用，清除用户信息和头像文件
     /// </summary>
     public void ClearUserInformationCache()
     {
-
         ClearAlbumList();
         CacheManager.Instance.ClearUserInformationCache();
         MVPFrameWork.UIManager.Instance.Quit(ViewId.MainView);
         MVPFrameWork.UIManager.Instance.Enter(ViewId.LoginView);
-
     }
 
     /// <summary>
@@ -95,14 +86,11 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
         string updatedNickName = _view.InptNickName.text;
         if(updatedNickName != string.Empty)
         {
-
             _view.TxtNickName.text = updatedNickName;
 
             CacheManager.Instance.UpdateNickName(updatedNickName);
 
-
             Debug.Log($"昵称更新为：{updatedNickName}");
-
         }
         else
         {
@@ -146,12 +134,12 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
         });
 
         Debug.Log("权限结果：" + permission);
-
     }
 
-    #endregion
+    #endregion Public
 
     #region Private
+
     /// <summary>
     /// 呈现视图层中的用户信息
     /// </summary>
@@ -164,21 +152,20 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
         _view.BtnUserIcon.GetComponent<Image>().sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
     }
 
-    #endregion
+    #endregion Private
 
-    #endregion
+    #endregion UserInformation
 
     #region AlbumView
 
     #region Public
+
     public void EnterAlbumCreateView()
     {
         MVPFrameWork.UIManager.Instance.Enter(ViewId.AlbumCreateView);
     }
 
-
-
-    #endregion
+    #endregion Public
 
     #region Private
 
@@ -194,10 +181,8 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
         {
             GameObject instantiatedObject = GameObject.Instantiate(obj, _view.GridAlbumContent.transform);
             instantiatedObject.name = item;
-
         }
     }
-
 
     /// <summary>
     ///  清空相册列表UI
@@ -211,9 +196,7 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
         }
     }
 
-    #endregion
+    #endregion Private
 
-
-    #endregion
+    #endregion AlbumView
 }
-

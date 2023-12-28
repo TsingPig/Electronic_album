@@ -1,2 +1,4 @@
 using MVPFrameWork;
-public class PhotoViewPresenter : PresenterBase<IPhotoViewView>, IPhotoViewPresenter {}
+
+public class PhotoViewPresenter : PresenterBase<IPhotoViewView>, IPhotoViewPresenter
+{ }

@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using TsingPigSDK;
-using UnityEngine;
 
 namespace MVPFrameWork
 {
@@ -38,7 +36,6 @@ namespace MVPFrameWork
             }
             else
             {
-
                 callback?.Invoke();
             }
         }
@@ -49,7 +46,6 @@ namespace MVPFrameWork
             {
                 if(value.active)
                 {
-
                     value.active = false;
                     _viewDic[viewId] = value;
                     _uiModule?.Quit(viewId, delegate
@@ -67,15 +63,11 @@ namespace MVPFrameWork
             {
                 callback?.Invoke();
             }
-
         }
 
         public void Preload(int viewId, bool instantiate = true)
         {
             _uiModule?.Preload(viewId, instantiate);
         }
-
     }
-
-
 }

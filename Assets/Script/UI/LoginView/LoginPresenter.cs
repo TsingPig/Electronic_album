@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using MVPFrameWork;
-using UIManager = MVPFrameWork.UIManager;
-using TsingPigSDK;
 using TMPro;
+using TsingPigSDK;
+using UnityEngine;
+using UIManager = MVPFrameWork.UIManager;
 
 public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
 {
@@ -33,13 +31,11 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
 
             //从服务器下载头像数据
             ServerManager.Instance.DownLoadUserIcon(LoginInputAccount);
-
         }
         else
         {
             Debug.Log("账号或者密码错误");
         }
-
     }
 
     public void OnRegister()
@@ -58,19 +54,15 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
                 UIManager.Instance.Quit(ViewId.LoginView);
                 UIManager.Instance.Enter(ViewId.MainView);
             }
-
         }
-
     }
 
     public void OnSuperLogin()
     {
-
     }
 
     public void ChangePasswordState(bool value)
     {
-
         if(value)
         {
             _view.InptLoginInputPassWord.inputType = TMPro.TMP_InputField.InputType.Standard;
@@ -79,7 +71,6 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
         {
             _view.InptLoginInputPassWord.inputType = TMPro.TMP_InputField.InputType.Password;
         }
-
     }
 
     public void ClearInformation(TMP_InputField info)

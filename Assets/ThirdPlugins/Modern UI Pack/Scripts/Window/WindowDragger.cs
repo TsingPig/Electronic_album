@@ -7,6 +7,7 @@ namespace Michsky.MUIP
     {
         [Header("Resources")]
         public RectTransform dragArea;
+
         public RectTransform dragObject;
 
         [Header("Settings")]
@@ -17,14 +18,13 @@ namespace Michsky.MUIP
 
         public new void Start()
         {
-            if (dragArea == null)
+            if(dragArea == null)
             {
                 try
                 {
                     var canvas = (Canvas)GameObject.FindObjectsOfType(typeof(Canvas))[0];
                     dragArea = canvas.GetComponent<RectTransform>();
                 }
-
                 catch { Debug.LogError("<b>[Movable Window]</b> Drag Area has not been assigned."); }
             }
         }
@@ -33,7 +33,7 @@ namespace Michsky.MUIP
         {
             get
             {
-                if (dragObject == null) { return (transform as RectTransform); }
+                if(dragObject == null) { return (transform as RectTransform); }
                 else { return dragObject; }
             }
         }
@@ -42,10 +42,10 @@ namespace Michsky.MUIP
         {
             get
             {
-                if (dragArea == null)
+                if(dragArea == null)
                 {
                     RectTransform canvas = transform as RectTransform;
-                    while (canvas.parent != null && canvas.parent is RectTransform) { canvas = canvas.parent as RectTransform; }
+                    while(canvas.parent != null && canvas.parent is RectTransform) { canvas = canvas.parent as RectTransform; }
                     return canvas;
                 }
                 else { return dragArea; }
@@ -57,14 +57,14 @@ namespace Michsky.MUIP
             originalPanelLocalPosition = DragObjectInternal.localPosition;
             RectTransformUtility.ScreenPointToLocalPointInRectangle(DragAreaInternal, data.position, data.pressEventCamera, out originalLocalPointerPosition);
             gameObject.transform.SetAsLastSibling();
-            if (topOnDrag == true) { dragObject.transform.SetAsLastSibling(); }
+            if(topOnDrag == true) { dragObject.transform.SetAsLastSibling(); }
         }
 
         public void OnDrag(PointerEventData data)
         {
             Vector2 localPointerPosition;
 
-            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(DragAreaInternal, data.position, data.pressEventCamera, out localPointerPosition))
+            if(RectTransformUtility.ScreenPointToLocalPointInRectangle(DragAreaInternal, data.position, data.pressEventCamera, out localPointerPosition))
             {
                 Vector3 offsetToOriginal = localPointerPosition - originalLocalPointerPosition;
                 DragObjectInternal.localPosition = originalPanelLocalPosition + offsetToOriginal;

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace Michsky.MUIP
@@ -8,11 +7,13 @@ namespace Michsky.MUIP
     {
         // Resources
         public Transform itemParent;
+
         public GameObject itemPreset;
         public GameObject scrollbar;
 
         // Settings
         public bool initializeOnAwake = true;
+
         public bool showScrollbar = true;
         public RowCount rowCount = RowCount.Two;
 
@@ -43,25 +44,28 @@ namespace Michsky.MUIP
             [Range(0.1f, 1)] public float iconScale = 1;
         }
 
-        public enum RowType { Icon, Text }
-        public enum RowCount { One, Two, Three }
+        public enum RowType
+        { Icon, Text }
 
-        void Awake()
+        public enum RowCount
+        { One, Two, Three }
+
+        private void Awake()
         {
-            if (itemParent == null) { Debug.LogError("<b>[List View]</b> 'Item Parent' is missing."); return; }
-            if (initializeOnAwake == true) { InitializeItems(); }
+            if(itemParent == null) { Debug.LogError("<b>[List View]</b> 'Item Parent' is missing."); return; }
+            if(initializeOnAwake == true) { InitializeItems(); }
         }
 
         public void InitializeItems()
         {
 #if UNITY_EDITOR
-            if (Application.isPlaying == false) { for (int i = itemParent.childCount; i > 0; --i) { DestroyImmediate(itemParent.GetChild(0).gameObject); } }
-            else { foreach (Transform child in itemParent) { Destroy(child.gameObject); } }
+            if(Application.isPlaying == false) { for(int i = itemParent.childCount; i > 0; --i) { DestroyImmediate(itemParent.GetChild(0).gameObject); } }
+            else { foreach(Transform child in itemParent) { Destroy(child.gameObject); } }
 #else
             foreach (Transform child in itemParent) { Destroy(child.gameObject); }
 #endif
 
-            for (int i = 0; i < listItems.Count; ++i)
+            for(int i = 0; i < listItems.Count; ++i)
             {
                 GameObject go = Instantiate(itemPreset, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
                 go.transform.SetParent(itemParent, false);
@@ -75,8 +79,8 @@ namespace Michsky.MUIP
                 lvi.PassReferences();
             }
 
-            if (showScrollbar == false && scrollbar != null) { scrollbar.transform.localScale = new Vector3(0, 0, 0); }
-            else if (showScrollbar == true && scrollbar != null) { scrollbar.transform.localScale = new Vector3(1, 1, 1); }
+            if(showScrollbar == false && scrollbar != null) { scrollbar.transform.localScale = new Vector3(0, 0, 0); }
+            else if(showScrollbar == true && scrollbar != null) { scrollbar.transform.localScale = new Vector3(1, 1, 1); }
         }
     }
 }

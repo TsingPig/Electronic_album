@@ -1,9 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using MVPFrameWork;
-using TMPro;
-using System;
 
 public interface IMainPresenter : IPresenter
 {
@@ -29,12 +24,11 @@ public interface IMainPresenter : IPresenter
     /// <param name="icon"></param>
     void UpdateUserIcon();
 
-    #endregion
+    #endregion UserInformation
 
     #region AlbumView
 
     void EnterAlbumCreateView();
 
-    #endregion
-
+    #endregion AlbumView
 }

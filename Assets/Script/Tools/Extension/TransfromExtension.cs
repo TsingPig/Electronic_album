@@ -1,4 +1,5 @@
 using UnityEngine;
+
 namespace TsingPigSDK
 {
     public static class Texture2DExtensions

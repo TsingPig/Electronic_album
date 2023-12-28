@@ -1,4 +1,3 @@
-using Sirenix.OdinInspector;
 using System.Data;
 using TsingPigSDK;
 
@@ -52,7 +51,6 @@ public class MySQLManager : Singleton<MySQLManager>
             //Console.WriteLine("登录失败：用户名或密码不正确。");
             return false;
         }
-
     }
 
     /// <summary>
@@ -69,7 +67,6 @@ public class MySQLManager : Singleton<MySQLManager>
 
         _mySQLAccess.Update(tableName, columnToUpdate, newNickName, conditionColumn, "=", conditionValue);
     }
-
 
     /// <summary>
     /// 查询指定账号的昵称

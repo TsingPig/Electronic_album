@@ -1,6 +1,5 @@
 using System;
 using TsingPigSDK;
-using UnityEngine;
 
 namespace MVPFrameWork
 {
@@ -23,14 +22,15 @@ namespace MVPFrameWork
         {
             _module.Enter(viewId, callback);
         }
+
         public void Quit(int viewId, Action callback = null)
         {
             _module?.Quit(viewId, callback);
         }
+
         public void Preload(int viewId, bool instantiate = true)
         {
             _module?.Preload(viewId, instantiate);
         }
-
     }
 }

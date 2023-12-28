@@ -7,6 +7,7 @@ namespace MVPFrameWork
         void Enter(int viewId, Action callback = null);
 
         void Quit(int viewId, Action callback = null, bool destroy = false);
+
         void Preload(int viewId, bool instantiate = true);
     }
 }

@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
@@ -12,6 +13,7 @@ namespace Michsky.MUIP
     {
         [Header("Resources")]
         [SerializeField] private DemoElementSwayParent swayParent;
+
         [SerializeField] private Canvas mainCanvas;
         [SerializeField] private RectTransform swayObject;
         [SerializeField] private CanvasGroup normalCG;
@@ -20,24 +22,25 @@ namespace Michsky.MUIP
 
         [Header("Settings")]
         [SerializeField] private float smoothness = 10;
+
         [SerializeField] private float transitionSpeed = 8;
-        [SerializeField] [Range(0, 1)] private float dissolveAlpha = 0.5f;
+        [SerializeField][Range(0, 1)] private float dissolveAlpha = 0.5f;
 
         [Header("Events")]
         [SerializeField] private UnityEvent onClick;
 
-        bool allowSway;
+        private bool allowSway;
         [HideInInspector] public bool wmSelected;
 
-        Vector3 cursorPos;
-        Vector2 defaultPos;
+        private Vector3 cursorPos;
+        private Vector2 defaultPos;
 
-        void Awake()
+        private void Awake()
         {
-            if (swayParent == null)
+            if(swayParent == null)
             {
                 var tempSway = transform.parent.GetComponent<DemoElementSwayParent>();
-                if (tempSway == null) { transform.parent.gameObject.AddComponent<DemoElementSwayParent>(); }
+                if(tempSway == null) { transform.parent.gameObject.AddComponent<DemoElementSwayParent>(); }
                 swayParent = tempSway;
             }
 
@@ -46,35 +49,36 @@ namespace Michsky.MUIP
             highlightedCG.alpha = 0;
         }
 
-        void Update()
+        private void Update()
         {
 #if ENABLE_LEGACY_INPUT_MANAGER
-            if (allowSway == true) { cursorPos = Input.mousePosition; }
+            if(allowSway == true) { cursorPos = Input.mousePosition; }
 #elif ENABLE_INPUT_SYSTEM
             if (allowSway == true) { cursorPos = Mouse.current.position.ReadValue(); }
 #endif
-            if(mainCanvas) { 
-                if (mainCanvas.renderMode == RenderMode.ScreenSpaceOverlay) { ProcessOverlay(); }
-                else if (mainCanvas.renderMode == RenderMode.ScreenSpaceCamera) { ProcessSSC(); }
-                else if (mainCanvas.renderMode == RenderMode.WorldSpace) { ProcessWorldSpace(); }
+            if(mainCanvas)
+            {
+                if(mainCanvas.renderMode == RenderMode.ScreenSpaceOverlay) { ProcessOverlay(); }
+                else if(mainCanvas.renderMode == RenderMode.ScreenSpaceCamera) { ProcessSSC(); }
+                else if(mainCanvas.renderMode == RenderMode.WorldSpace) { ProcessWorldSpace(); }
             }
         }
 
-        void ProcessOverlay()
+        private void ProcessOverlay()
         {
-            if (allowSway == true) { swayObject.position = Vector2.Lerp(swayObject.position, cursorPos, Time.deltaTime * smoothness); }
+            if(allowSway == true) { swayObject.position = Vector2.Lerp(swayObject.position, cursorPos, Time.deltaTime * smoothness); }
             else { swayObject.localPosition = Vector2.Lerp(swayObject.localPosition, defaultPos, Time.deltaTime * smoothness); }
         }
 
-        void ProcessSSC()
+        private void ProcessSSC()
         {
-            if (allowSway == true) { swayObject.position = Vector2.Lerp(swayObject.position, Camera.main.ScreenToWorldPoint(cursorPos), Time.deltaTime * smoothness); }
+            if(allowSway == true) { swayObject.position = Vector2.Lerp(swayObject.position, Camera.main.ScreenToWorldPoint(cursorPos), Time.deltaTime * smoothness); }
             else { swayObject.localPosition = Vector2.Lerp(swayObject.localPosition, defaultPos, Time.deltaTime * smoothness); }
         }
 
-        void ProcessWorldSpace()
+        private void ProcessWorldSpace()
         {
-            if (allowSway == true) 
+            if(allowSway == true)
             {
                 Vector3 clampedPos = new Vector3(cursorPos.x, cursorPos.y, (mainCanvas.transform.position.z / 6f));
                 swayObject.position = Vector3.Lerp(swayObject.position, Camera.main.ScreenToWorldPoint(clampedPos), Time.deltaTime * smoothness);
@@ -84,7 +88,7 @@ namespace Michsky.MUIP
 
         public void Dissolve()
         {
-            if (wmSelected == true)
+            if(wmSelected == true)
                 return;
 
             StopCoroutine("DissolveHelper");
@@ -96,7 +100,7 @@ namespace Michsky.MUIP
 
         public void Highlight()
         {
-            if (wmSelected == true)
+            if(wmSelected == true)
                 return;
 
             StopCoroutine("DissolveHelper");
@@ -108,7 +112,7 @@ namespace Michsky.MUIP
 
         public void Active()
         {
-            if (wmSelected == true)
+            if(wmSelected == true)
                 return;
 
             StopCoroutine("DissolveHelper");
@@ -152,9 +156,9 @@ namespace Michsky.MUIP
             onClick.Invoke();
         }
 
-        IEnumerator DissolveHelper()
+        private IEnumerator DissolveHelper()
         {
-            while (normalCG.alpha > dissolveAlpha)
+            while(normalCG.alpha > dissolveAlpha)
             {
                 normalCG.alpha -= Time.unscaledDeltaTime * transitionSpeed;
                 highlightedCG.alpha -= Time.unscaledDeltaTime * transitionSpeed;
@@ -166,9 +170,9 @@ namespace Michsky.MUIP
             highlightedCG.gameObject.SetActive(false);
         }
 
-        IEnumerator HighlightHelper()
+        private IEnumerator HighlightHelper()
         {
-            while (normalCG.alpha < 1)
+            while(normalCG.alpha < 1)
             {
                 normalCG.alpha += Time.unscaledDeltaTime * transitionSpeed;
                 highlightedCG.alpha -= Time.unscaledDeltaTime * transitionSpeed;
@@ -180,11 +184,11 @@ namespace Michsky.MUIP
             highlightedCG.gameObject.SetActive(false);
         }
 
-        IEnumerator ActiveHelper()
+        private IEnumerator ActiveHelper()
         {
             highlightedCG.gameObject.SetActive(true);
 
-            while (highlightedCG.alpha < 1)
+            while(highlightedCG.alpha < 1)
             {
                 normalCG.alpha -= Time.unscaledDeltaTime * transitionSpeed;
                 highlightedCG.alpha += Time.unscaledDeltaTime * transitionSpeed;
@@ -195,11 +199,11 @@ namespace Michsky.MUIP
             normalCG.alpha = 0;
         }
 
-        IEnumerator WMSelectHelper()
+        private IEnumerator WMSelectHelper()
         {
             selectedCG.gameObject.SetActive(true);
 
-            while (selectedCG.alpha < 1)
+            while(selectedCG.alpha < 1)
             {
                 normalCG.alpha -= Time.unscaledDeltaTime * transitionSpeed;
                 highlightedCG.alpha -= Time.unscaledDeltaTime * transitionSpeed;
@@ -212,9 +216,9 @@ namespace Michsky.MUIP
             selectedCG.alpha = 1;
         }
 
-        IEnumerator WMDeselectHelper()
+        private IEnumerator WMDeselectHelper()
         {
-            while (selectedCG.alpha > 0)
+            while(selectedCG.alpha > 0)
             {
                 selectedCG.alpha -= Time.unscaledDeltaTime * transitionSpeed;
                 yield return null;

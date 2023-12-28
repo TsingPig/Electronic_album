@@ -1,2 +1,4 @@
 using MVPFrameWork;
-public interface IPhotoViewView : IView {}
+
+public interface IPhotoViewView : IView
+{ }

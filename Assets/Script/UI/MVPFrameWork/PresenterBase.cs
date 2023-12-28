@@ -1,8 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-
 namespace MVPFrameWork
 {
     public abstract class PresenterBase<TView> : IPresenter where TView : class, IView
@@ -33,7 +28,6 @@ namespace MVPFrameWork
         {
         }
 
-        
         public virtual void OnDestroy()
         {
         }
@@ -42,25 +36,16 @@ namespace MVPFrameWork
         {
         }
 
-
         public virtual void OnShowCompleted()
         {
         }
-
-
 
         public virtual void OnHideStart()
         {
         }
 
-
         public virtual void OnHideCompleted()
         {
         }
-
-        
-
-        
     }
-
 }

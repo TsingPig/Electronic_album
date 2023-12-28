@@ -1,21 +1,39 @@
 using System;
-using System.Drawing;
 using System.IO;
-using System.Security.Principal;
 using TsingPigSDK;
 using UnityEngine;
 using UIManager = MVPFrameWork.UIManager;
-
 
 public class CacheManager : Singleton<CacheManager>
 {
     private UserInformation _userInform;
 
     //public static string CACHA_PATH => Application.persistentDataPath;
+
     public const string CACHA_PATH = "Assets/Resources/UserInformation";
+
     public static string USER_DATA_FILE => CACHA_PATH + "/userData.json";
+
     public static string ICON_PATH => CACHA_PATH + "/icons";
-    
+
+    /// <summary>
+    /// 程序入口，首先判断是否存在缓存的账号信息。是则直接自动登录。
+    /// </summary>
+    public void ApplicationEntry()
+    {
+        string filePath = USER_DATA_FILE;
+        if(File.Exists(filePath))
+        {
+            UIManager.Instance.Enter(ViewId.MainView);
+
+            UserInformationCached = true;
+        }
+        else
+        {
+            UIManager.Instance.Enter(ViewId.LoginView);
+        }
+    }
+
     /// <summary>
     /// 加载头像纹理
     /// </summary>
@@ -81,25 +99,6 @@ public class CacheManager : Singleton<CacheManager>
         }
     }
 
-
-    /// <summary>
-    /// 程序入口，首先判断是否存在缓存的账号信息。是则直接自动登录。
-    /// </summary>
-    public void ApplicationEntry()
-    {
-        string filePath = USER_DATA_FILE;
-        if(File.Exists(filePath))
-        {
-            UIManager.Instance.Enter(ViewId.MainView);
-
-            UserInformationCached = true;
-        }
-        else
-        {
-            UIManager.Instance.Enter(ViewId.LoginView);
-        }
-    }
-
     /// <summary>
     /// 登录时调用，保存用户信息和头像到本地
     /// </summary>
@@ -125,30 +124,6 @@ public class CacheManager : Singleton<CacheManager>
         File.WriteAllText(USER_DATA_FILE, json);
         Debug.Log($"缓存信息：账号：{account}   昵称：{nickName}   图像：{icon.name}");
     }
-
-
-    ///// <summary>
-    ///// 登录时调用，保存用户信息和头像到本地
-    ///// </summary>
-    ///// <param name="account">账号</param>
-    ///// <param name="nickName">昵称</param>
-    ///// <param name="icon">头像贴图</param>
-    //public void SaveUserInformation(string account, string nickName)
-    //{
-    //    UserInformationCached = true;
-
-    //    UserInformation userData = new UserInformation
-    //    {
-    //        userName = account,
-    //        nickName = nickName,
-    //        iconPath = Path.Combine(ICON_PATH, account + ".jpg")
-    //    };
-
-    //    string json = JsonUtility.ToJson(userData);
-    //    // 保存到本地文件
-    //    File.WriteAllText(USER_DATA_FILE, json);
-    //}
-
 
     /// <summary>
     /// 修改缓存中的昵称
@@ -189,11 +164,9 @@ public class CacheManager : Singleton<CacheManager>
         }
     }
 
-
     /// <summary>
     /// 用户退出登录时调用，清除用户信息和头像文件
     /// </summary>
-
     public void ClearUserInformationCache()
     {
         if(File.Exists(USER_DATA_FILE))
@@ -209,10 +182,7 @@ public class CacheManager : Singleton<CacheManager>
         Debug.Log("清除用户信息缓存");
         UserInformationCached = false;
         UserInform = null;
-
-
     }
-
 
     /// <summary>
     /// 以字节流形式保存头像到本地。
@@ -246,7 +216,6 @@ public class CacheManager : Singleton<CacheManager>
         File.WriteAllBytes(fileName, bytes);
     }
 
-
     /// <summary>
     ///  保存头像到本地，并返回保存的路径
     /// </summary>
@@ -272,6 +241,5 @@ public class CacheManager : Singleton<CacheManager>
     {
         base.Awake();
         ApplicationEntry();
-
     }
 }

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using TsingPigSDK;
 
 namespace MVPFrameWork
@@ -32,7 +31,7 @@ namespace MVPFrameWork
 
                 view = Container.Resolve<IView>(viewId);
 
-                if (view == null)
+                if(view == null)
                 {
                     Log.Error($"{viewId}Ω‚Œˆ ß∞‹");
                 }
@@ -65,7 +64,6 @@ namespace MVPFrameWork
 
                 if(destroy)
                 {
-
                     view.Destroy();
                     _uiDic.Remove(viewId);
                 }
@@ -94,7 +92,5 @@ namespace MVPFrameWork
                 }
             }, instantiate);
         }
-
-
     }
 }
