@@ -1,6 +1,5 @@
 using Michsky.MUIP;
 using TMPro;
-using UnityEngine;
 
 /// <summary>
 /// 相册列表项的点击事件

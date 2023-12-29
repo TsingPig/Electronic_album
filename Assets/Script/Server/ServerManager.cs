@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
+using System.Threading.Tasks;
 using TsingPigSDK;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class ServerManager : Singleton<ServerManager>
 {
@@ -67,15 +69,15 @@ public class ServerManager : Singleton<ServerManager>
     {
         StartCoroutine(GetFolders(account, UpdateAlbum_Event));
     }
-    
+
     /// <summary>
     /// 获取用户相册的所有图片
     /// </summary>
     /// <param name="account"></param>
     /// <param name="albumName"></param>
-    public void GetPhotos(string account, string albumName)
+    public void GetAlbumSize(string account, string albumName, Action<int> callback = null)
     {
-        StartCoroutine(GetPhotos($"{account}/{albumName}/all", UpdateAlbum_Event));
+        StartCoroutine(GetConnectSize($"{account}/{albumName}", callback));
     }
 
     /// <summary>
@@ -201,41 +203,45 @@ public class ServerManager : Singleton<ServerManager>
     }
 
     /// <summary>
-    ///  获得某个文件夹路径下的所有图片文件
+    ///  获得某个文件夹路径下的文件数量
     /// </summary>
     /// <param name="folderPath"></param>
     /// <returns></returns>
-    private IEnumerator GetPhotos(string folderPath, Action<FolderList> callback = null)
+    private IEnumerator GetConnectSize(string folderPath, Action<int> callback = null)
     {
-        using(UnityWebRequest www = UnityWebRequest.Get($"{url}/get_photos/{folderPath}"))
+        using(UnityWebRequest www = UnityWebRequest.Get($"{url}/connect_size/{folderPath}"))
         {
             www.downloadHandler = new DownloadHandlerBuffer();
             yield return www.SendWebRequest();
 
             if(www.result == UnityWebRequest.Result.Success)
             {
-                //string jsonResponse = www.downloadHandler.text;
-                //FolderList folderList = JsonUtility.FromJson<FolderList>(jsonResponse);
-
-                //if(folderList != null && folderList.folders != null)
-                //{
-                //    foreach(string folder in folderList.folders)
-                //    {
-                //        Debug.Log("Folder Name: " + folder);
-                //    }
-                //}
-
-                //callback?.Invoke(folderList);
-
-                Debug.Log("get_photos get successfully");
+                int connectSize = int.Parse(www.downloadHandler.data.ToString());
+                callback?.Invoke(connectSize);
+                Debug.Log($"{folderPath}：文件数量为{connectSize}");
             }
             else
             {
-                Debug.LogError("Error get folderPath: " + www.error);
+                Debug.LogError($"无法获取{folderPath}下的文件数量: " + www.error);
             }
         }
     }
 
+    public async void GetPhotoAsync(string account, string albumName, int photoId, Image image)
+    {
+        using(UnityWebRequest www = UnityWebRequest.Get($"{url}/download/{account}/{albumName}/{photoId}.jpg"))
+        {
+            while(www.result != UnityWebRequest.Result.Success)
+            {
+                await Task.Yield();
+                byte[] fileData = www.downloadHandler.data;
+
+                Texture2D photoTex = new Texture2D(200, 200);
+                photoTex.LoadImage(fileData);
+                image.sprite = Sprite.Create(photoTex, new Rect(0, 0, photoTex.width, photoTex.height), new Vector2(0.5f, 0.5f));
+            }
+        }
+    }
 
     /// <summary>
     /// 返回只包含合法字符（字母/数字）的字符串
