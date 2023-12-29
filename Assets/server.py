@@ -71,13 +71,13 @@ def connect_size(account, album_name):
                 photo_size += 1
     
         print(photo_size)
-        return photo_size
+        return str(photo_size)
     else:
         return 'Album not found', 404
 
-# 输入用户名和相册名以及range: l-r 返回按照时间排序后[l, r]的图片
-@app.route('/get_photos/<account>/<album_name>/<range>', methods=['GET'])
-def get_photos(account, album_name, range):
+# 输入用户名和相册名以及rank 返回按照时间排序后rank的图片
+@app.route('/get_photos/<account>/<album_name>/<rank>', methods=['GET'])
+def get_photos(account, album_name, rank):
     album_path = os.path.join(app.config['UPLOAD_FOLDER'], account, album_name)
     if os.path.exists(album_path):
         photos = {'photos': []}
@@ -88,24 +88,20 @@ def get_photos(account, album_name, range):
                 photo_ctime = os.path.getctime(os.path.join(album_path, photo))
                 photos['photos'].append((photo, photo_ctime))           
         photos['photos'].sort(key=lambda x: x[1], reverse=True)
-        # 如果range为all，返回所有图片
-        if range == 'all':
-            print(photos['photos'])
-            a = {}
-            for item in photos.items():
-                a[item.key] = item.value[1]
-            return json.dumps(a)
-            for photo, _ in photos['photos']:
-                send_file(photo)
-        # 否则返回range范围内的图片
+
+        rank = int(rank.split('.')[0])
+
+        if rank <= len(photos['photos']):
+            print(photos['photos'][rank][0])
+            photo_to_send =  os.path.join(album_path, photos['photos'][rank][0])
+            print(photo_to_send)
+            return send_file(photo_to_send)
+
         else:
-            l = int(range.split('-')[0])
-            r = int(range.split('-')[1])
-            return json.dumps(photos['photos'][l:r+1])
-            for photo, _ in photos['photos'][l:r+1]:
-                send_file(photo)
+            return 'photo not found', 404
     else:
         return 'Album not found', 404
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=port)
+    from waitress import serve
+    serve(app, host="0.0.0.0", port=port)
