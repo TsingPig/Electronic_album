@@ -8,9 +8,11 @@ public class CacheManager : Singleton<CacheManager>
 {
     private UserInformation _userInform;
 
+#if UNITY_EDITOR
+    public const string CACHA_PATH = "Assets/Resources/UserInformation";
+#else
     public static string CACHA_PATH => Application.persistentDataPath;
-
-    //public const string CACHA_PATH = "Assets/Resources/UserInformation";
+#endif
 
     public static string USER_DATA_FILE => CACHA_PATH + "/userData.json";
 
