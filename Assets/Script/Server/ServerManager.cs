@@ -216,7 +216,8 @@ public class ServerManager : Singleton<ServerManager>
 
             if(www.result == UnityWebRequest.Result.Success)
             {
-                int connectSize = int.Parse(www.downloadHandler.data.ToString());
+                string jsonResponse = www.downloadHandler.text;
+                int connectSize = int.Parse(jsonResponse);
                 callback?.Invoke(connectSize);
                 Debug.Log($"{folderPath}：文件数量为{connectSize}");
             }
@@ -229,17 +230,28 @@ public class ServerManager : Singleton<ServerManager>
 
     public async void GetPhotoAsync(string account, string albumName, int photoId, Image image)
     {
-        using(UnityWebRequest www = UnityWebRequest.Get($"{url}/download/{account}/{albumName}/{photoId}.jpg"))
+        using(UnityWebRequest www = UnityWebRequest.Get($"{url}/get_photos/{account}/{albumName}/{photoId}.jpg"))
         {
-            while(www.result != UnityWebRequest.Result.Success)
+            DownloadHandlerTexture texD1 = new DownloadHandlerTexture(true);
+            www.downloadHandler = texD1;
+
+            www.SendWebRequest();
+
+            while(!www.isDone)
             {
                 await Task.Yield();
-                byte[] fileData = www.downloadHandler.data;
-
-                Texture2D photoTex = new Texture2D(200, 200);
-                photoTex.LoadImage(fileData);
-                image.sprite = Sprite.Create(photoTex, new Rect(0, 0, photoTex.width, photoTex.height), new Vector2(0.5f, 0.5f));
             }
+
+
+            Debug.Log($"{photoId}请求完毕");
+            //byte[] fileData = www.downloadHandler.data;
+
+            //Texture2D photoTex = new Texture2D(200, 200);
+            Texture2D photoTex = texD1.texture;
+
+            //photoTex.LoadImage(fileData);
+            image.sprite = Sprite.Create(photoTex, new Rect(0, 0, 200, 200), new Vector2(0.5f, 0.5f));
+
         }
     }
 

@@ -1715,6 +1715,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BtnEnterManager: {fileID: 5802690933557745747}
+  Cover: {fileID: 8371185510109662533}
 --- !u!1 &7609825515063425893
 GameObject:
   m_ObjectHideFlags: 0
