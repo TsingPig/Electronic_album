@@ -2,7 +2,6 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
 
 namespace TsingPigSDK
 {
@@ -10,14 +9,19 @@ namespace TsingPigSDK
     {
         //连接类对象
         private static MySqlConnection mySqlConnection;
+
         //IP地址
         private static string host;
+
         //端口号
         private static string port;
+
         //用户名
         private static string userName;
+
         //密码
         private static string password;
+
         //数据库名称
         private static string databaseName;
 
@@ -47,15 +51,14 @@ namespace TsingPigSDK
             {
                 string mySqlString = string.Format("server = {0};port={1};database = {2};user = {3};password = {4};", host, port, databaseName, userName, password);
                 mySqlConnection = new MySqlConnection(mySqlString);
+
                 //if(mySqlConnection.State == ConnectionState.Closed)
                 mySqlConnection.Open();
-
             }
             catch(Exception e)
             {
                 throw new Exception("服务器连接失败，请重新检查MySql服务是否打开。" + e.Message.ToString());
             }
-
         }
 
         /// <summary>
@@ -83,7 +86,6 @@ namespace TsingPigSDK
         public DataSet Select(string tableName, string[] items, string[] whereColumnName,
             string[] operation, string[] value)
         {
-
             if(whereColumnName.Length != operation.Length || operation.Length != value.Length)
             {
                 throw new Exception("输入不正确：" + "要查询的条件、条件操作符、条件值 的数量不一致！");
@@ -151,7 +153,6 @@ namespace TsingPigSDK
             return null;
         }
 
-
         /// <summary>
         /// 插入数据
         /// </summary>
@@ -179,9 +180,7 @@ namespace TsingPigSDK
                 Log.Error(ex.Message);
                 return false;
             }
-
         }
-
 
         /// <summary>
         /// 更新数据
@@ -199,7 +198,6 @@ namespace TsingPigSDK
             ExecuteNonQuery(update);
             Log.Info($"更新数据: {update}");
         }
-
 
         /// <summary>
         /// 执行非查询SQL语句
@@ -222,7 +220,6 @@ namespace TsingPigSDK
                 }
             }
         }
-
 
         /// <summary>
         /// 显示Table列表
@@ -251,7 +248,5 @@ namespace TsingPigSDK
 
             return null;
         }
-
     }
-
 }

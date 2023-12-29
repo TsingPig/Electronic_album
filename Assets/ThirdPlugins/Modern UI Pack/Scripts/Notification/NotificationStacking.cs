@@ -12,30 +12,30 @@ namespace Michsky.MUIP
 
         [Header("Settings")]
         public float delay = 1;
-        int currentNotification = 0;
 
-        void Update()
+        private int currentNotification = 0;
+
+        private void Update()
         {
-            if (enableUpdating == true)
+            if(enableUpdating == true)
             {
                 try
                 {
                     notifications[currentNotification].gameObject.SetActive(true);
 
-                    if (notifications[currentNotification].notificationAnimator.GetCurrentAnimatorStateInfo(0).IsName("Wait"))
+                    if(notifications[currentNotification].notificationAnimator.GetCurrentAnimatorStateInfo(0).IsName("Wait"))
                     {
                         notifications[currentNotification].OpenNotification();
                         StartCoroutine("StartNotification");
                         enableUpdating = false;
                     }
 
-                    if (currentNotification >= notifications.Count)
+                    if(currentNotification >= notifications.Count)
                     {
                         enableUpdating = false;
                         currentNotification = 0;
                     }
                 }
-
                 catch
                 {
                     enableUpdating = false;
@@ -45,7 +45,7 @@ namespace Michsky.MUIP
             }
         }
 
-        IEnumerator StartNotification()
+        private IEnumerator StartNotification()
         {
             yield return new WaitForSeconds(notifications[currentNotification].timer + delay);
             Destroy(notifications[currentNotification].gameObject);

@@ -1,12 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
-using UnityEngine;
-using TsingPigSDK;
-using UnityEngine.Networking;
-using System.IO;
 using System;
-using static System.Net.WebRequestMethods;
+using System.Collections;
+using TsingPigSDK;
+using UnityEngine;
+using UnityEngine.Networking;
 
 public class ServerManager : Singleton<ServerManager>
 {
@@ -14,6 +10,7 @@ public class ServerManager : Singleton<ServerManager>
     /// 公网ip
     /// </summary>
     public string host = "http://1.12.46.157";
+
     public int post = 80;
 
     /// <summary>
@@ -26,8 +23,10 @@ public class ServerManager : Singleton<ServerManager>
     /// </summary>
     public Func<UserInformation> DownLoadUserIcon_Event;
 
+    /// <summary>
+    /// 更新相册列表后回调事件
+    /// </summary>
     public Action<FolderList> UpdateAlbum_Event;
-
 
     /// <summary>
     /// 向服务器上传头像
@@ -72,7 +71,7 @@ public class ServerManager : Singleton<ServerManager>
     /// <param name="folderName">相册名</param>
     /// <param name="callback">回调</param>
     /// <returns></returns>
-    IEnumerator CreateEmptyFolder(string folderPath, Action<string> callback)
+    private IEnumerator CreateEmptyFolder(string folderPath, Action<string> callback)
     {
         // 创建一个表单数据对象
         using(UnityWebRequest www = UnityWebRequest.Post($"{url}/createEmptyFolder/{folderPath}", ""))
@@ -90,7 +89,6 @@ public class ServerManager : Singleton<ServerManager>
                 callback?.Invoke(www.error);
             }
         }
-
     }
 
     /// <summary>
@@ -100,7 +98,7 @@ public class ServerManager : Singleton<ServerManager>
     /// <param name="fileName"></param>
     /// <param name="bytes"></param>
     /// <returns></returns>
-    IEnumerator UploadFile(string account, string fileName, byte[] bytes)
+    private IEnumerator UploadFile(string account, string fileName, byte[] bytes)
     {
         // 创建一个表单数据对象
         WWWForm form = new WWWForm();
@@ -132,9 +130,8 @@ public class ServerManager : Singleton<ServerManager>
     /// <param name="fileName"></param>
     /// <param name="callback"></param>
     /// <returns></returns>
-    IEnumerator DownloadFile(string filePath, Action<byte[]> callback)
+    private IEnumerator DownloadFile(string filePath, Action<byte[]> callback)
     {
-
         UnityWebRequest www = UnityWebRequest.Get($"{url}/download/{filePath}");
 
         yield return www.SendWebRequest();
@@ -158,7 +155,7 @@ public class ServerManager : Singleton<ServerManager>
     /// </summary>
     /// <param name="folderPath"></param>
     /// <returns></returns>
-    IEnumerator GetFolders(string folderPath, Action<FolderList> callback = null)
+    private IEnumerator GetFolders(string folderPath, Action<FolderList> callback = null)
     {
         using(UnityWebRequest www = UnityWebRequest.Get($"{url}/get_folders/{folderPath}"))
         {
@@ -167,7 +164,6 @@ public class ServerManager : Singleton<ServerManager>
 
             if(www.result == UnityWebRequest.Result.Success)
             {
-
                 string jsonResponse = www.downloadHandler.text;
                 FolderList folderList = JsonUtility.FromJson<FolderList>(jsonResponse);
 
@@ -178,7 +174,7 @@ public class ServerManager : Singleton<ServerManager>
                         Debug.Log("Folder Name: " + folder);
                     }
                 }
-                
+
                 callback?.Invoke(folderList);
 
                 Debug.Log("folderPath get successfully");
@@ -188,7 +184,6 @@ public class ServerManager : Singleton<ServerManager>
                 Debug.LogError("Error get folderPath: " + www.error);
             }
         }
-
     }
 
     /// <summary>
@@ -211,7 +206,6 @@ public class ServerManager : Singleton<ServerManager>
 
     private void Init()
     {
-
     }
 
     private new void Awake()
@@ -225,6 +219,4 @@ public class ServerManager : Singleton<ServerManager>
     {
         public string[] folders;
     }
-
-
 }

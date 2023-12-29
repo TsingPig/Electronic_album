@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
-using TMPro;
+using UnityEngine.UI;
 
 namespace Michsky.MUIP
 {
@@ -13,6 +13,7 @@ namespace Michsky.MUIP
     {
         [Header("Resources")]
         public ContextMenuManager contextManager;
+
         public Transform itemParent;
 
         [Header("Settings")]
@@ -21,14 +22,14 @@ namespace Michsky.MUIP
         [Header("Items")]
         public List<ContextItem> contexItems = new List<ContextItem>();
 
-        Animator contextAnimator;
-        GameObject selectedItem;
-        Image setItemImage;
-        TextMeshProUGUI setItemText;
-        Sprite imageHelper;
-        string textHelper;
-        float timer;
-        bool timerEnabled;
+        private Animator contextAnimator;
+        private GameObject selectedItem;
+        private Image setItemImage;
+        private TextMeshProUGUI setItemText;
+        private Sprite imageHelper;
+        private string textHelper;
+        private float timer;
+        private bool timerEnabled;
 
         [System.Serializable]
         public class ContextItem
@@ -45,32 +46,31 @@ namespace Michsky.MUIP
             // SUB_MENU
         }
 
-        void Start()
+        private void Start()
         {
-            if (contextManager == null)
+            if(contextManager == null)
             {
                 try
                 {
                     contextManager = GameObject.Find("Context Menu").GetComponent<ContextMenuManager>();
                     itemParent = contextManager.transform.Find("Content/Item List").transform;
                 }
-
                 catch { Debug.Log("<b>[Context Menu]</b> Context Manager is missing.", this); return; }
             }
 
             contextAnimator = contextManager.contextAnimator;
 
-            foreach (Transform child in itemParent)
+            foreach(Transform child in itemParent)
                 Destroy(child.gameObject);
         }
 
-        void Update()
+        private void Update()
         {
-            if (timerEnabled == true)
+            if(timerEnabled == true)
             {
                 timer += Time.deltaTime;
 
-                if (timer >= holdToOpen)
+                if(timer >= holdToOpen)
                 {
                     CheckForTimer();
                     timerEnabled = false;
@@ -92,23 +92,22 @@ namespace Michsky.MUIP
 
         public void CheckForTimer()
         {
-            if (timer <= holdToOpen)
+            if(timer <= holdToOpen)
                 return;
 
-            if (contextManager.isOn == true)
+            if(contextManager.isOn == true)
             {
                 contextAnimator.Play("Menu Out");
                 contextManager.isOn = false;
             }
-
-            else if (contextManager.isOn == false)
+            else if(contextManager.isOn == false)
             {
-                foreach (Transform child in itemParent)
+                foreach(Transform child in itemParent)
                     Destroy(child.gameObject);
 
-                for (int i = 0; i < contexItems.Count; ++i)
+                for(int i = 0; i < contexItems.Count; ++i)
                 {
-                    if (contexItems[i].contextItemType == ContextItemType.BUTTON)
+                    if(contexItems[i].contextItemType == ContextItemType.BUTTON)
                         selectedItem = contextManager.contextButton;
 
                     GameObject go = Instantiate(selectedItem, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
@@ -124,7 +123,7 @@ namespace Michsky.MUIP
                     imageHelper = contexItems[i].itemIcon;
                     setItemImage.sprite = imageHelper;
 
-                    if (imageHelper == null)
+                    if(imageHelper == null)
                         setItemImage.color = new Color(0, 0, 0, 0);
 
                     Button itemButton;
@@ -141,7 +140,7 @@ namespace Michsky.MUIP
             }
         }
 
-        IEnumerator ExecuteAfterTime(float time)
+        private IEnumerator ExecuteAfterTime(float time)
         {
             yield return new WaitForSeconds(time);
             itemParent.gameObject.SetActive(false);

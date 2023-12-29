@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
+
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
@@ -9,7 +9,7 @@ namespace Michsky.MUIP
 {
     public class InputSystemChecker : MonoBehaviour
     {
-        void Awake()
+        private void Awake()
         {
 #if ENABLE_INPUT_SYSTEM && !ENABLE_LEGACY_INPUT_MANAGER
             InputSystemUIInputModule tempModule = gameObject.GetComponent<InputSystemUIInputModule>();

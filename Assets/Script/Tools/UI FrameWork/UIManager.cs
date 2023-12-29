@@ -1,18 +1,17 @@
 using System;
 using UnityEngine;
-using UIManager = MVPFrameWork.UIManager;
-
 
 namespace TsingPigSDK
 {
-
     public class UIManager : Singleton<UIManager>
     {
         private PanelBuffer _panelBuffer;
+
         public GameObject ActivePanelObject
         {
             get { return _panelBuffer.TopPanelObject; }
         }
+
         private new void Awake()
         {
             base.Awake();
@@ -21,7 +20,6 @@ namespace TsingPigSDK
 
         private void Start()
         {
-
         }
 
         private void Update()
@@ -30,7 +28,7 @@ namespace TsingPigSDK
             {
                 Pop();
             }
-            else if(Input.GetKeyUp(KeyCode.A)) 
+            else if(Input.GetKeyUp(KeyCode.A))
             {
             }
         }
@@ -42,10 +40,9 @@ namespace TsingPigSDK
         /// <returns></returns>
         public T GetOrAddComponetToActivePanel<T>() where T : Component
         {
-            if (ActivePanelObject.GetComponent<T>() == null)
+            if(ActivePanelObject.GetComponent<T>() == null)
             {
                 ActivePanelObject.AddComponent<T>();
-
             }
             return ActivePanelObject.GetComponent<T>();
         }
@@ -58,9 +55,9 @@ namespace TsingPigSDK
         public GameObject FindChildGameObject(string name)
         {
             Transform[] transforms = ActivePanelObject.GetComponentsInChildren<Transform>();
-            foreach (var item in transforms)
+            foreach(var item in transforms)
             {
-                if (item.gameObject.name == name)
+                if(item.gameObject.name == name)
                 {
                     return item.gameObject;
                 }
@@ -78,9 +75,9 @@ namespace TsingPigSDK
         public T GetOrAddComponentInChilden<T>(string name) where T : Component
         {
             GameObject child = FindChildGameObject(name);
-            if (child != null)
+            if(child != null)
             {
-                if (child.GetComponent<T>() != null)
+                if(child.GetComponent<T>() != null)
                 {
                     return child.GetComponent<T>();
                 }
@@ -93,7 +90,7 @@ namespace TsingPigSDK
         {
             Type type = Type.GetType(panelName);
 
-            if (type != null)
+            if(type != null)
             {
                 object panelInstance = Activator.CreateInstance(type);
                 _panelBuffer.Push(panelInstance as BasePanel);

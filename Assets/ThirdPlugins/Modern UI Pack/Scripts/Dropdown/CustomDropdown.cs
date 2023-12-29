@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
-using TMPro;
-using System.Collections;
+using UnityEngine.UI;
 
 namespace Michsky.MUIP
 {
@@ -12,6 +12,7 @@ namespace Michsky.MUIP
     {
         // Resources
         public Animator dropdownAnimator;
+
         public GameObject triggerObject;
         public TextMeshProUGUI selectedText;
         public Image selectedImage;
@@ -28,6 +29,7 @@ namespace Michsky.MUIP
 
         // Settings
         public bool isInteractable = true;
+
         public bool enableIcon = true;
         public bool enableTrigger = true;
         public bool enableScrollbar = true;
@@ -48,6 +50,7 @@ namespace Michsky.MUIP
 
         // Animation
         public AnimationType animationType;
+
         public PanelDirection panelDirection;
         [Range(25, 1000)] public float panelSize = 200;
         [Range(0.5f, 10)] public float curveSpeed = 3;
@@ -55,6 +58,7 @@ namespace Michsky.MUIP
 
         // Saving
         public bool saveSelected = false;
+
         public string saveKey = "My Dropdown";
 
         // Item list
@@ -63,30 +67,38 @@ namespace Michsky.MUIP
 
         // Events
         [System.Serializable] public class DropdownEvent : UnityEvent<int> { }
+
         public DropdownEvent onValueChanged;
+
         [System.Serializable] public class ItemTextChangedEvent : UnityEvent<TMP_Text> { }
+
         public ItemTextChangedEvent onItemTextChanged;
 
         // Audio
         public AudioClip hoverSound;
+
         public AudioClip clickSound;
 
         // Other variables
         [HideInInspector] public bool isOn;
+
         [HideInInspector] public int index = 0;
         [HideInInspector] public int siblingIndex = 0;
         [HideInInspector] public TextMeshProUGUI setItemText;
         [HideInInspector] public Image setItemImage;
-        EventTrigger triggerEvent;
-        Sprite imageHelper;
-        string textHelper;
+        private EventTrigger triggerEvent;
+        private Sprite imageHelper;
+        private string textHelper;
 
 #if UNITY_EDITOR
         public bool extendEvents = false;
 #endif
 
-        public enum AnimationType { Modular, Custom }
-        public enum PanelDirection { Bottom, Top }
+        public enum AnimationType
+        { Modular, Custom }
+
+        public enum PanelDirection
+        { Bottom, Top }
 
         [System.Serializable]
         public class Item
@@ -97,9 +109,9 @@ namespace Michsky.MUIP
             public UnityEvent OnItemSelection = new UnityEvent();
         }
 
-        void Awake()
+        private void Awake()
         {
-            if (enableTrigger == true && triggerObject != null)
+            if(enableTrigger == true && triggerObject != null)
             {
                 // triggerButton = gameObject.GetComponent<Button>();
                 triggerEvent = triggerObject.AddComponent<EventTrigger>();
@@ -109,9 +121,9 @@ namespace Michsky.MUIP
                 triggerEvent.GetComponent<EventTrigger>().triggers.Add(entry);
             }
 
-            if (setHighPriority == true)
+            if(setHighPriority == true)
             {
-                if (contentCG == null) { contentCG = transform.Find("Content/Item List").GetComponent<CanvasGroup>(); }
+                if(contentCG == null) { contentCG = transform.Find("Content/Item List").GetComponent<CanvasGroup>(); }
                 contentCG.alpha = 1;
 
                 Canvas tempCanvas = contentCG.gameObject.AddComponent<Canvas>();
@@ -120,20 +132,20 @@ namespace Michsky.MUIP
                 contentCG.gameObject.AddComponent<GraphicRaycaster>();
             }
 
-            if (initAtStart == true && items.Count != 0) { SetupDropdown(); }
+            if(initAtStart == true && items.Count != 0) { SetupDropdown(); }
         }
 
-        void Start()
+        private void Start()
         {
-            if (animationType == AnimationType.Custom) { return; }
-            else if (animationType == AnimationType.Modular && dropdownAnimator != null) { Destroy(dropdownAnimator); }
+            if(animationType == AnimationType.Custom) { return; }
+            else if(animationType == AnimationType.Modular && dropdownAnimator != null) { Destroy(dropdownAnimator); }
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
-            if (listCG == null) { listCG = gameObject.GetComponentInChildren<CanvasGroup>(); }
-            if (listRect == null) { listRect = listCG.GetComponent<RectTransform>(); }
-            if (updateOnEnable == true && index < items.Count) { SetDropdownIndex(selectedItemIndex); }
+            if(listCG == null) { listCG = gameObject.GetComponentInChildren<CanvasGroup>(); }
+            if(listRect == null) { listRect = listCG.GetComponent<RectTransform>(); }
+            if(updateOnEnable == true && index < items.Count) { SetDropdownIndex(selectedItemIndex); }
 
             listCG.alpha = 0;
             listCG.interactable = false;
@@ -143,15 +155,15 @@ namespace Michsky.MUIP
 
         public void SetupDropdown()
         {
-            if (dropdownAnimator == null) { dropdownAnimator = gameObject.GetComponent<Animator>(); }
-            if (enableScrollbar == false && scrollbar != null) { Destroy(scrollbar); }
-            if (itemList == null) { itemList = itemParent.GetComponent<VerticalLayoutGroup>(); }
+            if(dropdownAnimator == null) { dropdownAnimator = gameObject.GetComponent<Animator>(); }
+            if(enableScrollbar == false && scrollbar != null) { Destroy(scrollbar); }
+            if(itemList == null) { itemList = itemParent.GetComponent<VerticalLayoutGroup>(); }
 
             UpdateItemLayout();
             index = 0;
 
-            foreach (Transform child in itemParent) { Destroy(child.gameObject); }
-            for (int i = 0; i < items.Count; ++i)
+            foreach(Transform child in itemParent) { Destroy(child.gameObject); }
+            for(int i = 0; i < items.Count; ++i)
             {
                 GameObject go = Instantiate(itemObject, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
                 go.transform.SetParent(itemParent, false);
@@ -166,9 +178,9 @@ namespace Michsky.MUIP
                 Transform goImage = go.gameObject.transform.Find("Icon");
                 setItemImage = goImage.GetComponent<Image>();
 
-                if (items[i].itemIcon == null) { setItemImage.gameObject.SetActive(false); }
+                if(items[i].itemIcon == null) { setItemImage.gameObject.SetActive(false); }
                 else { imageHelper = items[i].itemIcon; setItemImage.sprite = imageHelper; }
-              
+
                 items[i].itemIndex = i;
                 Item mainItem = items[i];
 
@@ -179,39 +191,41 @@ namespace Michsky.MUIP
                 {
                     SetDropdownIndex(index = mainItem.itemIndex);
                     onValueChanged.Invoke(index = mainItem.itemIndex);
-                    if (saveSelected == true) { PlayerPrefs.SetInt("Dropdown_" + saveKey, mainItem.itemIndex); }
+                    if(saveSelected == true) { PlayerPrefs.SetInt("Dropdown_" + saveKey, mainItem.itemIndex); }
                 });
             }
 
-            if (selectedImage != null && enableIcon == false) { selectedImage.gameObject.SetActive(false); }
-            else if (selectedImage != null) { selectedImage.sprite = items[selectedItemIndex].itemIcon; }
-            if (selectedText != null) { selectedText.text = items[selectedItemIndex].itemName; onItemTextChanged?.Invoke(selectedText); }
-          
-            if (saveSelected == true)
+            if(selectedImage != null && enableIcon == false) { selectedImage.gameObject.SetActive(false); }
+            else if(selectedImage != null) { selectedImage.sprite = items[selectedItemIndex].itemIcon; }
+            if(selectedText != null) { selectedText.text = items[selectedItemIndex].itemName; onItemTextChanged?.Invoke(selectedText); }
+
+            if(saveSelected == true)
             {
-                if (invokeAtStart == true) { items[PlayerPrefs.GetInt("Dropdown_" + saveKey)].OnItemSelection.Invoke(); }
+                if(invokeAtStart == true) { items[PlayerPrefs.GetInt("Dropdown_" + saveKey)].OnItemSelection.Invoke(); }
                 else { SetDropdownIndex(PlayerPrefs.GetInt("Dropdown_" + saveKey)); }
             }
-            else if (invokeAtStart == true) { items[selectedItemIndex].OnItemSelection.Invoke(); }
+            else if(invokeAtStart == true) { items[selectedItemIndex].OnItemSelection.Invoke(); }
 
             currentListParent = transform.parent;
         }
 
         // Obsolete
-        public void ChangeDropdownInfo(int itemIndex) { SetDropdownIndex(itemIndex); }
+        public void ChangeDropdownInfo(int itemIndex)
+        { SetDropdownIndex(itemIndex); }
+
         public void SetDropdownIndex(int itemIndex)
         {
-            if (selectedImage != null && enableIcon == true && items[itemIndex].itemIcon != null) { selectedImage.gameObject.SetActive(true); selectedImage.sprite = items[itemIndex].itemIcon; }
-            else if (selectedImage != null && enableIcon == true && items[itemIndex].itemIcon == null) { selectedImage.gameObject.SetActive(false); }
-            if (selectedText != null) { selectedText.text = items[itemIndex].itemName; onItemTextChanged?.Invoke(selectedText); }
-            if (enableDropdownSounds == true && useClickSound == true) { soundSource.PlayOneShot(clickSound); }
+            if(selectedImage != null && enableIcon == true && items[itemIndex].itemIcon != null) { selectedImage.gameObject.SetActive(true); selectedImage.sprite = items[itemIndex].itemIcon; }
+            else if(selectedImage != null && enableIcon == true && items[itemIndex].itemIcon == null) { selectedImage.gameObject.SetActive(false); }
+            if(selectedText != null) { selectedText.text = items[itemIndex].itemName; onItemTextChanged?.Invoke(selectedText); }
+            if(enableDropdownSounds == true && useClickSound == true) { soundSource.PlayOneShot(clickSound); }
 
             selectedItemIndex = itemIndex;
         }
 
         public void Animate()
         {
-            if (isOn == false && animationType == AnimationType.Modular)
+            if(isOn == false && animationType == AnimationType.Modular)
             {
                 isOn = true;
                 listCG.blocksRaycasts = true;
@@ -222,8 +236,7 @@ namespace Michsky.MUIP
                 StopCoroutine("StartExpand");
                 StartCoroutine("StartExpand");
             }
-
-            else if (isOn == true && animationType == AnimationType.Modular)
+            else if(isOn == true && animationType == AnimationType.Modular)
             {
                 isOn = false;
                 listCG.blocksRaycasts = false;
@@ -233,8 +246,7 @@ namespace Michsky.MUIP
                 StopCoroutine("StartExpand");
                 StartCoroutine("StartMinimize");
             }
-
-            else if (isOn == false && animationType == AnimationType.Custom)
+            else if(isOn == false && animationType == AnimationType.Custom)
             {
                 dropdownAnimator.Play("Stylish In");
                 isOn = true;
@@ -243,8 +255,7 @@ namespace Michsky.MUIP
                 StopCoroutine("StartExpand");
                 StartCoroutine("StartMinimize");
             }
-
-            else if (isOn == true && animationType == AnimationType.Custom)
+            else if(isOn == true && animationType == AnimationType.Custom)
             {
                 dropdownAnimator.Play("Stylish Out");
                 isOn = false;
@@ -254,9 +265,9 @@ namespace Michsky.MUIP
                 StartCoroutine("StartMinimize");
             }
 
-            if (enableTrigger == true && isOn == false) { triggerObject.SetActive(false); }
-            else if (enableTrigger == true && isOn == true) { triggerObject.SetActive(true); }
-            if (enableTrigger == true && outOnPointerExit == true) { triggerObject.SetActive(false); }
+            if(enableTrigger == true && isOn == false) { triggerObject.SetActive(false); }
+            else if(enableTrigger == true && isOn == true) { triggerObject.SetActive(true); }
+            if(enableTrigger == true && outOnPointerExit == true) { triggerObject.SetActive(false); }
         }
 
         public void Interactable(bool value)
@@ -270,7 +281,7 @@ namespace Michsky.MUIP
             item.itemName = title;
             item.itemIcon = icon;
             items.Add(item);
-            if (notify == true) { SetupDropdown(); }
+            if(notify == true) { SetupDropdown(); }
         }
 
         public void CreateNewItem(string title, bool notify)
@@ -278,7 +289,7 @@ namespace Michsky.MUIP
             Item item = new Item();
             item.itemName = title;
             items.Add(item);
-            if (notify == true) { SetupDropdown(); }
+            if(notify == true) { SetupDropdown(); }
         }
 
         public void CreateNewItem(string title)
@@ -293,7 +304,7 @@ namespace Michsky.MUIP
         {
             var item = items.Find(x => x.itemName == itemTitle);
             items.Remove(item);
-            if (notify == true) { SetupDropdown(); }
+            if(notify == true) { SetupDropdown(); }
         }
 
         public void RemoveItem(string itemTitle)
@@ -305,7 +316,7 @@ namespace Michsky.MUIP
 
         public void UpdateItemLayout()
         {
-            if (itemList == null)
+            if(itemList == null)
                 return;
 
             itemList.spacing = itemSpacing;
@@ -317,39 +328,39 @@ namespace Michsky.MUIP
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (isInteractable == false) { return; }
-            if (enableDropdownSounds == true && useClickSound == true) { soundSource.PlayOneShot(clickSound); }
-            
+            if(isInteractable == false) { return; }
+            if(enableDropdownSounds == true && useClickSound == true) { soundSource.PlayOneShot(clickSound); }
+
             Animate();
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (isInteractable == false) { return; }
-            if (enableDropdownSounds == true && useHoverSound == true) { soundSource.PlayOneShot(hoverSound); }
+            if(isInteractable == false) { return; }
+            if(enableDropdownSounds == true && useHoverSound == true) { soundSource.PlayOneShot(hoverSound); }
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (isInteractable == false) { return; }
-            if (outOnPointerExit == true && isOn == true) { Animate(); isOn = false; }
+            if(isInteractable == false) { return; }
+            if(outOnPointerExit == true && isOn == true) { Animate(); isOn = false; }
         }
 
         public void OnSubmit(BaseEventData eventData)
         {
-            if (isInteractable == false) { return; }
-            if (enableDropdownSounds == true && useClickSound == true) { soundSource.PlayOneShot(clickSound); }
+            if(isInteractable == false) { return; }
+            if(enableDropdownSounds == true && useClickSound == true) { soundSource.PlayOneShot(clickSound); }
 
             Animate();
         }
 
-        IEnumerator StartExpand()
+        private IEnumerator StartExpand()
         {
             float elapsedTime = 0;
             Vector2 startPos = listRect.sizeDelta;
             Vector2 endPos = new Vector2(listRect.sizeDelta.x, panelSize);
 
-            while (listRect.sizeDelta.y <= panelSize - 0.1f)
+            while(listRect.sizeDelta.y <= panelSize - 0.1f)
             {
                 elapsedTime += Time.unscaledDeltaTime;
 
@@ -362,13 +373,13 @@ namespace Michsky.MUIP
             listRect.sizeDelta = endPos;
         }
 
-        IEnumerator StartMinimize()
+        private IEnumerator StartMinimize()
         {
             float elapsedTime = 0;
             Vector2 startPos = listRect.sizeDelta;
             Vector2 endPos = new Vector2(listRect.sizeDelta.x, 0);
 
-            while (listRect.sizeDelta.y >= 0.1f)
+            while(listRect.sizeDelta.y >= 0.1f)
             {
                 elapsedTime += Time.unscaledDeltaTime;
 

@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 namespace Michsky.MUIP
 {
@@ -21,25 +21,24 @@ namespace Michsky.MUIP
 
         protected override void Set(float input, bool sendCallback)
         {
-            if (minSlider == null)
+            if(minSlider == null)
                 minSlider = transform.parent.Find("Min Slider").GetComponent<RangeMinSlider>();
 
-            if (!assignedRealValue)
+            if(!assignedRealValue)
             {
                 realValue = maxValue;
                 assignedRealValue = true;
             }
-
             else
                 realValue = maxValue - input + minValue;
 
-            if (wholeNumbers == true)
+            if(wholeNumbers == true)
                 realValue = Mathf.Round(realValue);
 
-            if (realValue <= minSlider.value)
+            if(realValue <= minSlider.value)
                 return;
 
-            if (label != null)
+            if(label != null)
                 label.text = realValue.ToString(numberFormat);
 
             base.Set(input, sendCallback);

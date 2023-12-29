@@ -1,17 +1,19 @@
 using UnityEngine;
+
 namespace TsingPigSDK
 {
     public class Singleton<T> : MonoBehaviour where T : MonoBehaviour, new()
     {
         private static T instance;
+
         public static T Instance
         {
             get
             {
-                if (instance == null)
+                if(instance == null)
                 {
                     instance = FindObjectOfType<T>();
-                    if (instance == null)
+                    if(instance == null)
                     {
                         GameObject singletonObject = new GameObject();
                         instance = singletonObject.AddComponent<T>();
@@ -22,9 +24,10 @@ namespace TsingPigSDK
                 return instance;
             }
         }
+
         protected virtual void Awake()
         {
-            if (instance == null)
+            if(instance == null)
             {
                 instance = this as T;
                 DontDestroyOnLoad(gameObject);

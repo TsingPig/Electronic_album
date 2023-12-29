@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using TMPro;
 
 namespace Michsky.MUIP
 {
@@ -15,11 +15,13 @@ namespace Michsky.MUIP
 
         // Resources
         public Image sliderImage;
+
         public Transform indicatorPivot;
         public TextMeshProUGUI valueText;
 
         // Settings
         public float minValue = 0;
+
         public float maxValue = 100;
         [Range(0, 8)] public int decimals;
         public bool isPercent;
@@ -27,13 +29,17 @@ namespace Michsky.MUIP
 
         // Saving
         public bool rememberValue;
+
         public string sliderTag;
 
         // Events
         [System.Serializable]
-        public class SliderEvent : UnityEvent<float> { }
+        public class SliderEvent : UnityEvent<float>
+        { }
+
         [SerializeField]
         public SliderEvent onValueChanged = new SliderEvent();
+
         public UnityEvent onPointerEnter;
         public UnityEvent onPointerExit;
 
@@ -44,7 +50,8 @@ namespace Michsky.MUIP
         private float currentAngleOnPointerDown;
         private float valueDisplayPrecision;
 
-        public enum StartPoint { Left, Right, Top, Down }
+        public enum StartPoint
+        { Left, Right, Top, Down }
 
         public float SliderAngle
         {
@@ -70,7 +77,7 @@ namespace Michsky.MUIP
         {
             graphicRaycaster = GetComponentInParent<GraphicRaycaster>();
 
-            if (graphicRaycaster == null)
+            if(graphicRaycaster == null)
                 Debug.LogWarning("<b>[Radial Slider]</b> Could not find GraphicRaycaster component in parent.", this);
         }
 
@@ -78,7 +85,7 @@ namespace Michsky.MUIP
         {
             valueDisplayPrecision = Mathf.Pow(10, decimals);
 
-            if (rememberValue == true) { LoadState(); }
+            if(rememberValue == true) { LoadState(); }
             else { SliderAngle = currentValue * 3.6f; }
 
             SliderValue = currentValue;
@@ -96,7 +103,7 @@ namespace Michsky.MUIP
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            if (HasValueChanged())
+            if(HasValueChanged())
                 SaveState();
 
             hitRectTransform = null;
@@ -105,8 +112,8 @@ namespace Michsky.MUIP
 
         public void OnDrag(PointerEventData eventData)
         {
-            if (currentValue >= minValue) { HandleSliderMouseInput(eventData, false); }
-            else if (currentValue <= minValue) { SliderValueRaw = minValue; }
+            if(currentValue >= minValue) { HandleSliderMouseInput(eventData, false); }
+            else if(currentValue <= minValue) { SliderValueRaw = minValue; }
         }
 
         public void OnPointerEnter(PointerEventData eventData)
@@ -126,7 +133,7 @@ namespace Michsky.MUIP
 
         public void SaveState()
         {
-            if (!rememberValue)
+            if(!rememberValue)
                 return;
 
             PlayerPrefs.SetFloat(sliderTag + PREFS_UI_SAVE_NAME, currentAngle);
@@ -134,7 +141,7 @@ namespace Michsky.MUIP
 
         public void UpdateUI()
         {
-            if (SliderValueRaw >= minValue)
+            if(SliderValueRaw >= minValue)
             {
                 float normalizedAngle = SliderAngle / 360.0f;
                 indicatorPivot.transform.localEulerAngles = new Vector3(180.0f, 0.0f, SliderAngle);
@@ -152,26 +159,26 @@ namespace Michsky.MUIP
 
         private void HandleSliderMouseInput(PointerEventData eventData, bool allowValueWrap)
         {
-            if (!isPointerDown)
+            if(!isPointerDown)
                 return;
 
             Vector2 localPos;
             RectTransformUtility.ScreenPointToLocalPointInRectangle(hitRectTransform, eventData.position, eventData.pressEventCamera, out localPos);
             float newAngle = Mathf.Atan2(-localPos.y, localPos.x) * Mathf.Rad2Deg + 180f;
 
-            if (!allowValueWrap)
+            if(!allowValueWrap)
             {
                 currentAngle = SliderAngle;
                 bool needsClamping = Mathf.Abs(newAngle - currentAngle) >= 180;
 
-                if (needsClamping)
+                if(needsClamping)
                     newAngle = currentAngle < newAngle ? 0.0f : 360.0f;
             }
 
             SliderAngle = newAngle;
             UpdateUI();
 
-            if (HasValueChanged())
+            if(HasValueChanged())
                 onValueChanged.Invoke(SliderValueRaw);
         }
     }

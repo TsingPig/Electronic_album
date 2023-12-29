@@ -1,8 +1,6 @@
 using Michsky.MUIP;
 using MVPFrameWork;
 using TMPro;
-using TsingPigSDK;
-using UnityEngine;
 using UnityEngine.UI;
 
 [ParentInfo(FindType.FindWithName, ConstDef.CANVAS)]
@@ -11,11 +9,10 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
     #region TopPanel
 
     private ButtonManager _btnSetting;
+
     public ButtonManager BtnSetting { get => _btnSetting; set => _btnSetting = value; }
 
-    #endregion
-
-
+    #endregion TopPanel
 
     #region UserInformationView
 
@@ -29,23 +26,33 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
     private Button _btnSureUpdateNickName;
 
     public TMP_Text TxtUserName { get => _txtUserName; set => _txtUserName = value; }
+
     public Button BtnUserIcon { get => _btnUserIcon; set => _btnUserIcon = value; }
+
     public Button BtnUpdateUserIcon { get => _btnUpdateUserIcon; set => _btnUpdateUserIcon = value; }
+
     public TMP_Text TxtNickName { get => _txtNickName; set => _txtNickName = value; }
+
     public Button BtnUpdateNickName { get => _btnUpdateNickName; set => _btnUpdateNickName = value; }
+
     public Button BtnEnterPhotoWall { get => _btnEnterPhotoWall; set => _btnEnterPhotoWall = value; }
+
     public TMP_InputField InptNickName { get => _inptNickName; set => _inptNickName = value; }
+
     public Button BtnSureUpdateNickName { get => _btnSureUpdateNickName; set => _btnSureUpdateNickName = value; }
 
-    #endregion
+    #endregion UserInformationView
 
     #region AlbumView
+
     private ButtonManager _btnCreateAlbum;
     private GridLayoutGroup _gridAlbumContent;
+
     public ButtonManager BtnCreateAlbum => _btnCreateAlbum;
+
     public GridLayoutGroup GridAlbumContent => _gridAlbumContent;
 
-    #endregion
+    #endregion AlbumView
 
     protected override void OnCreate()
     {
@@ -54,7 +61,7 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
         _btnSetting = _root.Find<ButtonManager>("TopPanel/btnSetting");
         _btnSetting.onClick.AddListener(_presenter.ClearUserInformationCache);
 
-        #endregion
+        #endregion TopPanel
 
         #region UserInformationView
 
@@ -72,14 +79,15 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
 
         _btnUserIcon.onClick.AddListener(_presenter.UpdateUserIcon);
 
-        #endregion
+        #endregion UserInformationView
 
         #region AlbumView
+
         _btnCreateAlbum = _root.Find<ButtonManager>("Window Manager/Windows/AlbumView/ScrollbarView/Viewport/Content/CreateItem/btnCreateAlbum");
         _btnCreateAlbum.onClick.AddListener(_presenter.EnterAlbumCreateView);
 
         _gridAlbumContent = _root.Find<GridLayoutGroup>("Window Manager/Windows/AlbumView/ScrollbarView/Viewport/Content");
-        #endregion
-    }
 
+        #endregion AlbumView
+    }
 }

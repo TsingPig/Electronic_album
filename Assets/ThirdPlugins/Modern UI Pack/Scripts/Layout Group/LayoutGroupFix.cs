@@ -11,25 +11,25 @@ namespace Michsky.MUIP
     {
         [SerializeField] private bool fixOnEnable = true;
         [SerializeField] private bool fixWithDelay = true;
-        float fixDelay = 0.025f;
+        private float fixDelay = 0.025f;
 
-        void OnEnable()
+        private void OnEnable()
         {
 #if UNITY_EDITOR
             LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
-            if (Application.isPlaying == false) { return; }
+            if(Application.isPlaying == false) { return; }
 #endif
-            if (fixWithDelay == false && fixOnEnable == true) { LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>()); }
-            else if (fixWithDelay == true) { StartCoroutine(FixDelay()); }
+            if(fixWithDelay == false && fixOnEnable == true) { LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>()); }
+            else if(fixWithDelay == true) { StartCoroutine(FixDelay()); }
         }
 
         public void FixLayout()
         {
-            if (fixWithDelay == false) { LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>()); }
+            if(fixWithDelay == false) { LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>()); }
             else { StartCoroutine(FixDelay()); }
         }
 
-        IEnumerator FixDelay()
+        private IEnumerator FixDelay()
         {
             yield return new WaitForSecondsRealtime(fixDelay);
             LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());

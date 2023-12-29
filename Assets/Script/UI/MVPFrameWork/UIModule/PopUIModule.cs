@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using TsingPigSDK;
 using UnityEngine;
 
@@ -24,6 +23,21 @@ namespace MVPFrameWork
             _uiModule = new UIModule();
         }
 
+
+        public void Enter(int viewId, IModel model)
+        {
+            _viewDic.TryGetValue(viewId, out var value);
+            Debug.Log(" Enter(int viewId, IModel model)");
+
+            if(!value.active)
+            {
+                Debug.Log("!value.active");
+                value.active = true;
+                _viewDic[viewId] = value;
+                _uiModule?.Enter(viewId, model);
+            }
+
+        }
         public void Enter(int viewId, Action callback = null)
         {
             _viewDic.TryGetValue(viewId, out var value);
@@ -38,7 +52,6 @@ namespace MVPFrameWork
             }
             else
             {
-
                 callback?.Invoke();
             }
         }
@@ -49,7 +62,6 @@ namespace MVPFrameWork
             {
                 if(value.active)
                 {
-
                     value.active = false;
                     _viewDic[viewId] = value;
                     _uiModule?.Quit(viewId, delegate
@@ -67,15 +79,11 @@ namespace MVPFrameWork
             {
                 callback?.Invoke();
             }
-
         }
 
         public void Preload(int viewId, bool instantiate = true)
         {
             _uiModule?.Preload(viewId, instantiate);
         }
-
     }
-
-
 }

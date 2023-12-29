@@ -1,11 +1,7 @@
-
 using System;
-using System.Collections;
-using System.Threading;
 using System.Threading.Tasks;
 using TsingPigSDK;
 using UnityEngine;
-
 
 namespace MVPFrameWork
 {
@@ -45,7 +41,6 @@ namespace MVPFrameWork
             }
         }
 
-
         /// 控制面板Alpha值动画淡入淡出
         /// </summary>
         /// <param name="fade">为真表示淡出，否则表示淡入</param>
@@ -67,6 +62,7 @@ namespace MVPFrameWork
             _rootCanvas.alpha = targetAlpha;
             callback?.Invoke();
         }
+
         public IPresenter Presenter
         {
             get
@@ -117,7 +113,6 @@ namespace MVPFrameWork
 
         public async void Create(Action callback = null)
         {
-
             if(_created)
             {
                 callback?.Invoke();
@@ -149,13 +144,13 @@ namespace MVPFrameWork
             //}
         }
 
-
         public void Show(Action callback = null)
         {
             try
             {
                 _presenter?.OnShowStart();
-            } catch(Exception exception)
+            }
+            catch(Exception exception)
             {
                 Debug.LogException(exception);
             }
@@ -167,14 +162,16 @@ namespace MVPFrameWork
                     try
                     {
                         _presenter?.OnShowCompleted();
-                    } catch(Exception exception3)
+                    }
+                    catch(Exception exception3)
                     {
                         Debug.LogException(exception3);
                     }
 
                     callback?.Invoke();
                 });
-            } catch(Exception exception2)
+            }
+            catch(Exception exception2)
             {
                 Debug.LogException(exception2);
             }
@@ -185,7 +182,8 @@ namespace MVPFrameWork
             try
             {
                 _presenter?.OnHideStart();
-            } catch(Exception exception)
+            }
+            catch(Exception exception)
             {
                 Debug.LogException(exception);
             }
@@ -197,14 +195,16 @@ namespace MVPFrameWork
                     try
                     {
                         _presenter?.OnHideCompleted();
-                    } catch(Exception exception3)
+                    }
+                    catch(Exception exception3)
                     {
                         Debug.LogException(exception3);
                     }
 
                     callback?.Invoke();
                 });
-            } catch(Exception exception2)
+            }
+            catch(Exception exception2)
             {
                 Debug.LogException(exception2);
             }
@@ -291,6 +291,7 @@ namespace MVPFrameWork
                 case FindType.FindWithTag:
                 result = NodeContainer.FindNodeWithTag(param);
                 break;
+
                 case FindType.FindWithName:
                 result = NodeContainer.FindNodeWithName(param);
                 break;
@@ -340,4 +341,3 @@ namespace MVPFrameWork
         }
     }
 }
-

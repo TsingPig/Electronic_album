@@ -9,28 +9,28 @@ namespace Michsky.MUIP
         public bool enableMobileMode = false;
         [HideInInspector] public Animator buttonAnimator;
 
-        void Awake()
+        private void Awake()
         {
-            if (buttonAnimator == null) { buttonAnimator = gameObject.GetComponent<Animator>(); }
-            if (Application.platform == RuntimePlatform.IPhonePlayer || Application.platform == RuntimePlatform.Android) { enableMobileMode = true; }
+            if(buttonAnimator == null) { buttonAnimator = gameObject.GetComponent<Animator>(); }
+            if(Application.platform == RuntimePlatform.IPhonePlayer || Application.platform == RuntimePlatform.Android) { enableMobileMode = true; }
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (enableMobileMode == true)
+            if(enableMobileMode == true)
                 return;
 
-            if (!buttonAnimator.GetCurrentAnimatorStateInfo(0).IsName("Hover to Pressed")
+            if(!buttonAnimator.GetCurrentAnimatorStateInfo(0).IsName("Hover to Pressed")
                 && !buttonAnimator.GetCurrentAnimatorStateInfo(0).IsName("Normal to Pressed"))
                 buttonAnimator.Play("Normal to Hover");
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (enableMobileMode == true)
+            if(enableMobileMode == true)
                 return;
 
-            if (!buttonAnimator.GetCurrentAnimatorStateInfo(0).IsName("Hover to Pressed")
+            if(!buttonAnimator.GetCurrentAnimatorStateInfo(0).IsName("Hover to Pressed")
                 && !buttonAnimator.GetCurrentAnimatorStateInfo(0).IsName("Normal to Pressed"))
                 buttonAnimator.Play("Hover to Normal");
         }

@@ -1,12 +1,13 @@
-﻿using UnityEngine;
-using TMPro;
+﻿using TMPro;
+using UnityEngine;
 
 namespace Michsky.MUIP
 {
     public class RangeSlider : MonoBehaviour
     {
         [Header("Settings")]
-        [Range(0,2)] public int decimalPlaces = 0;
+        [Range(0, 2)] public int decimalPlaces = 0;
+
         public float minValue = 0;
         public float maxValue = 1;
         public bool showLabels = true;
@@ -14,35 +15,39 @@ namespace Michsky.MUIP
 
         [Header("Min Slider")]
         public RangeMinSlider minSlider;
+
         public TextMeshProUGUI minSliderLabel;
 
         [Header("Max Slider")]
         public RangeMaxSlider maxSlider;
+
         public TextMeshProUGUI maxSliderLabel;
 
-        public float CurrentLowerValue { get { return minSlider.value; } }
-        public float CurrentUpperValue { get { return maxSlider.realValue; } }
+        public float CurrentLowerValue
+        { get { return minSlider.value; } }
 
-        void Awake()
+        public float CurrentUpperValue
+        { get { return maxSlider.realValue; } }
+
+        private void Awake()
         {
-            if (minSlider == null || maxSlider == null)
+            if(minSlider == null || maxSlider == null)
                 return;
 
-            if (showLabels == true)
+            if(showLabels == true)
             {
                 minSlider.label = minSliderLabel;
                 minSlider.numberFormat = "n" + decimalPlaces;
                 maxSlider.label = maxSliderLabel;
                 maxSlider.numberFormat = "n" + decimalPlaces;
             }
-
             else
             {
                 minSliderLabel.gameObject.SetActive(false);
                 maxSliderLabel.gameObject.SetActive(false);
             }
 
-            if (useWholeNumbers == true)
+            if(useWholeNumbers == true)
             {
                 minSlider.wholeNumbers = true;
                 maxSlider.wholeNumbers = true;
@@ -58,7 +63,7 @@ namespace Michsky.MUIP
 
         public void CheckForMinState(float value)
         {
-            if (minSlider.value >= maxSlider.realValue)
+            if(minSlider.value >= maxSlider.realValue)
             {
                 maxSlider.realValue = minSlider.value;
                 minSlider.value = maxSlider.realValue - 1;
