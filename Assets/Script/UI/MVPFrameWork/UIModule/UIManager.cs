@@ -21,10 +21,8 @@ namespace MVPFrameWork
 
         public void Enter(int viewId, IModel model)
         {
-            Debug.Log("UIManager Enter");
             _module.Enter(viewId, model);
         }
-
 
         public void Enter(int viewId, Action callback = null)
         {
