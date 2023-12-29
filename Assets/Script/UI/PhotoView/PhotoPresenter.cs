@@ -1,10 +1,6 @@
 using MVPFrameWork;
-using System.Collections.Generic;
 using TsingPigSDK;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.ResourceManagement.ResourceLocations;
 
 public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPresenter
 {
@@ -18,6 +14,9 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
         base.OnCreateCompleted();
         _view.TxtAlbumName.text = _model.AlbumName;
         LoadPhotoItemAsync();
+
+        ServerManager.Instance.GetPhotos(CacheManager.Instance.UserName, _model.AlbumName);
+
         //Debug.Log(_model.AlbumName);
         //Debug.Log((Model as IPhotoModel).Name); µÈ¼ÛÐ´·¨
     }
