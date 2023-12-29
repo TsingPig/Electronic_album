@@ -27,61 +27,65 @@ public static class Instantiater
 
         if(_objectPools.TryGetValue(addressablePath, out objectPool) && objectPool.Count > 0)
         {
-            GameObject obj = objectPool[0];
-            objectPool.RemoveAt(0);
-            obj.SetActive(true);
-            return obj;
-        }
-        else
-        {
-            AsyncOperationHandle<IList<IResourceLocation>> handlers = Addressables.LoadResourceLocationsAsync(addressablePath);
-            await handlers.Task;
-
-            IList<IResourceLocation> results = handlers.Result;
-
-            if(results.Count > 0)
+            foreach(var obj in objectPool)
             {
-                AsyncOperationHandle<GameObject> handler = Addressables.InstantiateAsync(results[0], parent);
-                await handler.Task;
-                GameObject instantiatedObject = handler.Result;
-                if(instantiatedObject != null)
+                if(!obj.activeSelf)
                 {
-                    if(!_objectPools.ContainsKey(addressablePath))
-                    {
-                        _objectPools[addressablePath] = new List<GameObject>();
-                    }
-                    _objectPools[addressablePath].Add(instantiatedObject);
-                    return instantiatedObject;
+                    obj.SetActive(true);
+                    return obj;
                 }
-                else
+            }
+        }
+        AsyncOperationHandle<IList<IResourceLocation>> handlers = Addressables.LoadResourceLocationsAsync(addressablePath);
+        await handlers.Task;
+
+        IList<IResourceLocation> results = handlers.Result;
+
+        if(results.Count > 0)
+        {
+            AsyncOperationHandle<GameObject> handler = Addressables.InstantiateAsync(results[0], parent);
+            await handler.Task;
+            GameObject instantiatedObject = handler.Result;
+            if(instantiatedObject != null)
+            {
+                if(!_objectPools.ContainsKey(addressablePath))
                 {
-                    Debug.LogError($"{addressablePath}GameObject加载错误");
-                    return null;
+                    _objectPools[addressablePath] = new List<GameObject>();
                 }
+                _objectPools[addressablePath].Add(instantiatedObject);
+                return instantiatedObject;
             }
             else
             {
-                Debug.LogError($"{addressablePath}找不到资源位置");
+                Debug.LogError($"{addressablePath}GameObject加载错误");
                 return null;
             }
         }
+        else
+        {
+            Debug.LogError($"{addressablePath}找不到资源位置");
+            return null;
+        }
     }
 
-    public static void DeactivateObject(GameObject obj)
+    public static void DeactivateObjectPool(string addressablePath)
     {
-        // 将对象设置为非激活状态，并放回对象池
-        obj.SetActive(false);
-
-        // 将对象放回对象池
-        foreach(var objectList in _objectPools.Values)
+        if(_objectPools.ContainsKey(addressablePath))
         {
-            if(objectList.Contains(obj))
+            foreach(var obj in _objectPools[addressablePath])
             {
-                return;
+                DeactivateObject(obj);
             }
         }
+        else
+        {
+            Debug.LogWarning($"尝试删除{addressablePath}是无效的");
+        }
+    }
 
-        Debug.LogWarning("Trying to deactivate an object not managed by the Instantiater.");
+    private static void DeactivateObject(GameObject obj)
+    {
+        obj.SetActive(false);
     }
 }
 

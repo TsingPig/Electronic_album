@@ -29,16 +29,8 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
 
     private async void LoadPhotoItemAsync()
     {
-        var task = Res<GameObject>.LoadAsync(StrDef.PHOTO_ITEM_DATA_PATH);
-        await task;
-        GameObject.Instantiate(task.Result, _view.GridPhotoContent.transform);
-        //var handler = Res<GameObject>.LoadAsync(StrDef.PHOTO_ITEM_DATA_PATH);
-        //await handler;
-        ////GameObject obj = handler.Result;
-        //AsyncOperationHandle<IList<IResourceLocation>> handlers = Addressables.LoadResourceLocationsAsync(StrDef.PHOTO_ITEM_DATA_PATH);
-        //IList<IResourceLocation> results = handlers.Result;
-        Instantiater.Release();
-        for(int i = 0; i < 20; i++)
+        Instantiater.DeactivateObjectPool(StrDef.PHOTO_ITEM_DATA_PATH);
+        for(int i = 0; i < Random.Range(15, 35); i++)
         {
             await Instantiater.InstantiateAsync(StrDef.PHOTO_ITEM_DATA_PATH, _view.GridPhotoContent.transform);
         }
