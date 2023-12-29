@@ -73,10 +73,8 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
         _btnEnterPhotoWall = _root.Find<Button>("Window Manager/Windows/UserInformationView/UserInformationPanel/UserPhotoWall/btnEnterPhotoWall");
         _inptNickName = _root.Find<TMP_InputField>("Window Manager/Windows/UserInformationView/UserInformationPanel/NickNameItem/inptNickName");
         _btnSureUpdateNickName = _root.Find<Button>("Window Manager/Windows/UserInformationView/UserInformationPanel/NickNameItem/inptNickName/btnSureUpdateNickName");
-
         _btnUpdateNickName.onClick.AddListener(_presenter.UpdateNickName);
         _btnSureUpdateNickName.onClick.AddListener(_presenter.SureUpdateNickName);
-
         _btnUserIcon.onClick.AddListener(_presenter.UpdateUserIcon);
 
         #endregion UserInformationView
@@ -85,7 +83,6 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
 
         _btnCreateAlbum = _root.Find<ButtonManager>("Window Manager/Windows/AlbumView/ScrollbarView/Viewport/Content/CreateItem/btnCreateAlbum");
         _btnCreateAlbum.onClick.AddListener(_presenter.EnterAlbumCreateView);
-
         _gridAlbumContent = _root.Find<GridLayoutGroup>("Window Manager/Windows/AlbumView/ScrollbarView/Viewport/Content");
 
         #endregion AlbumView

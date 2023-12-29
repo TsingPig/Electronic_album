@@ -36,7 +36,7 @@ namespace MVPFrameWork
                     Log.Error($"{viewId}Ω‚Œˆ ß∞‹");
                 }
 
-                view.Presenter.Model = model; 
+                view.Presenter.Model = model;
 
                 view?.Create(delegate
                 {
