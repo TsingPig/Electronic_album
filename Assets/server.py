@@ -41,7 +41,6 @@ def upload_photo():
         filename = f"{t.tm_year}{t.tm_mon:02}{t.tm_mday:02}_{t.tm_hour:02}{t.tm_min:02}{t.tm_sec:02}.{suffix}"
 
         filename = secure_filename(filename)
-        print(filename)
         account = request.form['account']
         album_name = request.form['album_name']
         upload_path = os.path.join(app.config['UPLOAD_FOLDER'], account, album_name)
@@ -81,7 +80,7 @@ def get_folders(account):
             # 如果是文件夹，将其加入folders字典中
             if os.path.isdir(os.path.join(album_path, folder)):
                 folders['folders'].append(folder)
-        print(folders['folders'])
+
         return json.dumps(folders)
     else:
         return json.dumps(folders)
@@ -96,7 +95,6 @@ def connect_size(account, album_name):
             if os.path.isfile(os.path.join(album_path, photo)):
                 photo_size += 1
     
-        print(photo_size)
         return str(photo_size)
     else:
         return 'Album not found', 404
@@ -117,9 +115,9 @@ def get_photos(account, album_name, rank):
 
         rank = int(rank.split('.')[0])
 
-        if rank <= len(photos['photos']):
+        if rank < len(photos['photos']):
             print(photos['photos'][rank][0])
-            photo_to_send =  os.path.join(album_path, photos['photos'][rank][0])
+            photo_to_send = os.path.join(album_path, photos['photos'][rank][0])
             print(photo_to_send)
             return send_file(photo_to_send)
 
