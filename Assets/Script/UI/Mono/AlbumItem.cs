@@ -1,5 +1,6 @@
 using Michsky.MUIP;
 using TMPro;
+using UnityEngine;
 
 /// <summary>
 /// 相册列表项的点击事件
@@ -20,6 +21,7 @@ public class AlbumItem : ItemBase
 
         MVPFrameWork.UIManager.Instance.Enter(ViewId.PhotoView, model);
     }
+
 
     private void Start()
     {

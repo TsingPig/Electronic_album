@@ -242,8 +242,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 142.5, y: -140}
-  m_SizeDelta: {x: 25, y: 280}
+  m_AnchoredPosition: {x: 272.5, y: -225}
+  m_SizeDelta: {x: 25, y: 450}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1155124045387465786
 GameObject:
@@ -357,8 +357,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 95.255005, y: -27.5}
-  m_SizeDelta: {x: 70.51, y: 45}
+  m_AnchoredPosition: {x: 272.5, y: -225}
+  m_SizeDelta: {x: 70.51, y: 450}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7119287960383134839
 CanvasRenderer:
@@ -390,15 +390,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: Button
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 0}
-  m_sharedMaterial: {fileID: 0}
+  m_fontAsset: {fileID: 11400000, guid: c4bd322654d21d74a9e1522f523faa0c, type: 2}
+  m_sharedMaterial: {fileID: -2968960263547407295, guid: c4bd322654d21d74a9e1522f523faa0c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4284435255
-  m_fontColor: {r: 0.21568628, g: 0.29411766, b: 0.37254903, a: 255}
+    rgba: 4284374622
+  m_fontColor: {r: 0.3679245, g: 0.3679245, b: 0.3679245, a: 255}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -531,6 +531,7 @@ MonoBehaviour:
   buttonText: Button
   iconScale: 10
   textSize: 24
+  longPressTime: 0.8
   autoFitContent: 0
   padding:
     left: 130
@@ -589,6 +590,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   onLeave:
+    m_PersistentCalls:
+      m_Calls: []
+  onLongPress:
     m_PersistentCalls:
       m_Calls: []
   rippleUpdateMode: 1
@@ -1334,8 +1338,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 95.255005, y: -27.5}
-  m_SizeDelta: {x: 70.51, y: 45}
+  m_AnchoredPosition: {x: 272.5, y: -225}
+  m_SizeDelta: {x: 70.51, y: 450}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9016983750861738258
 CanvasRenderer:
@@ -1367,15 +1371,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: Button
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 0}
-  m_sharedMaterial: {fileID: 0}
+  m_fontAsset: {fileID: 11400000, guid: c4bd322654d21d74a9e1522f523faa0c, type: 2}
+  m_sharedMaterial: {fileID: -2968960263547407295, guid: c4bd322654d21d74a9e1522f523faa0c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4284435255
-  m_fontColor: {r: 0.21568628, g: 0.29411766, b: 0.37254903, a: 255}
+    rgba: 4284374622
+  m_fontColor: {r: 0.3679245, g: 0.3679245, b: 0.3679245, a: 255}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1558,8 +1562,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 142.5, y: -140}
-  m_SizeDelta: {x: 25, y: 280}
+  m_AnchoredPosition: {x: 272.5, y: -225}
+  m_SizeDelta: {x: 25, y: 450}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &6937211007650519570
 GameObject:
@@ -1597,8 +1601,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 95.255005, y: -27.5}
-  m_SizeDelta: {x: 70.51, y: 45}
+  m_AnchoredPosition: {x: 272.5, y: -225}
+  m_SizeDelta: {x: 70.51, y: 450}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2442767039884332362
 CanvasRenderer:
@@ -1630,15 +1634,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: Button
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 0}
-  m_sharedMaterial: {fileID: 0}
+  m_fontAsset: {fileID: 11400000, guid: c4bd322654d21d74a9e1522f523faa0c, type: 2}
+  m_sharedMaterial: {fileID: -2968960263547407295, guid: c4bd322654d21d74a9e1522f523faa0c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4284435255
-  m_fontColor: {r: 0.21568628, g: 0.29411766, b: 0.37254903, a: 255}
+    rgba: 4284374622
+  m_fontColor: {r: 0.3679245, g: 0.3679245, b: 0.3679245, a: 255}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1846,8 +1850,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 142.5, y: -140}
-  m_SizeDelta: {x: 25, y: 280}
+  m_AnchoredPosition: {x: 272.5, y: -225}
+  m_SizeDelta: {x: 25, y: 450}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &7593182762566359782
 GameObject:

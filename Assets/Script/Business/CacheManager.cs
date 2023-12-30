@@ -37,13 +37,13 @@ public class CacheManager : Singleton<CacheManager>
     }
 
     /// <summary>
-    /// 加载头像纹理
+    /// 从路径中加载纹理。
     /// </summary>
-    /// <param name="iconPath"></param>
+    /// <param name="texturePath"></param>
     /// <returns></returns>
-    public static Texture2D LoadIconTexture(string iconPath)
+    public static Texture2D LoadTexture(string texturePath)
     {
-        byte[] fileData = File.ReadAllBytes(iconPath);
+        byte[] fileData = File.ReadAllBytes(texturePath);
         Texture2D texture = new Texture2D(200, 200);
         texture.LoadImage(fileData);
         return texture;
@@ -97,7 +97,7 @@ public class CacheManager : Singleton<CacheManager>
     {
         get
         {
-            return LoadIconTexture(ICON_PATH);
+            return LoadTexture(ICON_PATH);
         }
     }
 
