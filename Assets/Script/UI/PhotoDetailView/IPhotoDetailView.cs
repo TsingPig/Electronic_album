@@ -8,5 +8,5 @@ public interface IPhotoDetailView : IView
 
     ButtonManager BtnDeletePhoto { get; }
 
-    Image ImgDetailPhoto { get; }
+    Image ImgDetailPhoto { get; set; }
 }

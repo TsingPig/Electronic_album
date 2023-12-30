@@ -1,16 +1,17 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public interface IPhotoDetailModel : IModel
 {
     /// <summary>
-    /// ÕÕÆ¬Ï¸½ÚÎÆÀí
+    /// ÕÕÆ¬Image×é¼þ
     /// </summary>
-    Texture2D Tex2DPhotoDetail { get; }
+    Image ImgPhotoDetail { get; }
 
     /// <summary>
     /// ÕÕÆ¬±àºÅ
     /// </summary>
     int PhotoId { get; }
 
-    void SetModel(Texture2D tex2DPhotoDetail, int photoId);
+    void SetModel(Image imgPhotoDetail, int photoId);
 }

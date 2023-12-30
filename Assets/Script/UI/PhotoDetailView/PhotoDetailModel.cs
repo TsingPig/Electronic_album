@@ -1,17 +1,17 @@
-using UnityEngine;
+using UnityEngine.UI;
 
 public class PhotoDetailModel : IPhotoDetailModel
 {
-    private Texture2D _tex2DPhotoDetail;
+    private Image _imgPhotoDetail;
     private int _photoId;
 
-    public Texture2D Tex2DPhotoDetail => _tex2DPhotoDetail;
+    public Image ImgPhotoDetail => _imgPhotoDetail;
+
     public int PhotoId => _photoId;
 
-
-    public void SetModel(Texture2D tex2DPhotoDetail, int photoId)
+    public void SetModel(Image imgPhotoDetail, int photoId)
     {
-        _tex2DPhotoDetail = tex2DPhotoDetail;
+        _imgPhotoDetail = imgPhotoDetail;
         _photoId = photoId;
     }
 }

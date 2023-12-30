@@ -10,17 +10,22 @@ public class PhotoItem : ItemBase
     public ButtonManager BtnEnterManager;
     public Image Cover;
 
+    /// <summary>
+    /// Í¼Æ¬Ë÷Òý
+    /// </summary>
+    [HideInInspector]
+    public int photoId;
+
     protected override void OnClick()
     {
         base.OnClick();
         Debug.Log($"PhotoItem OnClick");
 
-        //PhotoModel model = new PhotoModel();
-        //model.SetModel(AlbumTitle.text);
+        PhotoDetailModel model = new PhotoDetailModel();
 
-        // Debug.Log(AlbumTitle.text);
+        model.SetModel(Cover, photoId);
 
-        //MVPFrameWork.UIManager.Instance.Enter(ViewId.PhotoView, model);
+        MVPFrameWork.UIManager.Instance.Enter(ViewId.PhotoDetailView, model);
     }
 
     private void Start()
