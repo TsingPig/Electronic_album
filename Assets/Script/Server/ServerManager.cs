@@ -122,6 +122,11 @@ public class ServerManager : Singleton<ServerManager>
         }
     }
 
+    public void DeletePhoto(string account, string albumName, int photoId, Action<int> callback = null)
+    {
+        StartCoroutine(DeletePhoto($"{account}/{albumName}/{photoId}.jpg", callback));
+    }
+    
     /// <summary>
     /// 创建空文件夹
     /// </summary>
@@ -327,6 +332,23 @@ public class ServerManager : Singleton<ServerManager>
             else
             {
                 Debug.LogError($"Error delete album: {www.error}");
+            }
+        }
+    }
+
+    private IEnumerator DeletePhoto(string photoPath, Action<int> callback = null)
+    {
+        using(UnityWebRequest www = UnityWebRequest.Get($"{url}/delete_photo/{photoPath}"))
+        {
+            yield return www.SendWebRequest();
+
+            if(www.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log($"照片删除成功：{photoPath}");
+            }
+            else
+            {
+                Debug.LogError($"Error delete photo: {www.error}");
             }
         }
     }
