@@ -1,9 +1,24 @@
+using Michsky.MUIP;
 using MVPFrameWork;
+using UnityEngine.UI;
+
 [ParentInfo(FindType.FindWithName, ConstDef.CANVAS)]
 public class PhotoDetailView : ViewBase<IPhotoDetailPresenter>, IPhotoDetailView
 {
+    public ButtonManager _btnQuit;
+    public ButtonManager _btnDeletePhoto;
+    public Image _imgDetailPhoto;
+
+    public ButtonManager BtnQuit => _btnQuit;
+
+    public ButtonManager BtnDeletePhoto => _btnDeletePhoto;
+
+    public Image ImgDetailPhoto => _imgDetailPhoto;
+
     protected override void OnCreate()
     {
-        throw new System.NotImplementedException();
+        _btnQuit = _root.Find<ButtonManager>("MainPanel/btnQuit");
+        _btnDeletePhoto = _root.Find<ButtonManager>("MainPanel/btnDeletePhoto");
+        _imgDetailPhoto = _root.Find<Image>("MainPanel/imgDetailPhoto");
     }
 }

@@ -273,7 +273,7 @@ GameObject:
   - component: {fileID: 1096294799106846839}
   - component: {fileID: 1096294799106846832}
   m_Layer: 5
-  m_Name: AlbumPanel
+  m_Name: MainPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -1,2 +1,4 @@
 using MVPFrameWork;
-public interface IPhotoDetailPresenter : IPresenter {}
+public interface IPhotoDetailPresenter : IPresenter
+{
+}

@@ -84,13 +84,12 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
         {
             Image photoImage = (await Instantiater.InstantiateAsync(StrDef.PHOTO_ITEM_DATA_PATH, _view.GridPhotoContent.transform)).GetComponent<PhotoItem>().Cover;
             ServerManager.Instance.GetPhotoAsync(CacheManager.Instance.UserName, _model.AlbumName, i, photoImage);
-        }   
+        }
     }
 
     /// <summary>
     /// 异步刷新新上传的照片项
     /// </summary>
-    /// <param name="albumSize"></param>
     private async void RefreshUploadedPhotoItemAsync()
     {
         Image photoImage = (await Instantiater.InstantiateAsync(StrDef.PHOTO_ITEM_DATA_PATH, _view.GridPhotoContent.transform)).GetComponent<PhotoItem>().Cover;
@@ -103,8 +102,7 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
     /// <param name="source"></param>
     /// <param name="targetWidth"></param>
     /// <param name="targetHeight"></param>
-    /// <returns>重设后的图片尺寸</returns>
-
+    /// <returns>重设尺寸后的图片</returns>
     private Texture2D ScaleTexture(Texture2D source, float targetWidth, float targetHeight)
     {
         Texture2D result = new Texture2D((int)targetWidth, (int)targetHeight, source.format, false);
