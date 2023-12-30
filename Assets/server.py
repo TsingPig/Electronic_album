@@ -2,6 +2,7 @@ from flask import Flask, request, send_file
 from werkzeug.utils import secure_filename
 import os
 import json
+import time
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
@@ -20,6 +21,31 @@ def upload_file():
         filename = secure_filename(file.filename)
         account = request.form['account']
         upload_path = os.path.join(app.config['UPLOAD_FOLDER'], account)
+        if not os.path.exists(upload_path):
+            os.makedirs(upload_path)
+        file.save(os.path.join(upload_path, filename))
+        return 'File uploaded!'
+    
+@app.route('/upload_photo', methods=['POST'])
+def upload_photo():
+    if 'file' not in request.files:
+        return 'No file part', 400
+    file = request.files['file']
+    if file.filename == '':
+        return 'No selected file', 400
+    if file:
+        # filename = secure_filename(file.filename)
+        suffix = file.filename.split(".")[-1]
+        
+        t = time.localtime()
+        filename = f"{t.tm_year}{t.tm_mon:02}{t.tm_mday:02}_{t.tm_hour:02}{t.tm_min:02}{t.tm_sec:02}.{suffix}"
+
+        filename = secure_filename(filename)
+        print(filename)
+        account = request.form['account']
+        album_name = request.form['album_name']
+        upload_path = os.path.join(app.config['UPLOAD_FOLDER'], account, album_name)
+        print(upload_path)
         if not os.path.exists(upload_path):
             os.makedirs(upload_path)
         file.save(os.path.join(upload_path, filename))

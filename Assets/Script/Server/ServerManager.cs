@@ -197,7 +197,7 @@ public class ServerManager : Singleton<ServerManager>
         form.AddField("album_name", albumName); // 添加账户信息到表单
 
         // 添加文件数据到表单
-        form.AddBinaryData("file", bytes, Time.time.ToString(), "image/jpg");
+        form.AddBinaryData("file", bytes);
 
         using(UnityWebRequest www = UnityWebRequest.Post($"{host}/upload_photo", form))
         {
