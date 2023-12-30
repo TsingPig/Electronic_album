@@ -85,6 +85,19 @@ def get_folders(account):
     else:
         return json.dumps(folders)
 
+# 输入用户名和相册名，删除对应相册
+@app.route('/delete_folder/<account>/<album_name>', methods=['GET'])
+def delete_folder(account, album_name):
+    album_path = os.path.join(app.config['UPLOAD_FOLDER'], account, album_name)
+    if os.path.exists(album_path):
+        # 删除album_path和其目录里的所有文件
+        for photo in os.listdir(album_path):
+            os.remove(os.path.join(album_path, photo))
+        os.rmdir(album_path)
+        return 'Album deleted'
+    else:
+        return 'Album not found', 404
+
 # 输入用户名和相册名，返回对应相册下的图片数量
 @app.route('/connect_size/<account>/<album_name>', methods=['GET'])
 def connect_size(account, album_name):
@@ -111,7 +124,7 @@ def get_photos(account, album_name, rank):
             if os.path.isfile(os.path.join(album_path, photo)):
                 photo_ctime = os.path.getctime(os.path.join(album_path, photo))
                 photos['photos'].append((photo, photo_ctime))           
-        photos['photos'].sort(key=lambda x: x[1], reverse=True)
+        photos['photos'].sort(key=lambda x: x[1], reverse=False)
 
         rank = int(rank.split('.')[0])
 
@@ -121,6 +134,31 @@ def get_photos(account, album_name, rank):
             print(photo_to_send)
             return send_file(photo_to_send)
 
+        else:
+            return 'photo not found', 404
+    else:
+        return 'Album not found', 404
+
+# 输入用户名和相册名以及rank，删除按照时间排序后rank的图片
+@app.route('/delete_photo/<account>/<album_name>/<rank>', methods=['GET'])
+def delete_photo(account, album_name, rank):
+    album_path = os.path.join(app.config['UPLOAD_FOLDER'], account, album_name)
+    if os.path.exists(album_path):
+        photos = {'photos': []}
+        # 遍历相册目录下的所有文件
+        for photo in os.listdir(album_path):
+            # 如果是文件，将其加入photos字典中
+            if os.path.isfile(os.path.join(album_path, photo)):
+                photo_ctime = os.path.getctime(os.path.join(album_path, photo))
+                photos['photos'].append((photo, photo_ctime))           
+        photos['photos'].sort(key=lambda x: x[1], reverse=False)
+
+        rank = int(rank.split('.')[0])
+
+        if rank < len(photos['photos']):
+            photo_to_delete = os.path.join(album_path, photos['photos'][rank][0])
+            os.remove(photo_to_delete)
+            return 'photo deleted'
         else:
             return 'photo not found', 404
     else:
