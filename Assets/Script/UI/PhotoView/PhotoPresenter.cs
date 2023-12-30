@@ -43,8 +43,8 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
                     photoTex = ScaleTexture(photoTex, 200, 200);
                     if(photoTex != null)
                     {
-                        ServerManager.Instance.UploadPhoto(CacheManager.Instance.UserName, _model.AlbumName, photoTex.EncodeToPNG(), RefreshUploadedPhotoItemAsync);
-                        //ServerManager.Instance.GetAlbumSize(CacheManager.Instance.UserName, _model.AlbumName, RefreshUploadedPhotoItemAsync);
+                        ServerManager.Instance.UploadPhoto(CacheManager.Instance.UserName, _model.AlbumName, photoTex.EncodeToPNG());
+                        ServerManager.Instance.GetAlbumSize(CacheManager.Instance.UserName, _model.AlbumName, RefreshUploadedPhotoItemAsync);
                     }
                     else
                     {
@@ -83,25 +83,32 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
     private async void InitialPhotoItemsAsync(int albumSize)
     {
         Instantiater.DeactivateObjectPool(StrDef.PHOTO_ITEM_DATA_PATH);
-        //for(int i = 0; i < Random.Range(15, 35); i++)
+
+        //for(int i = albumSize - 1; i >= 0; i--)
         //{
-        //    await Instantiater.InstantiateAsync(StrDef.PHOTO_ITEM_DATA_PATH, _view.GridPhotoContent.transform);
+        //    PhotoItem photoItem = (await Instantiater.InstantiateAsync(StrDef.PHOTO_ITEM_DATA_PATH, _view.GridPhotoContent.transform)).GetComponent<PhotoItem>();
+        //    photoItem.photoId = i;
+        //    Image photoImage = photoItem.Cover;
+        //    ServerManager.Instance.GetPhotoAsync(CacheManager.Instance.UserName, _model.AlbumName, i, photoImage);
         //}
-        for(int i = albumSize - 1; i >= 0; i--)
+
+        for(int i = 0; i < albumSize; i++)
         {
-            Image photoImage = (await Instantiater.InstantiateAsync(StrDef.PHOTO_ITEM_DATA_PATH, _view.GridPhotoContent.transform)).GetComponent<PhotoItem>().Cover;
+            PhotoItem photoItem = (await Instantiater.InstantiateAsync(StrDef.PHOTO_ITEM_DATA_PATH, _view.GridPhotoContent.transform)).GetComponent<PhotoItem>();
+            photoItem.photoId = i;
+            Image photoImage = photoItem.Cover;
             ServerManager.Instance.GetPhotoAsync(CacheManager.Instance.UserName, _model.AlbumName, i, photoImage);
-        }   
+        }
     }
 
     /// <summary>
     /// 异步刷新新上传的照片项
     /// </summary>
-    /// <param name="albumSize"></param>
-    private async void RefreshUploadedPhotoItemAsync()
+    private async void RefreshUploadedPhotoItemAsync(int albumSize)
     {
-        Image photoImage = (await Instantiater.InstantiateAsync(StrDef.PHOTO_ITEM_DATA_PATH, _view.GridPhotoContent.transform)).GetComponent<PhotoItem>().Cover;
-        ServerManager.Instance.GetPhotoAsync(CacheManager.Instance.UserName, _model.AlbumName, 0, photoImage);
+        PhotoItem photoItem = (await Instantiater.InstantiateAsync(StrDef.PHOTO_ITEM_DATA_PATH, _view.GridPhotoContent.transform)).GetComponent<PhotoItem>();
+        Image photoImage = photoItem.Cover;
+        ServerManager.Instance.GetPhotoAsync(CacheManager.Instance.UserName, _model.AlbumName, albumSize, photoImage);
     }
 
     /// <summary>
@@ -110,8 +117,7 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
     /// <param name="source"></param>
     /// <param name="targetWidth"></param>
     /// <param name="targetHeight"></param>
-    /// <returns>重设后的图片尺寸</returns>
-
+    /// <returns>重设尺寸后的图片</returns>
     private Texture2D ScaleTexture(Texture2D source, float targetWidth, float targetHeight)
     {
         Texture2D result = new Texture2D((int)targetWidth, (int)targetHeight, source.format, false);
