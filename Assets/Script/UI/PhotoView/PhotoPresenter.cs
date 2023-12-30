@@ -1,4 +1,5 @@
 using MVPFrameWork;
+using System;
 using TsingPigSDK;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,6 +26,44 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
     public void Quit()
     {
         MVPFrameWork.UIManager.Instance.Quit(ViewId.PhotoView);
+    }
+
+    public void UploadPhoto()
+    {
+        Texture2D photoTex = null;
+        NativeGallery.Permission permission = NativeGallery.GetImageFromGallery((path) =>
+        {
+            Debug.Log("Í¼Æ¬Â·¾¶: " + path);
+            if(path != null)
+            {
+                try
+                {
+                    photoTex = CacheManager.LoadTexture(path);
+                    photoTex.Resize(200, 200);
+                    //photoTex.Reinitialize(200, 200);
+                    if(photoTex != null)
+                    {
+                        ServerManager.Instance.UploadPhoto(CacheManager.Instance.UserName, _model.AlbumName, photoTex.EncodeToPNG(), OnShowCompleted);
+                    }
+                    else
+                    {
+                        Debug.Log($"Cannot load image from {path}");
+                    }
+                }
+                catch(Exception e)
+                {
+                    Debug.LogError($"Error loading image: {e.Message}");
+                }
+            }
+        });
+
+    }
+
+    public void DeleteAlbum()
+    {
+        ServerManager.Instance.DeletaAlbumFolder(CacheManager.Instance.UserName, _model.AlbumName);
+        
+        //MVPFrameWork.UIManager.Instance.Quit(View)
     }
 
     private async void LoadPhotoItemAsync(int albumSize)

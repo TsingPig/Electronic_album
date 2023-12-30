@@ -15,7 +15,7 @@ public abstract class ItemBase : MonoBehaviour
         }
     }
 
-    protected virtual void OnClick()
-    {
-    }
+    protected virtual void OnClick() { }
+
+
 }

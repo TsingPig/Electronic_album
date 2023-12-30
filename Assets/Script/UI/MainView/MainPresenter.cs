@@ -112,7 +112,7 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
             {
                 try
                 {
-                    icon = CacheManager.LoadIconTexture(path);
+                    icon = CacheManager.LoadTexture(path);
                     if(icon != null)
                     {
                         _view.BtnUserIcon.image.sprite = Sprite.Create(icon, new Rect(0, 0, icon.width, icon.height), new Vector2(0.5f, 0.5f));
@@ -148,7 +148,7 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
     {
         _view.TxtUserName.text = userInformation.userName;
         _view.TxtNickName.text = userInformation.nickName;
-        Texture2D texture = CacheManager.LoadIconTexture(userInformation.iconPath);
+        Texture2D texture = CacheManager.LoadTexture(userInformation.iconPath);
         _view.BtnUserIcon.GetComponent<Image>().sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
     }
 

@@ -3,12 +3,13 @@ using MVPFrameWork;
 using TMPro;
 using UnityEngine.UI;
 
-
-
-
 public interface IPhotoView : IView
 {
     ButtonManager BtnQuit { get; }
+
+    ButtonManager BtnUploadPhoto { get; }
+
+    ButtonManager BtnDeleteAlbum { get; }
 
     TMP_Text TxtAlbumName { get; }
 

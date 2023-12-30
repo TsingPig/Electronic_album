@@ -40,6 +40,11 @@ public class ServerManager : Singleton<ServerManager>
         StartCoroutine(UploadFile(account, "usericon.jpg", usericon));
     }
 
+    public void UploadPhoto(string account, string albumName, byte[] photo, Action callback = null)
+    {
+        StartCoroutine(UploadPhotoFile(account, albumName, photo, callback));
+    }
+
     /// <summary>
     /// 从服务器下载头像
     /// </summary>
@@ -71,6 +76,16 @@ public class ServerManager : Singleton<ServerManager>
     }
 
     /// <summary>
+    /// 删除用户的某个相册
+    /// </summary>
+    /// <param name="account">用户名</param>
+    /// <param name="albumName">相册名</param>
+    public void DeletaAlbumFolder(string account, string albumName)
+    {
+        StartCoroutine(DeleteFolder(account, albumName, UpdateAlbum_Event));
+    }
+
+    /// <summary>
     /// 获取用户相册的所有图片
     /// </summary>
     /// <param name="account"></param>
@@ -78,6 +93,33 @@ public class ServerManager : Singleton<ServerManager>
     public void GetAlbumSize(string account, string albumName, Action<int> callback = null)
     {
         StartCoroutine(GetConnectSize($"{account}/{albumName}", callback));
+    }
+
+    /// <summary>
+    /// 异步加载相册中的图片
+    /// </summary>
+    /// <param name="account">账户</param>
+    /// <param name="albumName">相册名</param>
+    /// <param name="photoId">照片id</param>
+    /// <param name="image">图片组件</param>
+    public async void GetPhotoAsync(string account, string albumName, int photoId, Image image)
+    {
+        using(UnityWebRequest www = UnityWebRequest.Get($"{url}/get_photos/{account}/{albumName}/{photoId}.jpg"))
+        {
+            DownloadHandlerTexture texD1 = new DownloadHandlerTexture(true);
+            www.downloadHandler = texD1;
+
+            www.SendWebRequest();
+
+            while(!www.isDone)
+            {
+                await Task.Yield();
+            }
+
+            Debug.Log($"{photoId}请求完毕");
+            Texture2D photoTex = texD1.texture;
+            image.sprite = Sprite.Create(photoTex, new Rect(0, 0, 200, 200), new Vector2(0.5f, 0.5f));
+        }
     }
 
     /// <summary>
@@ -131,6 +173,41 @@ public class ServerManager : Singleton<ServerManager>
             if(www.result == UnityWebRequest.Result.Success)
             {
                 Debug.Log("File uploaded successfully");
+            }
+            else
+            {
+                Debug.LogError("Error uploading file: " + www.error);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="albumName"></param>
+    /// <param name="bytes"></param>
+    /// <param name="callback"></param>
+    /// <returns></returns>
+    private IEnumerator UploadPhotoFile(string account, string albumName, byte[] bytes, Action callback)
+    {
+        // 创建一个表单数据对象
+        WWWForm form = new WWWForm();
+        form.AddField("account", account); // 添加账户信息到表单
+        form.AddField("album_name", albumName); // 添加账户信息到表单
+
+        // 添加文件数据到表单
+        form.AddBinaryData("file", bytes, Time.time.ToString(), "image/jpg");
+
+        using(UnityWebRequest www = UnityWebRequest.Post($"{host}/upload_photo", form))
+        {
+            www.downloadHandler = new DownloadHandlerBuffer(); // 禁用压缩
+            yield return www.SendWebRequest();
+
+            if(www.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log("File uploaded successfully");
+                callback?.Invoke();
             }
             else
             {
@@ -228,28 +305,29 @@ public class ServerManager : Singleton<ServerManager>
         }
     }
 
-    public async void GetPhotoAsync(string account, string albumName, int photoId, Image image)
+    /// <summary>
+    /// 删除某个父目录下的子文件夹和其内容
+    /// </summary>
+    /// <param name="folderPath">父目录</param>
+    /// <param name="folderName">子文件夹名</param>
+    /// <param name="callback">回调</param>
+    /// <returns></returns>
+    private IEnumerator DeleteFolder(string folderPath, string folderName, Action<FolderList> callback = null)
     {
-        using(UnityWebRequest www = UnityWebRequest.Get($"{url}/get_photos/{account}/{albumName}/{photoId}.jpg"))
+        using(UnityWebRequest www = UnityWebRequest.Post($"{url}/deletaFolder/{folderPath}/{folderName}", ""))
         {
-            DownloadHandlerTexture texD1 = new DownloadHandlerTexture(true);
-            www.downloadHandler = texD1;
+            yield return www.SendWebRequest();
 
-            www.SendWebRequest();
-
-            while(!www.isDone)
+            if(www.result == UnityWebRequest.Result.Success)
             {
-                await Task.Yield();
+                Debug.Log($"子文件夹删除成功：{folderName}");
+                yield return StartCoroutine(GetFolders($"{folderPath}", callback));
+                Debug.Log($"刷新文件夹列表");
             }
-
-            Debug.Log($"{photoId}请求完毕");
-            //byte[] fileData = www.downloadHandler.data;
-
-            //Texture2D photoTex = new Texture2D(200, 200);
-            Texture2D photoTex = texD1.texture;
-
-            //photoTex.LoadImage(fileData);
-            image.sprite = Sprite.Create(photoTex, new Rect(0, 0, 200, 200), new Vector2(0.5f, 0.5f));
+            else
+            {
+                Debug.LogError($"Error delete album: {www.error}");
+            }
         }
     }
 
