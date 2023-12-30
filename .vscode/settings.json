@@ -52,5 +52,5 @@
         "Temp/": true
     },
     "dotnet.preferCSharpExtension": true,
-    "dotnet.defaultSolution": "Electronic_Album_git.sln"
+    "dotnet.defaultSolution": "Electronic_album_Git.sln"
 }
