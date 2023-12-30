@@ -43,7 +43,8 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
                     photoTex = ScaleTexture(photoTex, 200, 200);
                     if(photoTex != null)
                     {
-                        ServerManager.Instance.GetAlbumSize(CacheManager.Instance.UserName, _model.AlbumName, RefreshUploadedPhotoItemAsync);
+                        ServerManager.Instance.UploadPhoto(CacheManager.Instance.UserName, _model.AlbumName, photoTex.EncodeToPNG(), RefreshUploadedPhotoItemAsync);
+                        //ServerManager.Instance.GetAlbumSize(CacheManager.Instance.UserName, _model.AlbumName, RefreshUploadedPhotoItemAsync);
                     }
                     else
                     {
@@ -83,14 +84,14 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
         {
             Image photoImage = (await Instantiater.InstantiateAsync(StrDef.PHOTO_ITEM_DATA_PATH, _view.GridPhotoContent.transform)).GetComponent<PhotoItem>().Cover;
             ServerManager.Instance.GetPhotoAsync(CacheManager.Instance.UserName, _model.AlbumName, i, photoImage);
-        }
+        }   
     }
 
     /// <summary>
     /// 异步刷新新上传的照片项
     /// </summary>
     /// <param name="albumSize"></param>
-    private async void RefreshUploadedPhotoItemAsync(int albumSize)
+    private async void RefreshUploadedPhotoItemAsync()
     {
         Image photoImage = (await Instantiater.InstantiateAsync(StrDef.PHOTO_ITEM_DATA_PATH, _view.GridPhotoContent.transform)).GetComponent<PhotoItem>().Cover;
         ServerManager.Instance.GetPhotoAsync(CacheManager.Instance.UserName, _model.AlbumName, 0, photoImage);
