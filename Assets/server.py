@@ -35,10 +35,10 @@ def upload_photo():
         return 'No selected file', 400
     if file:
         # filename = secure_filename(file.filename)
-        # suffix = file.filename.split(".")[-1]
+        suffix = file.filename.split(".")[-1]
         
         t = time.localtime()
-        filename = f"{t.tm_year}{t.tm_mon:02}{t.tm_mday:02}_{t.tm_hour:02}{t.tm_min:02}{t.tm_sec:02}.jpg"
+        filename = f"{t.tm_year}{t.tm_mon:02}{t.tm_mday:02}_{t.tm_hour:02}{t.tm_min:02}{t.tm_sec:02}.{suffix}"
 
         filename = secure_filename(filename)
         print(filename)
