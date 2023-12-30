@@ -22,6 +22,7 @@ public class PhotoDetailView : ViewBase<IPhotoDetailPresenter>, IPhotoDetailView
         _imgDetailPhoto = _root.Find<Image>("MainPanel/imgDetailPhoto");
 
         _btnQuit.onClick.AddListener(_presenter.Quit);
+        _btnDeletePhoto.onClick.AddListener(_presenter.DeletePhoto);
 
     }
 }

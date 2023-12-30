@@ -1,18 +1,22 @@
 using MVPFrameWork;
+using TsingPigSDK;
+
 public class PhotoDetailPresenter : PresenterBase<IPhotoDetailView, IPhotoDetailModel>, IPhotoDetailPresenter
 {
     public void DeletePhoto()
     {
-        UIManager.Instance.Quit(ViewId.PhotoDetailView);
-        
+        MVPFrameWork.UIManager.Instance.Quit(ViewId.PhotoDetailView);
+        Instantiater.DeactivateObjectByIndex(StrDef.PHOTO_ITEM_DATA_PATH, _model.PhotoId);
     }
-    public override void OnCreateCompleted()
+
+    public override void OnShowCompleted()
     {
         base.OnCreateCompleted();
-        _view.ImgDetailPhoto = _model.ImgPhotoDetail;
+        _view.ImgDetailPhoto.sprite = _model.ImgPhotoDetail.sprite;
     }
+
     public void Quit()
     {
-        UIManager.Instance.Quit(ViewId.PhotoDetailView);
+        MVPFrameWork.UIManager.Instance.Quit(ViewId.PhotoDetailView);
     }
 }

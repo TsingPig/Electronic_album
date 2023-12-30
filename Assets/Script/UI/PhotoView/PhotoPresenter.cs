@@ -43,8 +43,8 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
                     photoTex = ScaleTexture(photoTex, 200, 200);
                     if(photoTex != null)
                     {
-                        ServerManager.Instance.UploadPhoto(CacheManager.Instance.UserName, _model.AlbumName, photoTex.EncodeToPNG(), RefreshUploadedPhotoItemAsync);
-                        //ServerManager.Instance.GetAlbumSize(CacheManager.Instance.UserName, _model.AlbumName, RefreshUploadedPhotoItemAsync);
+                        ServerManager.Instance.UploadPhoto(CacheManager.Instance.UserName, _model.AlbumName, photoTex.EncodeToPNG());
+                        ServerManager.Instance.GetAlbumSize(CacheManager.Instance.UserName, _model.AlbumName, RefreshUploadedPhotoItemAsync);
                     }
                     else
                     {
@@ -84,10 +84,18 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
     {
         Instantiater.DeactivateObjectPool(StrDef.PHOTO_ITEM_DATA_PATH);
 
-        for(int i = albumSize - 1; i >= 0; i--)
+        //for(int i = albumSize - 1; i >= 0; i--)
+        //{
+        //    PhotoItem photoItem = (await Instantiater.InstantiateAsync(StrDef.PHOTO_ITEM_DATA_PATH, _view.GridPhotoContent.transform)).GetComponent<PhotoItem>();
+        //    photoItem.photoId = i;
+        //    Image photoImage = photoItem.Cover;
+        //    ServerManager.Instance.GetPhotoAsync(CacheManager.Instance.UserName, _model.AlbumName, i, photoImage);
+        //}
+
+        for(int i = 0; i < albumSize; i++)
         {
             PhotoItem photoItem = (await Instantiater.InstantiateAsync(StrDef.PHOTO_ITEM_DATA_PATH, _view.GridPhotoContent.transform)).GetComponent<PhotoItem>();
-
+            photoItem.photoId = i;
             Image photoImage = photoItem.Cover;
             ServerManager.Instance.GetPhotoAsync(CacheManager.Instance.UserName, _model.AlbumName, i, photoImage);
         }
@@ -96,12 +104,11 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
     /// <summary>
     /// 异步刷新新上传的照片项
     /// </summary>
-    private async void RefreshUploadedPhotoItemAsync()
+    private async void RefreshUploadedPhotoItemAsync(int albumSize)
     {
         PhotoItem photoItem = (await Instantiater.InstantiateAsync(StrDef.PHOTO_ITEM_DATA_PATH, _view.GridPhotoContent.transform)).GetComponent<PhotoItem>();
-
         Image photoImage = photoItem.Cover;
-        ServerManager.Instance.GetPhotoAsync(CacheManager.Instance.UserName, _model.AlbumName, 0, photoImage);
+        ServerManager.Instance.GetPhotoAsync(CacheManager.Instance.UserName, _model.AlbumName, albumSize, photoImage);
     }
 
     /// <summary>

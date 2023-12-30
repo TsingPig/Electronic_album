@@ -13,7 +13,7 @@ public class PhotoItem : ItemBase
     /// <summary>
     /// Í¼Æ¬Ë÷Òý
     /// </summary>
-    [HideInInspector]
+    //[HideInInspector]
     public int photoId;
 
     protected override void OnClick()

@@ -59,13 +59,13 @@ namespace TsingPigSDK
                 }
                 else
                 {
-                    Debug.LogError($"{addressablePath}GameObject���ش���");
+                    Debug.LogError($"{addressablePath}GameObject找不到文件位置");
                     return null;
                 }
             }
             else
             {
-                Debug.LogError($"{addressablePath}�Ҳ�����Դλ��");
+                Debug.LogError($"{addressablePath}");
                 return null;
             }
         }
@@ -81,7 +81,7 @@ namespace TsingPigSDK
             }
             else
             {
-                Debug.LogWarning($"����ɾ��{addressablePath}����Ч��");
+                Debug.LogWarning($"{addressablePath}不在对象池中");
             }
         }
 
@@ -92,25 +92,8 @@ namespace TsingPigSDK
 
         public static void DeactivateObjectByIndex(string addressablePath, int idx)
         {
-            if(_objectPools.ContainsKey(addressablePath))
-            {
-                foreach(var obj in _objectPools[addressablePath])
-                {
-                    if(obj.activeSelf) 
-                    {
-                        if(idx == 0)
-                        {
-                            DeactivateObject(obj);
-                            break;
-                        }
-                        idx--;
-                    } 
-                }
-            }
-            else
-            {
-                // Debug.LogWarning($"����ɾ��{addressablePath}����Ч��");
-            }
+            _objectPools[addressablePath][idx].SetActive(false);
         }
+
     }
 }
