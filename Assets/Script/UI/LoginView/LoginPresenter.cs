@@ -51,6 +51,9 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
                 Texture2D randomIcon = new Texture2D(200, 200);
                 randomIcon.RandomGenerate();
                 CacheManager.Instance.SaveUserInformation(RegisterInputAccount, RegisterInputAccount, randomIcon);
+
+                CacheManager.Instance.UpdateIcon(randomIcon);
+
                 UIManager.Instance.Quit(ViewId.LoginView);
                 UIManager.Instance.Enter(ViewId.MainView);
             }

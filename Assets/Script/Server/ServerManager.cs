@@ -242,7 +242,6 @@ public class ServerManager : Singleton<ServerManager>
                 await Task.Yield();
             }
 
-
             Debug.Log($"{photoId}«Î«ÛÕÍ±œ");
             //byte[] fileData = www.downloadHandler.data;
 
@@ -251,7 +250,6 @@ public class ServerManager : Singleton<ServerManager>
 
             //photoTex.LoadImage(fileData);
             image.sprite = Sprite.Create(photoTex, new Rect(0, 0, 200, 200), new Vector2(0.5f, 0.5f));
-
         }
     }
 
