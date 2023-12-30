@@ -106,19 +106,21 @@ public class ServerManager : Singleton<ServerManager>
     {
         using(UnityWebRequest www = UnityWebRequest.Get($"{url}/get_photos/{account}/{albumName}/{photoId}.jpg"))
         {
-            DownloadHandlerTexture texD1 = new DownloadHandlerTexture(true);
-            www.downloadHandler = texD1;
-
-            www.SendWebRequest();
-
-            while(!www.isDone)
+            using(DownloadHandlerTexture texD1 = new DownloadHandlerTexture(true))
             {
-                await Task.Yield();
-            }
+                www.downloadHandler = texD1;
 
-            Debug.Log($"{photoId}请求完毕");
-            Texture2D photoTex = texD1.texture;
-            image.sprite = Sprite.Create(photoTex, new Rect(0, 0, 200, 200), new Vector2(0.5f, 0.5f));
+                www.SendWebRequest();
+
+                while(!www.isDone)
+                {
+                    await Task.Yield();
+                }
+
+                Debug.Log($"{photoId}请求完毕");
+                Texture2D photoTex = texD1.texture;
+                image.sprite = Sprite.Create(photoTex, new Rect(0, 0, 200, 200), new Vector2(0.5f, 0.5f));
+            }
         }
     }
 
@@ -126,7 +128,7 @@ public class ServerManager : Singleton<ServerManager>
     {
         StartCoroutine(DeletePhoto($"{account}/{albumName}/{photoId}.jpg", callback));
     }
-    
+
     /// <summary>
     /// 创建空文件夹
     /// </summary>
@@ -187,7 +189,7 @@ public class ServerManager : Singleton<ServerManager>
     }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <param name="account"></param>
     /// <param name="albumName"></param>

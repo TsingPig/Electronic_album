@@ -43,8 +43,10 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
                     photoTex = ScaleTexture(photoTex, 200, 200);
                     if(photoTex != null)
                     {
-                        ServerManager.Instance.UploadPhoto(CacheManager.Instance.UserName, _model.AlbumName, photoTex.EncodeToPNG());
-                        ServerManager.Instance.GetAlbumSize(CacheManager.Instance.UserName, _model.AlbumName, RefreshUploadedPhotoItemAsync);
+                        ServerManager.Instance.UploadPhoto(CacheManager.Instance.UserName, _model.AlbumName, photoTex.EncodeToPNG(), () =>
+                        {
+                            ServerManager.Instance.GetAlbumSize(CacheManager.Instance.UserName, _model.AlbumName, RefreshUploadedPhotoItemAsync);
+                        });
                     }
                     else
                     {
@@ -74,7 +76,6 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
         Instantiater.DeactivateObjectByIndex(StrDef.PHOTO_ITEM_DATA_PATH, 0);
         //ServerManager.Instance.DeletePhoto(CacheManager.Instance.UserName, _model.AlbumName, )
     }
-
 
     /// <summary>
     /// 初始化异步加载照片
