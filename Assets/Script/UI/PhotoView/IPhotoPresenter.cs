@@ -7,4 +7,6 @@ public interface IPhotoPresenter : IPresenter
     void UploadPhoto();
 
     void DeleteAlbum();
+
+    void DeletePhoto(int idx);
 }

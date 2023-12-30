@@ -69,6 +69,13 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
         //MVPFrameWork.UIManager.Instance.Quit(View)
     }
 
+    public void DeletePhoto(int idx)
+    {
+        Instantiater.DeactivateObjectByIndex(StrDef.PHOTO_ITEM_DATA_PATH, 0);
+        //ServerManager.Instance.DeletePhoto(CacheManager.Instance.UserName, _model.AlbumName, )
+    }
+
+
     /// <summary>
     /// 初始化异步加载照片
     /// </summary>
