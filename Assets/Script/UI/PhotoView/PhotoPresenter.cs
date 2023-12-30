@@ -15,19 +15,20 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
     {
         base.OnCreateCompleted();
         _view.TxtAlbumName.text = _model.AlbumName;
-        //LoadPhotoItemAsync();
-
-        ServerManager.Instance.GetAlbumSize(CacheManager.Instance.UserName, _model.AlbumName, LoadPhotoItemAsync);
-
-        //Debug.Log(_model.AlbumName);
-        //Debug.Log((Model as IPhotoModel).Name); 等价写法
+        ServerManager.Instance.GetAlbumSize(CacheManager.Instance.UserName, _model.AlbumName, InitialPhotoItemsAsync);
     }
 
+    /// <summary>
+    /// 退出当前相册
+    /// </summary>
     public void Quit()
     {
         MVPFrameWork.UIManager.Instance.Quit(ViewId.PhotoView);
     }
 
+    /// <summary>
+    /// 上传单张照片
+    /// </summary>
     public void UploadPhoto()
     {
         Texture2D photoTex = null;
@@ -42,7 +43,7 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
                     photoTex = ScaleTexture(photoTex, 200, 200);
                     if(photoTex != null)
                     {
-                        ServerManager.Instance.UploadPhoto(CacheManager.Instance.UserName, _model.AlbumName, photoTex.EncodeToPNG(), OnShowCompleted);
+                        ServerManager.Instance.GetAlbumSize(CacheManager.Instance.UserName, _model.AlbumName, RefreshUploadedPhotoItemAsync);
                     }
                     else
                     {
@@ -57,6 +58,9 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
         });
     }
 
+    /// <summary>
+    /// 删除相册
+    /// </summary>
     public void DeleteAlbum()
     {
         ServerManager.Instance.DeletaAlbumFolder(CacheManager.Instance.UserName, _model.AlbumName);
@@ -64,19 +68,41 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
         //MVPFrameWork.UIManager.Instance.Quit(View)
     }
 
-    private async void LoadPhotoItemAsync(int albumSize)
+    /// <summary>
+    /// 初始化异步加载照片
+    /// </summary>
+    /// <param name="albumSize"></param>
+    private async void InitialPhotoItemsAsync(int albumSize)
     {
         Instantiater.DeactivateObjectPool(StrDef.PHOTO_ITEM_DATA_PATH);
         //for(int i = 0; i < Random.Range(15, 35); i++)
         //{
         //    await Instantiater.InstantiateAsync(StrDef.PHOTO_ITEM_DATA_PATH, _view.GridPhotoContent.transform);
         //}
-        for(int i = 0; i < albumSize; i++)
+        for(int i = albumSize - 1; i >= 0; i--)
         {
             Image photoImage = (await Instantiater.InstantiateAsync(StrDef.PHOTO_ITEM_DATA_PATH, _view.GridPhotoContent.transform)).GetComponent<PhotoItem>().Cover;
             ServerManager.Instance.GetPhotoAsync(CacheManager.Instance.UserName, _model.AlbumName, i, photoImage);
         }
     }
+
+    /// <summary>
+    /// 异步刷新新上传的照片项
+    /// </summary>
+    /// <param name="albumSize"></param>
+    private async void RefreshUploadedPhotoItemAsync(int albumSize)
+    {
+        Image photoImage = (await Instantiater.InstantiateAsync(StrDef.PHOTO_ITEM_DATA_PATH, _view.GridPhotoContent.transform)).GetComponent<PhotoItem>().Cover;
+        ServerManager.Instance.GetPhotoAsync(CacheManager.Instance.UserName, _model.AlbumName, 0, photoImage);
+    }
+
+    /// <summary>
+    /// 重设上传图片尺寸，以便于缩小内存占用，加快加载速度
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="targetWidth"></param>
+    /// <param name="targetHeight"></param>
+    /// <returns>重设后的图片尺寸</returns>
 
     private Texture2D ScaleTexture(Texture2D source, float targetWidth, float targetHeight)
     {
