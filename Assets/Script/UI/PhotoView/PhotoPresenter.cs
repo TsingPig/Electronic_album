@@ -39,8 +39,7 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
                 try
                 {
                     photoTex = CacheManager.LoadTexture(path);
-                    photoTex.Resize(200, 200);
-                    //photoTex.Reinitialize(200, 200);
+                    photoTex = ScaleTexture(photoTex, 200, 200);
                     if(photoTex != null)
                     {
                         ServerManager.Instance.UploadPhoto(CacheManager.Instance.UserName, _model.AlbumName, photoTex.EncodeToPNG(), OnShowCompleted);
@@ -56,13 +55,12 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
                 }
             }
         });
-
     }
 
     public void DeleteAlbum()
     {
         ServerManager.Instance.DeletaAlbumFolder(CacheManager.Instance.UserName, _model.AlbumName);
-        
+
         //MVPFrameWork.UIManager.Instance.Quit(View)
     }
 
@@ -78,5 +76,25 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
             Image photoImage = (await Instantiater.InstantiateAsync(StrDef.PHOTO_ITEM_DATA_PATH, _view.GridPhotoContent.transform)).GetComponent<PhotoItem>().Cover;
             ServerManager.Instance.GetPhotoAsync(CacheManager.Instance.UserName, _model.AlbumName, i, photoImage);
         }
+    }
+
+    private Texture2D ScaleTexture(Texture2D source, float targetWidth, float targetHeight)
+    {
+        Texture2D result = new Texture2D((int)targetWidth, (int)targetHeight, source.format, false);
+
+        float incX = (1.0f / targetWidth);
+        float incY = (1.0f / targetHeight);
+
+        for(int i = 0; i < result.height; ++i)
+        {
+            for(int j = 0; j < result.width; ++j)
+            {
+                Color newColor = source.GetPixelBilinear((float)j / (float)result.width, (float)i / (float)result.height);
+                result.SetPixel(j, i, newColor);
+            }
+        }
+
+        result.Apply();
+        return result;
     }
 }
