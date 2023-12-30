@@ -12,28 +12,28 @@ namespace Michsky.MUIP
         [Header("Resources")]
         [SerializeField] private Image backgroundImage;
 
-        void Awake()
+        private void Awake()
         {
-            if (UIManagerAsset == null) { UIManagerAsset = Resources.Load<UIManager>("MUIP Manager"); }
+            if(UIManagerAsset == null) { UIManagerAsset = Resources.Load<UIManager>("MUIP Manager"); }
 
             this.enabled = true;
 
-            if (UIManagerAsset.enableDynamicUpdate == false)
+            if(UIManagerAsset.enableDynamicUpdate == false)
             {
                 UpdateContextMenu();
                 this.enabled = false;
             }
         }
 
-        void Update()
+        private void Update()
         {
-            if (UIManagerAsset == null) { return; }
-            if (UIManagerAsset.enableDynamicUpdate == true) { UpdateContextMenu(); }
+            if(UIManagerAsset == null) { return; }
+            if(UIManagerAsset.enableDynamicUpdate == true) { UpdateContextMenu(); }
         }
 
-        void UpdateContextMenu()
+        private void UpdateContextMenu()
         {
-            if (backgroundImage != null) { backgroundImage.color = UIManagerAsset.contextBackgroundColor; }
+            if(backgroundImage != null) { backgroundImage.color = UIManagerAsset.contextBackgroundColor; }
         }
     }
 }

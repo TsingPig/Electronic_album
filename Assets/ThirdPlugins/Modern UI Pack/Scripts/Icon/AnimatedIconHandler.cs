@@ -8,9 +8,10 @@ namespace Michsky.MUIP
     {
         [Header("Settings")]
         public PlayType playType;
+
         public Animator iconAnimator;
 
-        bool isClicked;
+        private bool isClicked;
 
         public enum PlayType
         {
@@ -19,36 +20,39 @@ namespace Michsky.MUIP
             None
         }
 
-        void Start()
+        private void Start()
         {
-            if (iconAnimator == null)
+            if(iconAnimator == null)
                 iconAnimator = gameObject.GetComponent<Animator>();
         }
 
-        public void PlayIn() { iconAnimator.Play("In"); }
-        public void PlayOut() { iconAnimator.Play("Out"); }
+        public void PlayIn()
+        { iconAnimator.Play("In"); }
+
+        public void PlayOut()
+        { iconAnimator.Play("Out"); }
 
         public void ClickEvent()
         {
-            if (isClicked == true) { PlayOut(); isClicked = false; }
+            if(isClicked == true) { PlayOut(); isClicked = false; }
             else { PlayIn(); isClicked = true; }
         }
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (playType == PlayType.Click)
+            if(playType == PlayType.Click)
                 ClickEvent();
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (playType == PlayType.Hover)
+            if(playType == PlayType.Hover)
                 iconAnimator.Play("In");
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (playType == PlayType.Hover)
+            if(playType == PlayType.Hover)
                 iconAnimator.Play("Out");
         }
     }

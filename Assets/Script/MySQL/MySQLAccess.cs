@@ -2,7 +2,6 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
 
 namespace TsingPigSDK
 {
@@ -10,14 +9,19 @@ namespace TsingPigSDK
     {
         //连接类对象
         private static MySqlConnection mySqlConnection;
+
         //IP地址
         private static string host;
+
         //端口号
         private static string port;
+
         //用户名
         private static string userName;
+
         //密码
         private static string password;
+
         //数据库名称
         private static string databaseName;
 
@@ -47,14 +51,14 @@ namespace TsingPigSDK
             {
                 string mySqlString = string.Format("server = {0};port={1};database = {2};user = {3};password = {4};", host, port, databaseName, userName, password);
                 mySqlConnection = new MySqlConnection(mySqlString);
+
                 //if(mySqlConnection.State == ConnectionState.Closed)
                 mySqlConnection.Open();
-
-            } catch(Exception e)
+            }
+            catch(Exception e)
             {
                 throw new Exception("服务器连接失败，请重新检查MySql服务是否打开。" + e.Message.ToString());
             }
-                
         }
 
         /// <summary>
@@ -82,7 +86,6 @@ namespace TsingPigSDK
         public DataSet Select(string tableName, string[] items, string[] whereColumnName,
             string[] operation, string[] value)
         {
-
             if(whereColumnName.Length != operation.Length || operation.Length != value.Length)
             {
                 throw new Exception("输入不正确：" + "要查询的条件、条件操作符、条件值 的数量不一致！");
@@ -94,7 +97,7 @@ namespace TsingPigSDK
                 query += $", `{items[i]}`";
             }
 
-            query += $" FROM ```{tableName}``` WHERE `{whereColumnName[0]}` {operation[0]} '{value[0]}'";
+            query += $" FROM `{tableName}` WHERE `{whereColumnName[0]}` {operation[0]} '{value[0]}'";
             for(int i = 1; i < whereColumnName.Length; i++)
             {
                 query += $" AND `{whereColumnName[i]}` {operation[i]} '{value[i]}'";
@@ -117,7 +120,7 @@ namespace TsingPigSDK
             {
                 throw new ArgumentException("Wildcard must be '*'.", nameof(wildcard));
             }
-            string query = $"SELECT * FROM ```{tableName}```";
+            string query = $"SELECT * FROM `{tableName}`";
             DataSet result = QuerySet(query);
             Log.LogQueryResult(result);
             return result;
@@ -137,10 +140,12 @@ namespace TsingPigSDK
                 {
                     MySqlDataAdapter mySqlAdapter = new MySqlDataAdapter(sqlString, mySqlConnection);
                     mySqlAdapter.Fill(ds);
-                } catch(Exception e)
+                }
+                catch(Exception e)
                 {
                     throw new Exception("SQL:" + sqlString + "/n" + e.Message.ToString());
-                } finally
+                }
+                finally
                 {
                 }
                 return ds;
@@ -148,25 +153,34 @@ namespace TsingPigSDK
             return null;
         }
 
-
         /// <summary>
         /// 插入数据
         /// </summary>
         /// <param name="tableName">表名</param>
         /// <param name="columns">要插入的列名</param>
         /// <param name="values">要插入的值</param>
-        public void Insert(string tableName, string[] columns, string[] values)
+        /// <returns>是否成功注册</returns>
+        public bool Insert(string tableName, string[] columns, string[] values)
         {
-            if(columns.Length != values.Length)
+            try
             {
-                throw new Exception("输入不正确：" + "要插入的列和值的数量不一致！");
+                if(columns.Length != values.Length)
+                {
+                    Log.Error("输入不正确：" + "要插入的列和值的数量不一致！");
+                    return false;
+                }
+
+                string query = $"INSERT INTO  `{tableName}`  ({string.Join(",", columns)}) VALUES ('{string.Join("','", values)}')";
+                Log.Info($"插入数据{query}");
+                ExecuteNonQuery(query);
+                return true;
             }
-
-            string query = $"INSERT INTO  ```{tableName}```  ({string.Join(",", columns)}) VALUES ('{string.Join("','", values)}')";
-            Log.Info($"插入数据{query}");
-            ExecuteNonQuery(query);
+            catch(Exception ex)
+            {
+                Log.Error(ex.Message);
+                return false;
+            }
         }
-
 
         /// <summary>
         /// 更新数据
@@ -180,11 +194,10 @@ namespace TsingPigSDK
         public void Update(string tableName, string columnToUpdate, string newValue,
                            string whereColumnName, string operation, string value)
         {
-            string update = $"UPDATE ```{tableName}``` SET `{columnToUpdate}` = '{newValue}' WHERE `{whereColumnName}` {operation} '{value}'";
+            string update = $"UPDATE `{tableName}` SET `{columnToUpdate}` = '{newValue}' WHERE `{whereColumnName}` {operation} '{value}'";
             ExecuteNonQuery(update);
             Log.Info($"更新数据: {update}");
         }
-
 
         /// <summary>
         /// 执行非查询SQL语句
@@ -200,13 +213,13 @@ namespace TsingPigSDK
                     {
                         cmd.ExecuteNonQuery();
                     }
-                } catch(Exception e)
+                }
+                catch(Exception e)
                 {
                     throw new Exception("SQL:" + sqlString + "\n" + e.Message.ToString());
                 }
             }
         }
-
 
         /// <summary>
         /// 显示Table列表
@@ -235,7 +248,5 @@ namespace TsingPigSDK
 
             return null;
         }
-
     }
-
 }

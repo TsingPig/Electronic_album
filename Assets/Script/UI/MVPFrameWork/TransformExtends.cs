@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace MVPFrameWork
@@ -15,7 +13,7 @@ namespace MVPFrameWork
 
         public static bool Contains(this RectTransform container, RectTransform trans)
         {
-            if (trans == null)
+            if(trans == null)
             {
                 return false;
             }
@@ -28,9 +26,9 @@ namespace MVPFrameWork
             Vector3[] array2 = new Vector3[4];
             trans.GetWorldCorners(array2);
             bool result = false;
-            foreach (Vector3 point in array2)
+            foreach(Vector3 point in array2)
             {
-                if (rect.Contains(point))
+                if(rect.Contains(point))
                 {
                     result = true;
                     break;
@@ -42,7 +40,7 @@ namespace MVPFrameWork
 
         public static bool TotalContains(this RectTransform container, RectTransform trans)
         {
-            if (trans == null)
+            if(trans == null)
             {
                 return false;
             }
@@ -55,9 +53,9 @@ namespace MVPFrameWork
             Vector3[] array2 = new Vector3[4];
             trans.GetWorldCorners(array2);
             bool result = true;
-            foreach (Vector3 point in array2)
+            foreach(Vector3 point in array2)
             {
-                if (!rect.Contains(point))
+                if(!rect.Contains(point))
                 {
                     result = false;
                     break;

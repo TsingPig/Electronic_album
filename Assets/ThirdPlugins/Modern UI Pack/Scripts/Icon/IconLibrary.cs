@@ -8,6 +8,7 @@ namespace Michsky.MUIP
     {
         // Settings
         public bool alwaysUpdate = false;
+
         public bool optimizeUpdates = true;
 
         // Editor Only

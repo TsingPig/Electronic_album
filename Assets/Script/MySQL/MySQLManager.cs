@@ -1,4 +1,3 @@
-using Sirenix.OdinInspector;
 using System.Data;
 using TsingPigSDK;
 
@@ -8,7 +7,7 @@ public class MySQLManager : Singleton<MySQLManager>
 
     private void Init()
     {
-        _mySQLAccess = new MySQLAccess("gz-cynosdbmysql-grp-nlpmzwov.sql.tencentcdb.com", "21462", "Tsingpig2", "123asd**", "electronic_album");
+        _mySQLAccess = new MySQLAccess("gz-cynosdbmysql-grp-cttmzfob.sql.tencentcdb.com", "25862", "Tsingpig", "123asd**", "electronic_album");
     }
 
     /// <summary>
@@ -17,11 +16,12 @@ public class MySQLManager : Singleton<MySQLManager>
     /// <param name="account"></param>
     /// <param name="nick_name"></param>
     /// <param name="userPassword"></param>
-    public void Register(string account, string nick_name, string userPassword)
+    /// <returns>是否成功注册</returns>
+    public bool Register(string account, string nick_name, string userPassword)
     {
         string[] columns = { "account", "nick_name", "password" };
         string[] values = { account, nick_name, userPassword };
-        _mySQLAccess.Insert("useraccount", columns, values);
+        return _mySQLAccess.Insert("useraccount", columns, values);
     }
 
     /// <summary>
@@ -51,7 +51,6 @@ public class MySQLManager : Singleton<MySQLManager>
             //Console.WriteLine("登录失败：用户名或密码不正确。");
             return false;
         }
-
     }
 
     /// <summary>
@@ -68,7 +67,6 @@ public class MySQLManager : Singleton<MySQLManager>
 
         _mySQLAccess.Update(tableName, columnToUpdate, newNickName, conditionColumn, "=", conditionValue);
     }
-
 
     /// <summary>
     /// 查询指定账号的昵称

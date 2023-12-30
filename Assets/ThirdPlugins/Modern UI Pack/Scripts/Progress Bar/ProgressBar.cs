@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.Events;
-using TMPro;
+using UnityEngine.UI;
 
 namespace Michsky.MUIP
 {
@@ -9,6 +9,7 @@ namespace Michsky.MUIP
     {
         // Content
         public float currentPercent;
+
         [Range(0, 100)] public int speed;
         public float minValue = 0;
         public float maxValue = 100;
@@ -16,10 +17,12 @@ namespace Michsky.MUIP
 
         // Resources
         public Image loadingBar;
+
         public TextMeshProUGUI textPercent;
 
         // Settings
         public bool isOn;
+
         public bool restart;
         public bool invert;
         public bool addPrefix;
@@ -30,29 +33,31 @@ namespace Michsky.MUIP
         [Range(0, 5)] public int decimals = 0;
 
         // Events
-        [System.Serializable] 
-        public class ProgressBarEvent : UnityEvent<float> { }
+        [System.Serializable]
+        public class ProgressBarEvent : UnityEvent<float>
+        { }
+
         public ProgressBarEvent onValueChanged;
         [HideInInspector] public Slider eventSource;
 
-        void Start()
+        private void Start()
         {
             UpdateUI();
             InitializeEvents();
         }
 
-        void Update()
+        private void Update()
         {
-            if (isOn == false)
+            if(isOn == false)
                 return;
 
-            if (currentPercent <= maxValue && invert == false) { currentPercent += speed * Time.deltaTime; }
-            else if (currentPercent >= minValue && invert == true) { currentPercent -= speed * Time.deltaTime; }
+            if(currentPercent <= maxValue && invert == false) { currentPercent += speed * Time.deltaTime; }
+            else if(currentPercent >= minValue && invert == true) { currentPercent -= speed * Time.deltaTime; }
 
-            if (currentPercent >= maxValue && speed != 0 && restart == true && invert == false) { currentPercent = 0; }
-            else if (currentPercent <= minValue && speed != 0 && restart == true && invert == true) { currentPercent = maxValue; }
-            else if (currentPercent >= maxValue && speed != 0 && restart == false && invert == false) { currentPercent = maxValue; }
-            else if (currentPercent <= minValue && speed != 0 && restart == false && invert == true) { currentPercent = minValue; }
+            if(currentPercent >= maxValue && speed != 0 && restart == true && invert == false) { currentPercent = 0; }
+            else if(currentPercent <= minValue && speed != 0 && restart == true && invert == true) { currentPercent = maxValue; }
+            else if(currentPercent >= maxValue && speed != 0 && restart == false && invert == false) { currentPercent = maxValue; }
+            else if(currentPercent <= minValue && speed != 0 && restart == false && invert == true) { currentPercent = minValue; }
 
             UpdateUI();
         }
@@ -61,21 +66,21 @@ namespace Michsky.MUIP
         {
             loadingBar.fillAmount = currentPercent / maxValue;
 
-            if (addSuffix == true) { textPercent.text = currentPercent.ToString("F" + decimals) + suffix; }
+            if(addSuffix == true) { textPercent.text = currentPercent.ToString("F" + decimals) + suffix; }
             else { textPercent.text = currentPercent.ToString("F" + decimals); }
 
-            if (addPrefix == true)
+            if(addPrefix == true)
                 textPercent.text = prefix + textPercent.text;
 
-            if (eventSource != null)
+            if(eventSource != null)
                 eventSource.value = currentPercent;
         }
 
         public void InitializeEvents()
         {
-            if (Application.isPlaying == true && onValueChanged.GetPersistentEventCount() != 0)
+            if(Application.isPlaying == true && onValueChanged.GetPersistentEventCount() != 0)
             {
-                if (eventSource == null)
+                if(eventSource == null)
                     eventSource = gameObject.AddComponent(typeof(Slider)) as Slider;
 
                 eventSource.transition = Selectable.Transition.None;
@@ -85,7 +90,10 @@ namespace Michsky.MUIP
             }
         }
 
-        public void ClearEvents() { eventSource.onValueChanged.RemoveAllListeners(); }
-        public void ChangeValue(float newValue) { currentPercent = newValue; UpdateUI(); }
+        public void ClearEvents()
+        { eventSource.onValueChanged.RemoveAllListeners(); }
+
+        public void ChangeValue(float newValue)
+        { currentPercent = newValue; UpdateUI(); }
     }
 }

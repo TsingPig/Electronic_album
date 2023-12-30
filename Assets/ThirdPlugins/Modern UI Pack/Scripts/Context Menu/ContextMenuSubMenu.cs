@@ -1,8 +1,8 @@
 ﻿using System.Collections;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using TMPro;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace Michsky.MUIP
 {
@@ -15,52 +15,51 @@ namespace Michsky.MUIP
         public GameObject trigger;
         [HideInInspector] public int subMenuIndex;
 
-        GameObject selectedItem;
-        Image setItemImage;
-        TextMeshProUGUI setItemText;
-        Sprite imageHelper;
-        string textHelper;
-        RectTransform listParent;
+        private GameObject selectedItem;
+        private Image setItemImage;
+        private TextMeshProUGUI setItemText;
+        private Sprite imageHelper;
+        private string textHelper;
+        private RectTransform listParent;
 
-       [HideInInspector] public bool enableFadeOut = true;
+        [HideInInspector] public bool enableFadeOut = true;
 
-        void OnEnable()
+        private void OnEnable()
         {
-            if (itemParent == null) { Debug.Log("<b>[Context Menu]</b> Item Parent is missing.", this); return; }
+            if(itemParent == null) { Debug.Log("<b>[Context Menu]</b> Item Parent is missing.", this); return; }
 
             listParent = itemParent.parent.gameObject.GetComponent<RectTransform>();
         }
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (cmManager.subMenuBehaviour == ContextMenuManager.SubMenuBehaviour.Click)
+            if(cmManager.subMenuBehaviour == ContextMenuManager.SubMenuBehaviour.Click)
             {
-                if (subMenuAnimator.GetCurrentAnimatorStateInfo(0).IsName("Menu In")) 
-                { 
+                if(subMenuAnimator.GetCurrentAnimatorStateInfo(0).IsName("Menu In"))
+                {
                     subMenuAnimator.Play("Menu Out");
-                    if (trigger != null) { trigger.SetActive(false); }
+                    if(trigger != null) { trigger.SetActive(false); }
                 }
-
-                else 
-                { 
-                    subMenuAnimator.Play("Menu In"); 
-                    if (trigger != null) { trigger.SetActive(true); } 
+                else
+                {
+                    subMenuAnimator.Play("Menu In");
+                    if(trigger != null) { trigger.SetActive(true); }
                 }
             }
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            foreach (Transform child in itemParent)
+            foreach(Transform child in itemParent)
                 Destroy(child.gameObject);
 
-            for (int i = 0; i < cmContent.contexItems[subMenuIndex].subMenuItems.Count; ++i)
+            for(int i = 0; i < cmContent.contexItems[subMenuIndex].subMenuItems.Count; ++i)
             {
                 bool nulLVariable = false;
 
-                if (cmContent.contexItems[subMenuIndex].subMenuItems[i].contextItemType == ContextMenuContent.ContextItemType.Button && cmManager.contextButton != null)
+                if(cmContent.contexItems[subMenuIndex].subMenuItems[i].contextItemType == ContextMenuContent.ContextItemType.Button && cmManager.contextButton != null)
                     selectedItem = cmManager.contextButton;
-                else if (cmContent.contexItems[subMenuIndex].subMenuItems[i].contextItemType == ContextMenuContent.ContextItemType.Separator && cmManager.contextSeparator != null)
+                else if(cmContent.contexItems[subMenuIndex].subMenuItems[i].contextItemType == ContextMenuContent.ContextItemType.Separator && cmManager.contextSeparator != null)
                     selectedItem = cmManager.contextSeparator;
                 else
                 {
@@ -70,12 +69,12 @@ namespace Michsky.MUIP
                     nulLVariable = true;
                 }
 
-                if (nulLVariable == false)
+                if(nulLVariable == false)
                 {
                     GameObject go = Instantiate(selectedItem, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
                     go.transform.SetParent(itemParent, false);
 
-                    if (cmContent.contexItems[subMenuIndex].subMenuItems[i].contextItemType == ContextMenuContent.ContextItemType.Button)
+                    if(cmContent.contexItems[subMenuIndex].subMenuItems[i].contextItemType == ContextMenuContent.ContextItemType.Button)
                     {
                         setItemText = go.GetComponentInChildren<TextMeshProUGUI>();
                         textHelper = cmContent.contexItems[subMenuIndex].subMenuItems[i].itemText;
@@ -86,7 +85,7 @@ namespace Michsky.MUIP
                         imageHelper = cmContent.contexItems[subMenuIndex].subMenuItems[i].itemIcon;
                         setItemImage.sprite = imageHelper;
 
-                        if (imageHelper == null)
+                        if(imageHelper == null)
                             setItemImage.color = new Color(0, 0, 0, 0);
 
                         Button itemButton = go.GetComponent<Button>();
@@ -97,27 +96,27 @@ namespace Michsky.MUIP
                 }
             }
 
-            if (cmManager.autoSubMenuPosition == true)
+            if(cmManager.autoSubMenuPosition == true)
             {
-                if (cmManager.bottomLeft == true) { listParent.pivot = new Vector2(0f, listParent.pivot.y); }
-                if (cmManager.bottomRight == true) { listParent.pivot = new Vector2(1f, listParent.pivot.y); }
-                if (cmManager.topLeft == true) { listParent.pivot = new Vector2(listParent.pivot.x, 0f); }
-                if (cmManager.topRight == true) { listParent.pivot = new Vector2(listParent.pivot.x, 1f); }
+                if(cmManager.bottomLeft == true) { listParent.pivot = new Vector2(0f, listParent.pivot.y); }
+                if(cmManager.bottomRight == true) { listParent.pivot = new Vector2(1f, listParent.pivot.y); }
+                if(cmManager.topLeft == true) { listParent.pivot = new Vector2(listParent.pivot.x, 0f); }
+                if(cmManager.topRight == true) { listParent.pivot = new Vector2(listParent.pivot.x, 1f); }
             }
 
-            if (cmManager.subMenuBehaviour == ContextMenuManager.SubMenuBehaviour.Hover)
+            if(cmManager.subMenuBehaviour == ContextMenuManager.SubMenuBehaviour.Hover)
                 subMenuAnimator.Play("Menu In");
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
 #if !UNITY_2022_1_OR_NEWER
-            if (cmManager.subMenuBehaviour == ContextMenuManager.SubMenuBehaviour.Hover && !subMenuAnimator.GetCurrentAnimatorStateInfo(0).IsName("Start"))
+            if(cmManager.subMenuBehaviour == ContextMenuManager.SubMenuBehaviour.Hover && !subMenuAnimator.GetCurrentAnimatorStateInfo(0).IsName("Start"))
                 subMenuAnimator.Play("Menu Out");
 #endif
         }
 
-        IEnumerator ExecuteAfterTime(float time)
+        private IEnumerator ExecuteAfterTime(float time)
         {
             yield return new WaitForSecondsRealtime(time);
             itemParent.gameObject.SetActive(false);

@@ -1,59 +1,154 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
-using UnityEngine;
-using TsingPigSDK;
-using UnityEngine.Networking;
-using System.IO;
 using System;
+using System.Collections;
+using System.Threading.Tasks;
+using TsingPigSDK;
+using UnityEngine;
+using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class ServerManager : Singleton<ServerManager>
 {
+    /// <summary>
+    /// 公网ip
+    /// </summary>
+    public string host = "http://1.12.46.157";
+
+    public int post = 80;
+
+    /// <summary>
+    /// 公网url
+    /// </summary>
+    public string url => $"{host}:{post}";
+
     /// <summary>
     /// 头像下载完成后，更新用户显示
     /// </summary>
     public Func<UserInformation> DownLoadUserIcon_Event;
 
+    /// <summary>
+    /// 更新相册列表后回调事件
+    /// </summary>
+    public Action<FolderList> UpdateAlbum_Event;
 
-    public void UploadTest()
+    /// <summary>
+    /// 向服务器上传头像
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="usericon"></param>
+    public void UploadUserIcon(string account, byte[] usericon)
     {
-        StartCoroutine(UploadFile());
+        StartCoroutine(UploadFile(account, "usericon.jpg", usericon));
     }
 
+    /// <summary>
+    /// 从服务器下载头像
+    /// </summary>
+    /// <param name="account"></param>
     public void DownLoadUserIcon(string account)
     {
-        StartCoroutine(DownloadFile(account, CacheManager.Instance.SaveIcon));
+        string filePath = $"{RestrictedStringToLettersOrNumbers(account)}/usericon.jpg";
+        StartCoroutine(DownloadFile(filePath, CacheManager.Instance.SaveIcon));
     }
 
-
-    IEnumerator UploadFile()
+    /// <summary>
+    /// 为用户创建空相册文件夹
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="folderName"></param>
+    /// <param name="callback"></param>
+    public void CreateAlbumFolder(string account, string folderName, Action<string> callback = null)
     {
-        string filePath = "C:\\Users\\TsingPig\\Desktop\\IDLE\\1.jpg";
-        byte[] fileData = File.ReadAllBytes(filePath);
+        StartCoroutine(CreateEmptyFolder($"{account}/{folderName}", callback));
+    }
 
-        UnityWebRequest www = UnityWebRequest.Post("http://1.12.46.157/upload", new List<IMultipartFormSection>
-        {
-            new MultipartFormFileSection("file", fileData, "file.jpg", "image/jpg")
-        });
-        www.downloadHandler = new DownloadHandlerBuffer(); // 禁用压缩
-        yield return www.SendWebRequest();
+    /// <summary>
+    /// 获取用户的相册列表
+    /// </summary>
+    /// <param name="account">用户名</param>
+    public void GetAlbumFolder(string account)
+    {
+        StartCoroutine(GetFolders(account, UpdateAlbum_Event));
+    }
 
-        if(www.result == UnityWebRequest.Result.Success)
+    /// <summary>
+    /// 获取用户相册的所有图片
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="albumName"></param>
+    public void GetAlbumSize(string account, string albumName, Action<int> callback = null)
+    {
+        StartCoroutine(GetConnectSize($"{account}/{albumName}", callback));
+    }
+
+    /// <summary>
+    /// 创建空文件夹
+    /// </summary>
+    /// <param name="account">用户账号</param>
+    /// <param name="folderName">相册名</param>
+    /// <param name="callback">回调</param>
+    /// <returns></returns>
+    private IEnumerator CreateEmptyFolder(string folderPath, Action<string> callback)
+    {
+        // 创建一个表单数据对象
+        using(UnityWebRequest www = UnityWebRequest.Post($"{url}/createEmptyFolder/{folderPath}", ""))
         {
-            Debug.Log("File uploaded successfully");
-        }
-        else
-        {
-            Debug.LogError("Error uploading file: " + www.error);
+            yield return www.SendWebRequest();
+
+            if(www.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log($"文件夹创建成功：{folderPath}");
+                callback?.Invoke(www.result.ToString());
+            }
+            else
+            {
+                Debug.LogError($"Error creating album: {www.error}");
+                callback?.Invoke(www.error);
+            }
         }
     }
 
-
-    IEnumerator DownloadFile(string account, Action<string, byte[]> callback)
+    /// <summary>
+    /// 向服务器上传文件
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="fileName"></param>
+    /// <param name="bytes"></param>
+    /// <returns></returns>
+    private IEnumerator UploadFile(string account, string fileName, byte[] bytes)
     {
-        string fileName = "usericon.jpg";
+        // 创建一个表单数据对象
+        WWWForm form = new WWWForm();
+        form.AddField("account", account); // 添加账户信息到表单
 
-        UnityWebRequest www = UnityWebRequest.Get($"http://1.12.46.157:80/download/" + fileName);
+        // 添加文件数据到表单
+        form.AddBinaryData("file", bytes, fileName, "image/jpg");
+
+        using(UnityWebRequest www = UnityWebRequest.Post($"{host}/upload", form))
+        {
+            www.downloadHandler = new DownloadHandlerBuffer(); // 禁用压缩
+            yield return www.SendWebRequest();
+
+            if(www.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log("File uploaded successfully");
+            }
+            else
+            {
+                Debug.LogError("Error uploading file: " + www.error);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 从服务器下载文件
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="fileName"></param>
+    /// <param name="callback"></param>
+    /// <returns></returns>
+    private IEnumerator DownloadFile(string filePath, Action<byte[]> callback)
+    {
+        UnityWebRequest www = UnityWebRequest.Get($"{url}/download/{filePath}");
 
         yield return www.SendWebRequest();
 
@@ -61,25 +156,136 @@ public class ServerManager : Singleton<ServerManager>
         {
             byte[] fileData = www.downloadHandler.data;
 
-            Debug.Log("文件下载成功");
-
-            callback?.Invoke(account, fileData);
+            Debug.Log($"文件下载成功：{filePath}");
+            callback?.Invoke(fileData);
             DownLoadUserIcon_Event?.Invoke();
         }
         else
         {
-            Debug.LogError($"Error downloading file:{fileName} " + www.error);
+            Debug.LogError($"网络请求错误: {url}/download/{filePath} {www.error}");
         }
+    }
+
+    /// <summary>
+    ///  获得某个文件夹路径下的所有文件夹
+    /// </summary>
+    /// <param name="folderPath"></param>
+    /// <returns></returns>
+    private IEnumerator GetFolders(string folderPath, Action<FolderList> callback = null)
+    {
+        using(UnityWebRequest www = UnityWebRequest.Get($"{url}/get_folders/{folderPath}"))
+        {
+            www.downloadHandler = new DownloadHandlerBuffer();
+            yield return www.SendWebRequest();
+
+            if(www.result == UnityWebRequest.Result.Success)
+            {
+                string jsonResponse = www.downloadHandler.text;
+                FolderList folderList = JsonUtility.FromJson<FolderList>(jsonResponse);
+
+                if(folderList != null && folderList.folders != null)
+                {
+                    foreach(string folder in folderList.folders)
+                    {
+                        Debug.Log("Folder Name: " + folder);
+                    }
+                }
+
+                callback?.Invoke(folderList);
+
+                Debug.Log("folderPath get successfully");
+            }
+            else
+            {
+                Debug.LogError("Error get folderPath: " + www.error);
+            }
+        }
+    }
+
+    /// <summary>
+    ///  获得某个文件夹路径下的文件数量
+    /// </summary>
+    /// <param name="folderPath"></param>
+    /// <returns></returns>
+    private IEnumerator GetConnectSize(string folderPath, Action<int> callback = null)
+    {
+        using(UnityWebRequest www = UnityWebRequest.Get($"{url}/connect_size/{folderPath}"))
+        {
+            www.downloadHandler = new DownloadHandlerBuffer();
+            yield return www.SendWebRequest();
+
+            if(www.result == UnityWebRequest.Result.Success)
+            {
+                string jsonResponse = www.downloadHandler.text;
+                int connectSize = int.Parse(jsonResponse);
+                callback?.Invoke(connectSize);
+                Debug.Log($"{folderPath}：文件数量为{connectSize}");
+            }
+            else
+            {
+                Debug.LogError($"无法获取{folderPath}下的文件数量: " + www.error);
+            }
+        }
+    }
+
+    public async void GetPhotoAsync(string account, string albumName, int photoId, Image image)
+    {
+        using(UnityWebRequest www = UnityWebRequest.Get($"{url}/get_photos/{account}/{albumName}/{photoId}.jpg"))
+        {
+            DownloadHandlerTexture texD1 = new DownloadHandlerTexture(true);
+            www.downloadHandler = texD1;
+
+            www.SendWebRequest();
+
+            while(!www.isDone)
+            {
+                await Task.Yield();
+            }
+
+
+            Debug.Log($"{photoId}请求完毕");
+            //byte[] fileData = www.downloadHandler.data;
+
+            //Texture2D photoTex = new Texture2D(200, 200);
+            Texture2D photoTex = texD1.texture;
+
+            //photoTex.LoadImage(fileData);
+            image.sprite = Sprite.Create(photoTex, new Rect(0, 0, 200, 200), new Vector2(0.5f, 0.5f));
+
+        }
+    }
+
+    /// <summary>
+    /// 返回只包含合法字符（字母/数字）的字符串
+    /// </summary>
+    /// <param name="str"></param>
+    /// <returns></returns>
+    private string RestrictedStringToLettersOrNumbers(string str)
+    {
+        string restrictedString = string.Empty;
+        foreach(char ch in str)
+        {
+            if(char.IsLetterOrDigit(ch))
+            {
+                restrictedString += ch;
+            }
+        }
+        return restrictedString;
     }
 
     private void Init()
     {
-
     }
 
     private new void Awake()
     {
         base.Awake();
         Init();
+    }
+
+    [System.Serializable]
+    public class FolderList
+    {
+        public string[] folders;
     }
 }

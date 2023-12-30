@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.Events;
 using TMPro;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace Michsky.MUIP
 {
@@ -12,6 +12,7 @@ namespace Michsky.MUIP
     {
         // Resources
         public TextMeshProUGUI label;
+
         public TextMeshProUGUI labelHelper;
         public Image labelIcon;
         public Image labelIconHelper;
@@ -24,11 +25,13 @@ namespace Michsky.MUIP
 
         // Saving
         public bool enableIcon = true;
+
         public bool saveSelected = false;
         public string saveKey = "My Selector";
 
         // Settings
         public bool enableIndicators = true;
+
         public bool invokeAtStart;
         public bool invertAnimation;
         public bool loopSelection;
@@ -42,8 +45,11 @@ namespace Michsky.MUIP
 
         // Events
         [System.Serializable] public class SelectorEvent : UnityEvent<int> { }
+
         public SelectorEvent onValueChanged;
+
         [System.Serializable] public class ItemTextChangedEvent : UnityEvent<TMP_Text> { }
+
         public ItemTextChangedEvent onItemTextChanged;
 
         [System.Serializable]
@@ -54,10 +60,10 @@ namespace Michsky.MUIP
             public UnityEvent onItemSelect = new UnityEvent();
         }
 
-        void Awake()
+        private void Awake()
         {
-            if (selectorAnimator == null) { selectorAnimator = gameObject.GetComponent<Animator>(); }
-            if (label == null || labelHelper == null)
+            if(selectorAnimator == null) { selectorAnimator = gameObject.GetComponent<Animator>(); }
+            if(label == null || labelHelper == null)
             {
                 Debug.LogError("<b>[Horizontal Selector]</b> Cannot initalize the object due to missing resources.", this);
                 return;
@@ -66,26 +72,26 @@ namespace Michsky.MUIP
             SetupSelector();
             UpdateContentLayout();
 
-            if (invokeAtStart == true)
+            if(invokeAtStart == true)
             {
                 items[index].onItemSelect.Invoke();
                 onValueChanged.Invoke(index);
             }
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
-            if (gameObject.activeInHierarchy == true) { StartCoroutine("DisableAnimator"); }
+            if(gameObject.activeInHierarchy == true) { StartCoroutine("DisableAnimator"); }
         }
 
         public void SetupSelector()
         {
-            if (items.Count == 0)
+            if(items.Count == 0)
                 return;
 
-            if (saveSelected == true)
+            if(saveSelected == true)
             {
-                if (PlayerPrefs.HasKey("HorizontalSelector_" + saveKey) == true) { defaultIndex = PlayerPrefs.GetInt("HorizontalSelector_" + saveKey); }
+                if(PlayerPrefs.HasKey("HorizontalSelector_" + saveKey) == true) { defaultIndex = PlayerPrefs.GetInt("HorizontalSelector_" + saveKey); }
                 else { PlayerPrefs.SetInt("HorizontalSelector_" + saveKey, defaultIndex); }
             }
 
@@ -93,171 +99,171 @@ namespace Michsky.MUIP
             labelHelper.text = label.text;
             onItemTextChanged?.Invoke(label);
 
-            if (labelIcon != null && enableIcon == true)
+            if(labelIcon != null && enableIcon == true)
             {
                 labelIcon.sprite = items[defaultIndex].itemIcon;
                 labelIconHelper.sprite = labelIcon.sprite;
             }
-
-            else if (enableIcon == false)
+            else if(enableIcon == false)
             {
-                if (labelIcon != null) { labelIcon.gameObject.SetActive(false); }
-                if (labelIconHelper != null) { labelIconHelper.gameObject.SetActive(false); }
+                if(labelIcon != null) { labelIcon.gameObject.SetActive(false); }
+                if(labelIconHelper != null) { labelIconHelper.gameObject.SetActive(false); }
             }
 
             index = defaultIndex;
 
-            if (enableIndicators == true) { UpdateIndicators(); }
+            if(enableIndicators == true) { UpdateIndicators(); }
             else { Destroy(indicatorParent.gameObject); }
         }
 
         public void PreviousItem()
         {
-            if (items.Count == 0)
+            if(items.Count == 0)
                 return;
 
             StopCoroutine("DisableAnimator");
             selectorAnimator.enabled = true;
 
-            if (loopSelection == false)
+            if(loopSelection == false)
             {
-                if (index != 0)
+                if(index != 0)
                 {
                     labelHelper.text = label.text;
-                    if (labelIcon != null && enableIcon == true) { labelIconHelper.sprite = labelIcon.sprite; }
+                    if(labelIcon != null && enableIcon == true) { labelIconHelper.sprite = labelIcon.sprite; }
 
-                    if (index == 0) { index = items.Count - 1; }
+                    if(index == 0) { index = items.Count - 1; }
                     else { index--; }
 
                     label.text = items[index].itemTitle;
                     onItemTextChanged?.Invoke(label);
-                    if (labelIcon != null && enableIcon == true) { labelIcon.sprite = items[index].itemIcon; }
+                    if(labelIcon != null && enableIcon == true) { labelIcon.sprite = items[index].itemIcon; }
 
                     items[index].onItemSelect.Invoke();
                     onValueChanged.Invoke(index);
-                   
+
                     selectorAnimator.Play(null);
                     selectorAnimator.StopPlayback();
 
-                    if (invertAnimation == true) { selectorAnimator.Play("Forward"); }
+                    if(invertAnimation == true) { selectorAnimator.Play("Forward"); }
                     else { selectorAnimator.Play("Previous"); }
                 }
             }
-
             else
             {
                 labelHelper.text = label.text;
-                if (labelIcon != null && enableIcon == true) { labelIconHelper.sprite = labelIcon.sprite; }
+                if(labelIcon != null && enableIcon == true) { labelIconHelper.sprite = labelIcon.sprite; }
 
-                if (index == 0) { index = items.Count - 1; }
+                if(index == 0) { index = items.Count - 1; }
                 else { index--; }
 
                 label.text = items[index].itemTitle;
                 onItemTextChanged?.Invoke(label);
-                if (labelIcon != null && enableIcon == true) { labelIcon.sprite = items[index].itemIcon; }
+                if(labelIcon != null && enableIcon == true) { labelIcon.sprite = items[index].itemIcon; }
 
                 items[index].onItemSelect.Invoke();
                 onValueChanged.Invoke(index);
-                
+
                 selectorAnimator.Play(null);
                 selectorAnimator.StopPlayback();
 
-                if (invertAnimation == true) { selectorAnimator.Play("Forward"); }
+                if(invertAnimation == true) { selectorAnimator.Play("Forward"); }
                 else { selectorAnimator.Play("Previous"); }
             }
 
-            if (saveSelected == true) { PlayerPrefs.SetInt("HorizontalSelector_" + saveKey, index); }
-            if (enableIndicators == true)
+            if(saveSelected == true) { PlayerPrefs.SetInt("HorizontalSelector_" + saveKey, index); }
+            if(enableIndicators == true)
             {
-                for (int i = 0; i < items.Count; ++i)
+                for(int i = 0; i < items.Count; ++i)
                 {
                     GameObject go = indicatorParent.GetChild(i).gameObject;
                     Transform onObj = go.transform.Find("On");
                     Transform offObj = go.transform.Find("Off");
 
-                    if (i == index) { onObj.gameObject.SetActive(true); offObj.gameObject.SetActive(false); }
+                    if(i == index) { onObj.gameObject.SetActive(true); offObj.gameObject.SetActive(false); }
                     else { onObj.gameObject.SetActive(false); offObj.gameObject.SetActive(true); }
                 }
             }
 
-            if (gameObject.activeInHierarchy == true) { StartCoroutine("DisableAnimator"); }
+            if(gameObject.activeInHierarchy == true) { StartCoroutine("DisableAnimator"); }
         }
 
         public void NextItem()
         {
-            if (items.Count == 0)
+            if(items.Count == 0)
                 return;
 
             StopCoroutine("DisableAnimator");
             selectorAnimator.enabled = true;
 
-            if (loopSelection == false)
+            if(loopSelection == false)
             {
-                if (index != items.Count - 1)
+                if(index != items.Count - 1)
                 {
                     labelHelper.text = label.text;
-                    if (labelIcon != null && enableIcon == true) { labelIconHelper.sprite = labelIcon.sprite; }
+                    if(labelIcon != null && enableIcon == true) { labelIconHelper.sprite = labelIcon.sprite; }
 
-                    if ((index + 1) >= items.Count) { index = 0; }
+                    if((index + 1) >= items.Count) { index = 0; }
                     else { index++; }
 
                     label.text = items[index].itemTitle;
                     onItemTextChanged?.Invoke(label);
-                    if (labelIcon != null && enableIcon == true) { labelIcon.sprite = items[index].itemIcon; }
+                    if(labelIcon != null && enableIcon == true) { labelIcon.sprite = items[index].itemIcon; }
 
                     items[index].onItemSelect.Invoke();
                     onValueChanged.Invoke(index);
-                   
+
                     selectorAnimator.Play(null);
                     selectorAnimator.StopPlayback();
 
-                    if (invertAnimation == true) { selectorAnimator.Play("Previous"); }
+                    if(invertAnimation == true) { selectorAnimator.Play("Previous"); }
                     else { selectorAnimator.Play("Forward"); }
                 }
             }
-
             else
             {
                 labelHelper.text = label.text;
-                if (labelIcon != null && enableIcon == true) { labelIconHelper.sprite = labelIcon.sprite; }
+                if(labelIcon != null && enableIcon == true) { labelIconHelper.sprite = labelIcon.sprite; }
 
-                if ((index + 1) >= items.Count) { index = 0; }
+                if((index + 1) >= items.Count) { index = 0; }
                 else { index++; }
 
                 label.text = items[index].itemTitle;
                 onItemTextChanged?.Invoke(label);
-                if (labelIcon != null && enableIcon == true) { labelIcon.sprite = items[index].itemIcon; }
+                if(labelIcon != null && enableIcon == true) { labelIcon.sprite = items[index].itemIcon; }
 
                 items[index].onItemSelect.Invoke();
                 onValueChanged.Invoke(index);
-               
+
                 selectorAnimator.Play(null);
                 selectorAnimator.StopPlayback();
 
-                if (invertAnimation == true) { selectorAnimator.Play("Previous"); }
+                if(invertAnimation == true) { selectorAnimator.Play("Previous"); }
                 else { selectorAnimator.Play("Forward"); }
             }
 
-            if (saveSelected == true) { PlayerPrefs.SetInt("HorizontalSelector_" + saveKey, index); }
-            if (enableIndicators == true)
+            if(saveSelected == true) { PlayerPrefs.SetInt("HorizontalSelector_" + saveKey, index); }
+            if(enableIndicators == true)
             {
-                for (int i = 0; i < items.Count; ++i)
+                for(int i = 0; i < items.Count; ++i)
                 {
                     GameObject go = indicatorParent.GetChild(i).gameObject;
                     Transform onObj = go.transform.Find("On"); ;
                     Transform offObj = go.transform.Find("Off");
 
-                    if (i == index) { onObj.gameObject.SetActive(true); offObj.gameObject.SetActive(false); }
+                    if(i == index) { onObj.gameObject.SetActive(true); offObj.gameObject.SetActive(false); }
                     else { onObj.gameObject.SetActive(false); offObj.gameObject.SetActive(true); }
                 }
             }
 
-            if (gameObject.activeInHierarchy == true) { StartCoroutine("DisableAnimator"); }
+            if(gameObject.activeInHierarchy == true) { StartCoroutine("DisableAnimator"); }
         }
 
         // Obsolete
-        public void PreviousClick() { PreviousItem(); }
-        public void ForwardClick() { NextItem(); }
+        public void PreviousClick()
+        { PreviousItem(); }
+
+        public void ForwardClick()
+        { NextItem(); }
 
         public void CreateNewItem(string title)
         {
@@ -289,7 +295,7 @@ namespace Michsky.MUIP
 
             label.text = items[index].itemTitle;
             onItemTextChanged?.Invoke(label);
-            if (labelIcon != null && enableIcon == true) { labelIcon.sprite = items[index].itemIcon; }
+            if(labelIcon != null && enableIcon == true) { labelIcon.sprite = items[index].itemIcon; }
 
             UpdateContentLayout();
             UpdateIndicators();
@@ -298,29 +304,29 @@ namespace Michsky.MUIP
 
         public void UpdateIndicators()
         {
-            if (enableIndicators == false)
+            if(enableIndicators == false)
                 return;
 
-            foreach (Transform child in indicatorParent) { Destroy(child.gameObject); }
-            for (int i = 0; i < items.Count; ++i)
+            foreach(Transform child in indicatorParent) { Destroy(child.gameObject); }
+            for(int i = 0; i < items.Count; ++i)
             {
                 GameObject go = Instantiate(indicatorObject, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
                 go.transform.SetParent(indicatorParent, false);
                 go.name = items[i].itemTitle;
-                
+
                 Transform onObj = go.transform.Find("On");
                 Transform offObj = go.transform.Find("Off");
 
-                if (i == index) { onObj.gameObject.SetActive(true); offObj.gameObject.SetActive(false); }
+                if(i == index) { onObj.gameObject.SetActive(true); offObj.gameObject.SetActive(false); }
                 else { onObj.gameObject.SetActive(false); offObj.gameObject.SetActive(true); }
             }
         }
 
         public void UpdateContentLayout()
         {
-            if (contentLayout != null) { contentLayout.spacing = contentSpacing; }
-            if (contentLayoutHelper != null) { contentLayoutHelper.spacing = contentSpacing; }
-            if (labelIcon != null)
+            if(contentLayout != null) { contentLayout.spacing = contentSpacing; }
+            if(contentLayoutHelper != null) { contentLayoutHelper.spacing = contentSpacing; }
+            if(labelIcon != null)
             {
                 labelIcon.transform.localScale = new Vector3(iconScale, iconScale, iconScale);
                 labelIconHelper.transform.localScale = new Vector3(iconScale, iconScale, iconScale);
@@ -330,7 +336,7 @@ namespace Michsky.MUIP
             LayoutRebuilder.ForceRebuildLayoutImmediate(label.transform.parent.GetComponent<RectTransform>());
         }
 
-        IEnumerator DisableAnimator()
+        private IEnumerator DisableAnimator()
         {
             yield return new WaitForSeconds(0.5f);
             selectorAnimator.enabled = false;

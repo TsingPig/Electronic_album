@@ -19,19 +19,24 @@ namespace MVPFrameWork
             Init();
         }
 
+        public void Enter(int viewId, IModel model)
+        {
+            _module.Enter(viewId, model);
+        }
+
         public void Enter(int viewId, Action callback = null)
         {
-            Debug.Log("Enter" + viewId);
             _module.Enter(viewId, callback);
         }
+
         public void Quit(int viewId, Action callback = null)
         {
             _module?.Quit(viewId, callback);
         }
+
         public void Preload(int viewId, bool instantiate = true)
         {
             _module?.Preload(viewId, instantiate);
         }
-
     }
 }

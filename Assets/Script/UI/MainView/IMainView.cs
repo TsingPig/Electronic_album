@@ -1,17 +1,15 @@
 using Michsky.MUIP;
 using MVPFrameWork;
 using TMPro;
-using UnityEngine;
 using UnityEngine.UI;
 
 public interface IMainView : IView
 {
-
-
     #region TopPanel
+
     ButtonManager BtnSetting { get; set; }
 
-    #endregion
+    #endregion TopPanel
 
     #region UserInformationView
 
@@ -37,7 +35,13 @@ public interface IMainView : IView
     /// </summary>
     Button BtnSureUpdateNickName { get; set; }
 
-    #endregion
+    #endregion UserInformationView
 
+    #region AlbumView
 
+    ButtonManager BtnCreateAlbum { get; }
+
+    GridLayoutGroup GridAlbumContent { get; }
+
+    #endregion AlbumView
 }

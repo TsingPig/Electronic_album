@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+
 namespace MVPFrameWork
 {
     public static class Container
@@ -186,6 +187,4 @@ namespace MVPFrameWork
             GenerateInterfaceField(target, type.BaseType);
         }
     }
-
 }
-

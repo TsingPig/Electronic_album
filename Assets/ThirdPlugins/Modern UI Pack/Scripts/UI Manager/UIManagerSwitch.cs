@@ -8,36 +8,38 @@ namespace Michsky.MUIP
     {
         [Header("Settings")]
         [SerializeField] private UIManager UIManagerAsset;
+
         [HideInInspector] public bool overrideColors = false;
 
         [Header("Resources")]
         [SerializeField] private Image border;
+
         [SerializeField] private Image background;
         [SerializeField] private Image handleOn;
         [SerializeField] private Image handleOff;
 
-        void Awake()
+        private void Awake()
         {
-            if (UIManagerAsset == null) { UIManagerAsset = Resources.Load<UIManager>("MUIP Manager"); }
+            if(UIManagerAsset == null) { UIManagerAsset = Resources.Load<UIManager>("MUIP Manager"); }
 
             this.enabled = true;
 
-            if (UIManagerAsset.enableDynamicUpdate == false)
+            if(UIManagerAsset.enableDynamicUpdate == false)
             {
                 UpdateSwitch();
                 this.enabled = false;
             }
         }
 
-        void Update()
+        private void Update()
         {
-            if (UIManagerAsset == null) { return; }
-            if (UIManagerAsset.enableDynamicUpdate == true) { UpdateSwitch(); }
+            if(UIManagerAsset == null) { return; }
+            if(UIManagerAsset.enableDynamicUpdate == true) { UpdateSwitch(); }
         }
 
-        void UpdateSwitch()
+        private void UpdateSwitch()
         {
-            if (overrideColors == false)
+            if(overrideColors == false)
             {
                 border.color = new Color(UIManagerAsset.switchBorderColor.r, UIManagerAsset.switchBorderColor.g, UIManagerAsset.switchBorderColor.b, border.color.a);
                 background.color = new Color(UIManagerAsset.switchBackgroundColor.r, UIManagerAsset.switchBackgroundColor.g, UIManagerAsset.switchBackgroundColor.b, background.color.a);

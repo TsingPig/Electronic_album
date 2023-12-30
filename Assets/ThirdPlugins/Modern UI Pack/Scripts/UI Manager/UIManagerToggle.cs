@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 namespace Michsky.MUIP
 {
@@ -12,31 +12,32 @@ namespace Michsky.MUIP
 
         [Header("Resources")]
         [SerializeField] private Image border;
+
         [SerializeField] private Image background;
         [SerializeField] private Image check;
         [SerializeField] private TextMeshProUGUI onLabel;
         [SerializeField] private TextMeshProUGUI offLabel;
 
-        void Awake()
+        private void Awake()
         {
-            if (UIManagerAsset == null) { UIManagerAsset = Resources.Load<UIManager>("MUIP Manager"); }
+            if(UIManagerAsset == null) { UIManagerAsset = Resources.Load<UIManager>("MUIP Manager"); }
 
             this.enabled = true;
 
-            if (UIManagerAsset.enableDynamicUpdate == false)
+            if(UIManagerAsset.enableDynamicUpdate == false)
             {
                 UpdateToggle();
                 this.enabled = false;
             }
         }
 
-        void Update()
+        private void Update()
         {
-            if (UIManagerAsset == null) { return; }
-            if (UIManagerAsset.enableDynamicUpdate == true) { UpdateToggle(); }
+            if(UIManagerAsset == null) { return; }
+            if(UIManagerAsset.enableDynamicUpdate == true) { UpdateToggle(); }
         }
 
-        void UpdateToggle()
+        private void UpdateToggle()
         {
             border.color = UIManagerAsset.toggleBorderColor;
             background.color = UIManagerAsset.toggleBackgroundColor;

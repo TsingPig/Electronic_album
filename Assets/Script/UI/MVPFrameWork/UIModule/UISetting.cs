@@ -1,20 +1,17 @@
 using MVPFrameWork.Singleton;
-using System.Collections.Generic;
-using UnityEngine.Assertions;
-using UnityEngine;
 using System;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace MVPFrameWork
 {
-
     public static class UISetting
     {
         public static IResourceLoader DefaultResoucesLoader = Singleton<ResManager>.Instance;
 
-
         public static ParentParam DefaultParentParam = ParentParam.Default;
     }
-
 
     internal static class NodeContainer
     {

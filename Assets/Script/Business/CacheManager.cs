@@ -1,16 +1,40 @@
+using System;
 using System.IO;
 using TsingPigSDK;
 using UnityEngine;
 using UIManager = MVPFrameWork.UIManager;
 
-
 public class CacheManager : Singleton<CacheManager>
 {
+    private UserInformation _userInform;
 
-    //public static string CACHA_PATH => Application.persistentDataPath;
+#if UNITY_EDITOR
     public const string CACHA_PATH = "Assets/Resources/UserInformation";
+#else
+    public static string CACHA_PATH => Application.persistentDataPath;
+#endif
+
     public static string USER_DATA_FILE => CACHA_PATH + "/userData.json";
+
     public static string ICON_PATH => CACHA_PATH + "/icons";
+
+    /// <summary>
+    /// 程序入口，首先判断是否存在缓存的账号信息。是则直接自动登录。
+    /// </summary>
+    public void ApplicationEntry()
+    {
+        string filePath = USER_DATA_FILE;
+        if(File.Exists(filePath))
+        {
+            UIManager.Instance.Enter(ViewId.MainView);
+
+            UserInformationCached = true;
+        }
+        else
+        {
+            UIManager.Instance.Enter(ViewId.LoginView);
+        }
+    }
 
     /// <summary>
     /// 加载头像纹理
@@ -30,7 +54,30 @@ public class CacheManager : Singleton<CacheManager>
     /// </summary>
     public bool UserInformationCached = false;
 
-    private string UserName
+    public UserInformation UserInform
+    {
+        get
+        {
+            if(_userInform == null)
+            {
+                if(UserInformationCached)
+                {
+                    string json = File.ReadAllText(USER_DATA_FILE);
+                    _userInform = JsonUtility.FromJson<UserInformation>(json);
+                }
+            }
+            return _userInform;
+        }
+        set
+        {
+            _userInform = value;
+            UserInformUpdate_Event?.Invoke();
+        }
+    }
+
+    public Func<UserInformation> UserInformUpdate_Event = null;
+
+    public string UserName
     {
         get
         {
@@ -54,25 +101,6 @@ public class CacheManager : Singleton<CacheManager>
         }
     }
 
-
-    /// <summary>
-    /// 程序入口，首先判断是否存在缓存的账号信息。是则直接自动登录。
-    /// </summary>
-    public void ApplicationEntry()
-    {
-        string filePath =USER_DATA_FILE;
-        if(File.Exists(filePath))
-        {
-            UIManager.Instance.Enter(ViewId.MainView);
-
-            UserInformationCached = true;
-        }
-        else
-        {
-            UIManager.Instance.Enter(ViewId.LoginView);
-        }
-    }
-
     /// <summary>
     /// 登录时调用，保存用户信息和头像到本地
     /// </summary>
@@ -90,34 +118,13 @@ public class CacheManager : Singleton<CacheManager>
             iconPath = SaveIcon(account, icon)
         };
 
+        UserInform = userData;
+
         string json = JsonUtility.ToJson(userData);
 
         // 保存到本地文件
         File.WriteAllText(USER_DATA_FILE, json);
         Debug.Log($"缓存信息：账号：{account}   昵称：{nickName}   图像：{icon.name}");
-    }
-
-
-    /// <summary>
-    /// 登录时调用，保存用户信息和头像到本地
-    /// </summary>
-    /// <param name="account">账号</param>
-    /// <param name="nickName">昵称</param>
-    /// <param name="icon">头像贴图</param>
-    public void SaveUserInformation(string account, string nickName)
-    {
-        UserInformationCached = true;
-
-        UserInformation userData = new UserInformation
-        {
-            userName = account,
-            nickName = nickName,
-            iconPath = Path.Combine(ICON_PATH, account + ".jpg")
-        };
-
-        string json = JsonUtility.ToJson(userData);
-        // 保存到本地文件
-        File.WriteAllText(USER_DATA_FILE, json);
     }
 
     /// <summary>
@@ -139,6 +146,8 @@ public class CacheManager : Singleton<CacheManager>
 
                 string updateJson = JsonUtility.ToJson(userData);
 
+                UserInform = userData;
+
                 File.WriteAllText(filePath, updateJson);
 
                 Debug.Log($"昵称已修改为：{updateNickName}");
@@ -158,19 +167,8 @@ public class CacheManager : Singleton<CacheManager>
     }
 
     /// <summary>
-    /// 更新头像缓存
-    /// </summary>
-    /// <param name="updateIcon"></param>
-    public void UpdateIcon(Texture2D updateIcon)
-    {
-        SaveIcon(UserName, updateIcon);
-    }
-
-
-    /// <summary>
     /// 用户退出登录时调用，清除用户信息和头像文件
     /// </summary>
-
     public void ClearUserInformationCache()
     {
         if(File.Exists(USER_DATA_FILE))
@@ -185,23 +183,38 @@ public class CacheManager : Singleton<CacheManager>
         }
         Debug.Log("清除用户信息缓存");
         UserInformationCached = false;
-
-
+        UserInform = null;
     }
-
 
     /// <summary>
     /// 以字节流形式保存头像到本地。
     /// </summary>
     /// <param name="account"></param>
     /// <param name="bytes"></param>
-    public void SaveIcon(string account, byte[] bytes)
+    public void SaveIcon(byte[] bytes)
     {
         if(!Directory.Exists(ICON_PATH))
         {
             Directory.CreateDirectory(ICON_PATH);
         }
-        string fileName = Path.Combine(ICON_PATH, account + ".jpg");
+        string fileName = Path.Combine(ICON_PATH, UserName + ".jpg");
+        File.WriteAllBytes(fileName, bytes);
+    }
+
+    /// <summary>
+    /// 更新头像：缓存+服务器
+    /// </summary>
+    /// <param name="updateIcon"></param>
+    public void UpdateIcon(Texture2D updateIcon)
+    {
+        if(!Directory.Exists(ICON_PATH))
+        {
+            Directory.CreateDirectory(ICON_PATH);
+        }
+
+        string fileName = Path.Combine(ICON_PATH, UserName + ".jpg");
+        byte[] bytes = updateIcon.EncodeToPNG();
+        ServerManager.Instance.UploadUserIcon(UserName, bytes);
         File.WriteAllBytes(fileName, bytes);
     }
 
@@ -220,6 +233,7 @@ public class CacheManager : Singleton<CacheManager>
 
         string fileName = Path.Combine(ICON_PATH, account + ".jpg");
         byte[] bytes = icon.EncodeToPNG();
+
         File.WriteAllBytes(fileName, bytes);
 
         return fileName;
@@ -229,6 +243,5 @@ public class CacheManager : Singleton<CacheManager>
     {
         base.Awake();
         ApplicationEntry();
-
     }
 }

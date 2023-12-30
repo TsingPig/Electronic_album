@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+
 namespace TsingPigSDK
 {
     /// <summary>
@@ -23,6 +24,7 @@ namespace TsingPigSDK
         private BasePanel _topPanel;
 
         private Dictionary<UIType, GameObject> _dicUI;
+
         public PanelBuffer()
         {
             _panelStack = new Stack<BasePanel>();
@@ -36,7 +38,7 @@ namespace TsingPigSDK
         public void Push(BasePanel nextPanel)
         {
             Debug.Log(nextPanel.UIType.Name);
-            if (_panelStack.Count > 0)
+            if(_panelStack.Count > 0)
             {
                 _topPanel = _panelStack.Peek();
                 _topPanel.OnPause();
@@ -47,15 +49,16 @@ namespace TsingPigSDK
             _topPanel = _panelStack.Peek();
             _topPanel.OnEntry();
         }
+
         public void Pop()
         {
-            if (_panelStack.Count > 0)
+            if(_panelStack.Count > 0)
             {
                 _panelStack.Peek().OnExit();
                 DestroyUI(_panelStack.Peek().UIType);
                 _panelStack.Pop();
             }
-            if (_panelStack.Count > 0)
+            if(_panelStack.Count > 0)
             {
                 _panelStack.Peek().OnResume();
             }
@@ -69,9 +72,9 @@ namespace TsingPigSDK
         public GameObject GetSingleUI(UIType type)
         {
             GameObject parent = GameObject.Find("Canvas");
-            if (parent != null)
+            if(parent != null)
             {
-                if (_dicUI.ContainsKey(type))
+                if(_dicUI.ContainsKey(type))
                 {
                     return _dicUI[type];
                 }
@@ -87,19 +90,18 @@ namespace TsingPigSDK
             }
             else
             {
-
                 Log.Error("丢失Canvas，请创建Canvas对象");
                 return null;
             }
         }
+
         public void DestroyUI(UIType type)
         {
-            if (_dicUI.ContainsKey(type))
+            if(_dicUI.ContainsKey(type))
             {
                 GameObject.Destroy(_dicUI[type]);
                 _dicUI.Remove(type);
             }
         }
-
     }
 }

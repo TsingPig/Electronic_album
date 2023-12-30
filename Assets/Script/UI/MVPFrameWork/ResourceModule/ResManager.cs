@@ -1,8 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Resources;
-using UnityEngine;
 
 namespace MVPFrameWork.Singleton
 {
@@ -52,14 +48,12 @@ namespace MVPFrameWork.Singleton
             _loader?.UnloadAll();
         }
 
-
         private void SetupLoader()
         {
-            if (_loader == null)
+            if(_loader == null)
             {
                 // _loader = new AddressablesLoader();
             }
         }
     }
 }
-

@@ -1,8 +1,9 @@
 ﻿using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
-using TMPro;
+
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
@@ -15,10 +16,12 @@ namespace Michsky.MUIP
     {
         [Header("Resources")]
         public TMP_InputField inputText;
+
         public Animator inputFieldAnimator;
 
         [Header("Settings")]
         public bool processSubmit = false;
+
         public bool clearOnSubmit = true;
 
         [Header("Events")]
@@ -26,50 +29,51 @@ namespace Michsky.MUIP
 
         // Hidden variables
         private string inAnim = "In";
+
         private string outAnim = "Out";
         private string instaInAnim = "Instant In";
         private string instaOutAnim = "Instant Out";
 
-        void Awake()
+        private void Awake()
         {
-            if (inputText == null) { inputText = gameObject.GetComponent<TMP_InputField>(); }
-            if (inputFieldAnimator == null) { inputFieldAnimator = gameObject.GetComponent<Animator>(); }
+            if(inputText == null) { inputText = gameObject.GetComponent<TMP_InputField>(); }
+            if(inputFieldAnimator == null) { inputFieldAnimator = gameObject.GetComponent<Animator>(); }
 
             inputText.onSelect.AddListener(delegate { AnimateIn(); });
             inputText.onEndEdit.AddListener(delegate { AnimateOut(); });
             UpdateStateInstant();
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
-            if (inputText == null)
+            if(inputText == null)
                 return;
 
             inputText.ForceLabelUpdate();
             UpdateStateInstant();
 
-            if (gameObject.activeInHierarchy == true) { StartCoroutine("DisableAnimator"); }
+            if(gameObject.activeInHierarchy == true) { StartCoroutine("DisableAnimator"); }
         }
 
-        void Update()
+        private void Update()
         {
-            if (processSubmit == false ||
+            if(processSubmit == false ||
                 string.IsNullOrEmpty(inputText.text) == true ||
                 EventSystem.current.currentSelectedGameObject != inputText.gameObject)
             { return; }
 
 #if ENABLE_LEGACY_INPUT_MANAGER
-            if (Input.GetKeyDown(KeyCode.Return)) { onSubmit.Invoke(); if (clearOnSubmit == true) { inputText.text = ""; } }
+            if(Input.GetKeyDown(KeyCode.Return)) { onSubmit.Invoke(); if(clearOnSubmit == true) { inputText.text = ""; } }
 #elif ENABLE_INPUT_SYSTEM
             if (Keyboard.current.enterKey.wasPressedThisFrame) { onSubmit.Invoke(); if (clearOnSubmit == true) { inputText.text = ""; } }
 #endif
         }
 
-        public void AnimateIn() 
+        public void AnimateIn()
         {
             StopCoroutine("DisableAnimator");
-         
-            if (inputFieldAnimator.gameObject.activeInHierarchy == true && inputText.text.Length == 0) 
+
+            if(inputFieldAnimator.gameObject.activeInHierarchy == true && inputText.text.Length == 0)
             {
                 inputFieldAnimator.enabled = true;
                 inputFieldAnimator.Play(inAnim);
@@ -79,27 +83,27 @@ namespace Michsky.MUIP
 
         public void AnimateOut()
         {
-            if (inputFieldAnimator.gameObject.activeInHierarchy == true)
+            if(inputFieldAnimator.gameObject.activeInHierarchy == true)
             {
                 inputFieldAnimator.enabled = true;
-                if (inputText.text.Length == 0) { inputFieldAnimator.Play(outAnim); }
+                if(inputText.text.Length == 0) { inputFieldAnimator.Play(outAnim); }
                 StartCoroutine("DisableAnimator");
             }
         }
 
         public void UpdateState()
         {
-            if (inputText.text.Length == 0) { AnimateOut(); }
+            if(inputText.text.Length == 0) { AnimateOut(); }
             else { AnimateIn(); }
         }
 
         public void UpdateStateInstant()
         {
-            if (inputText.text.Length == 0) { inputFieldAnimator.Play(instaOutAnim); }
+            if(inputText.text.Length == 0) { inputFieldAnimator.Play(instaOutAnim); }
             else { inputFieldAnimator.Play(instaInAnim); }
         }
 
-        IEnumerator DisableAnimator()
+        private IEnumerator DisableAnimator()
         {
             yield return new WaitForSeconds(1);
             inputFieldAnimator.enabled = false;

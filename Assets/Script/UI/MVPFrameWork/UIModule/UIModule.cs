@@ -12,7 +12,7 @@ namespace MVPFrameWork
         {
             get
             {
-                IView value = null;
+                IView value;
                 _uiDic.TryGetValue(viewId, out value);
                 return value;
             }
@@ -22,15 +22,53 @@ namespace MVPFrameWork
             }
         }
 
-        public void Enter(int viewId, Action callback = null)
+        public void Enter(int viewId, IModel model)
         {
-            Log.Info("进入：", viewId.ToString());
             IView view = this[viewId];
             if(view == null)
             {
+                Log.Info("Enter：", viewId.ToString());
+
                 view = Container.Resolve<IView>(viewId);
+
+                if(view == null)
+                {
+                    Log.Error($"{viewId}解析失败");
+                }
+
+                view.Presenter.Model = model;
+
                 view?.Create(delegate
                 {
+                    Log.Info(viewId.ToString() + "UIModule Enter");
+                    this[viewId] = view;
+                });
+            }
+            else
+            {
+                view.Presenter.Model = model;
+                view.Show();
+            }
+        }
+
+        public void Enter(int viewId, Action callback = null)
+        {
+            IView view = this[viewId];
+            if(view == null)
+            {
+                Log.Info("Enter：", viewId.ToString());
+
+                view = Container.Resolve<IView>(viewId);
+
+                if(view == null)
+                {
+                    Log.Error($"{viewId}解析失败");
+                }
+
+                view?.Create(delegate
+                {
+                    Log.Info(viewId.ToString() + "UIModule Enter");
+
                     this[viewId] = view;
                     view?.Show(callback);
                 });
@@ -51,6 +89,8 @@ namespace MVPFrameWork
 
             view.Hide(delegate
             {
+                Log.Info(viewId.ToString() + "UIModule Quit");
+
                 if(destroy)
                 {
                     view.Destroy();
@@ -81,7 +121,5 @@ namespace MVPFrameWork
                 }
             }, instantiate);
         }
-
-
     }
 }

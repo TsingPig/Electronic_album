@@ -12,41 +12,42 @@ namespace Michsky.MUIP
 
         [Header("Resources")]
         public List<GameObject> images = new List<GameObject>();
+
         public List<GameObject> imagesWithAlpha = new List<GameObject>();
 
-        void Awake()
+        private void Awake()
         {
-            if (UIManagerAsset == null) { UIManagerAsset = Resources.Load<UIManager>("MUIP Manager"); }
+            if(UIManagerAsset == null) { UIManagerAsset = Resources.Load<UIManager>("MUIP Manager"); }
 
             this.enabled = true;
 
-            if (UIManagerAsset.enableDynamicUpdate == false)
+            if(UIManagerAsset.enableDynamicUpdate == false)
             {
                 UpdateAnimatedIcon();
                 this.enabled = false;
             }
         }
 
-        void Update()
+        private void Update()
         {
-            if (UIManagerAsset == null) { return; }
-            if (UIManagerAsset.enableDynamicUpdate == true) { UpdateAnimatedIcon(); }
+            if(UIManagerAsset == null) { return; }
+            if(UIManagerAsset.enableDynamicUpdate == true) { UpdateAnimatedIcon(); }
         }
 
-        void UpdateAnimatedIcon()
+        private void UpdateAnimatedIcon()
         {
-            for (int i = 0; i < images.Count; ++i)
+            for(int i = 0; i < images.Count; ++i)
             {
-                if (images[i] == null)
+                if(images[i] == null)
                     continue;
 
                 Image currentImage = images[i].GetComponent<Image>();
                 currentImage.color = UIManagerAsset.animatedIconColor;
             }
 
-            for (int i = 0; i < imagesWithAlpha.Count; ++i)
+            for(int i = 0; i < imagesWithAlpha.Count; ++i)
             {
-                if (imagesWithAlpha[i] == null)
+                if(imagesWithAlpha[i] == null)
                     continue;
 
                 Image currentAlphaImage = imagesWithAlpha[i].GetComponent<Image>();
