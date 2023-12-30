@@ -59,13 +59,13 @@ namespace TsingPigSDK
                 }
                 else
                 {
-                    Debug.LogError($"{addressablePath}GameObject¼ÓÔØ´íÎó");
+                    Debug.LogError($"{addressablePath}GameObjectï¿½ï¿½ï¿½Ø´ï¿½ï¿½ï¿½");
                     return null;
                 }
             }
             else
             {
-                Debug.LogError($"{addressablePath}ÕÒ²»µ½×ÊÔ´Î»ÖÃ");
+                Debug.LogError($"{addressablePath}ï¿½Ò²ï¿½ï¿½ï¿½ï¿½ï¿½Ô´Î»ï¿½ï¿½");
                 return null;
             }
         }
@@ -81,13 +81,36 @@ namespace TsingPigSDK
             }
             else
             {
-                Debug.LogWarning($"³¢ÊÔÉ¾³ý{addressablePath}ÊÇÎÞÐ§µÄ");
+                Debug.LogWarning($"ï¿½ï¿½ï¿½ï¿½É¾ï¿½ï¿½{addressablePath}ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½");
             }
         }
 
         private static void DeactivateObject(GameObject obj)
         {
             obj.SetActive(false);
+        }
+
+        public static void DeactivateObjectByIndex(string addressablePath, int idx)
+        {
+            if(_objectPools.ContainsKey(addressablePath))
+            {
+                foreach(var obj in _objectPools[addressablePath])
+                {
+                    if(obj.activeSelf) 
+                    {
+                        if(idx == 0)
+                        {
+                            DeactivateObject(obj);
+                            break;
+                        }
+                        idx--;
+                    } 
+                }
+            }
+            else
+            {
+                // Debug.LogWarning($"ï¿½ï¿½ï¿½ï¿½É¾ï¿½ï¿½{addressablePath}ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½");
+            }
         }
     }
 }
