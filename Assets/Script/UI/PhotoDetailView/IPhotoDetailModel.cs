@@ -1,4 +1,3 @@
-using UnityEngine;
 using UnityEngine.UI;
 
 public interface IPhotoDetailModel : IModel
@@ -13,5 +12,7 @@ public interface IPhotoDetailModel : IModel
     /// </summary>
     int PhotoId { get; }
 
-    void SetModel(Image imgPhotoDetail, int photoId);
+    string AlbumName { get; }
+
+    void SetModel(Image imgPhotoDetail, int photoId, string albumName);
 }
