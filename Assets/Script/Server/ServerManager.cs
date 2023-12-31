@@ -243,7 +243,7 @@ public class ServerManager : Singleton<ServerManager>
         form.AddField("album_name", albumName); // 添加账户信息到表单
 
         // 添加文件数据到表单
-        form.AddBinaryData("file", bytes, ((int)Time.time).ToString(), "image/png");
+        form.AddBinaryData("file", bytes, $"{(int)Time.time}.png", "image/png");
 
         if(bytes == null)
         {
