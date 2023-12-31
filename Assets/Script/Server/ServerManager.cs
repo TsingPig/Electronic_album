@@ -163,9 +163,28 @@ public class ServerManager : Singleton<ServerManager>
         }
     }
 
+    /// <summary>
+    /// 删除图片
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="albumName"></param>
+    /// <param name="photoIndex">图片实际索引</param>
+    /// <param name="callback"></param>
     public void DeletePhoto(string account, string albumName, int photoIndex, Action<int> callback = null)
     {
         StartCoroutine(DeletePhoto($"{account}/{albumName}/{photoIndex}.jpg", callback));
+    }
+
+    /// <summary>
+    /// 创建照片墙动态
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="content"></param>
+    /// <param name="photoSize"></param>
+    /// <param name="callback"></param>
+    public void UploadMomentItem(string account, string content, int photoSize, Action callback = null)
+    {
+        StartCoroutine(UploadMoment(account, content, photoSize, callback));
     }
 
     /// <summary>
@@ -432,6 +451,39 @@ public class ServerManager : Singleton<ServerManager>
             else
             {
                 Debug.LogWarning($"Error delete photo: {www.error}");
+            }
+        }
+    }
+
+    /// <summary>
+    /// 上传动态信息
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="content">动态文案</param>
+    /// <param name="photoSize">图片数量</param>
+    /// <param name="callback"></param>
+    /// <returns></returns>
+    private IEnumerator UploadMoment(string account, string content, int photoSize, Action callback = null)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("size", photoSize);
+        form.AddField("text", content);
+
+        //form.AddBinaryData("file", bytes, fileName, "image/jpg");
+
+        using(UnityWebRequest www = UnityWebRequest.Post($"{host}/upload_moments", form))
+        {
+            www.downloadHandler = new DownloadHandlerBuffer(); // 禁用压缩
+            yield return www.SendWebRequest();
+
+            if(www.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log("Moment uploaded successfully");
+                callback?.Invoke();
+            }
+            else
+            {
+                Debug.LogError("Error uploading Moment: " + www.error);
             }
         }
     }

@@ -64,16 +64,6 @@ public class CreatePhotoWallItemPresenter : PresenterBase<ICreatePhotoWallItemVi
         });
     }
 
-    private async void VisualizeUploadedPhotos(int uploadedPhotoCount)
-    {
-        for(int i = 0; i < uploadedPhotoCount; i++)
-        {
-            PhotoItem photoItem = (await Instantiater.InstantiateAsync(StrDef.PHOTO_UPLOAD_ITEM_DATA_PATH, _view.GridPhotoContent.transform)).GetComponent<PhotoItem>();
-            Image photoImage = photoItem.Cover;
-            photoImage.sprite = Sprite.Create(_model.Photos[i], new Rect(0, 0, 200, 200), new Vector2(0.5f, 0.5f));
-        }
-    }
-
     public void CreatePhotoWallItem()
     {
         ServerManager.Instance.CreateAlbumFolder(CacheManager.Instance.UserName, DefaultTargetAlbumName, () =>
@@ -84,7 +74,10 @@ public class CreatePhotoWallItemPresenter : PresenterBase<ICreatePhotoWallItemVi
 
                 ServerManager.Instance.UploadPhotos(CacheManager.Instance.UserName, DefaultTargetAlbumName, _model.Photos.EncodeToPNG(), () =>
                 {
-
+                    ServerManager.Instance.UploadMomentItem(CacheManager.Instance.UserName, _view.InptContent.text, _model.Photos.Length, () =>
+                    {
+                        Debug.Log($"上传动态成功");
+                    });
                 });
             }
             else
@@ -99,6 +92,16 @@ public class CreatePhotoWallItemPresenter : PresenterBase<ICreatePhotoWallItemVi
         MVPFrameWork.UIManager.Instance.Quit(ViewId.CreatePhotoWallItemView);
     }
 
+    private async void VisualizeUploadedPhotos(int uploadedPhotoCount)
+    {
+        for(int i = 0; i < uploadedPhotoCount; i++)
+        {
+            PhotoItem photoItem = (await Instantiater.InstantiateAsync(StrDef.PHOTO_UPLOAD_ITEM_DATA_PATH, _view.GridPhotoContent.transform)).GetComponent<PhotoItem>();
+            Image photoImage = photoItem.Cover;
+            photoImage.sprite = Sprite.Create(_model.Photos[i], new Rect(0, 0, 200, 200), new Vector2(0.5f, 0.5f));
+        }
+    }
+
     private void Initialize()
     {
         _view.InptContent.text = string.Empty;
@@ -110,6 +113,8 @@ public class CreatePhotoWallItemPresenter : PresenterBase<ICreatePhotoWallItemVi
                 Instantiater.ReleaseObject(StrDef.PHOTO_UPLOAD_ITEM_DATA_PATH, _view.GridPhotoContent.transform.GetChild(i).gameObject);
             }
         }
+
         _model.Photos = null;
+        _model.Content = null;
     }
 }

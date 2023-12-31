@@ -4,5 +4,7 @@ public interface ICreatePhotoWallItemModel : IModel
 {
     Texture2D[] Photos { get; set; }
 
-    void SetModel(Texture2D[] photos);
+    string Content { get; set; }
+
+    void SetModel(Texture2D[] photos, string content);
 }
