@@ -85,14 +85,6 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
     {
         Instantiater.DeactivateObjectPool(StrDef.PHOTO_ITEM_DATA_PATH);
 
-        //for(int i = albumSize - 1; i >= 0; i--)
-        //{
-        //    PhotoItem photoItem = (await Instantiater.InstantiateAsync(StrDef.PHOTO_ITEM_DATA_PATH, _view.GridPhotoContent.transform)).GetComponent<PhotoItem>();
-        //    photoItem.photoId = i;
-        //    Image photoImage = photoItem.Cover;
-        //    ServerManager.Instance.GetPhotoAsync(CacheManager.Instance.UserName, _model.AlbumName, i, photoImage);
-        //}
-
         for(int i = 0; i < albumSize; i++)
         {
             PhotoItem photoItem = (await Instantiater.InstantiateAsync(StrDef.PHOTO_ITEM_DATA_PATH, _view.GridPhotoContent.transform)).GetComponent<PhotoItem>();
