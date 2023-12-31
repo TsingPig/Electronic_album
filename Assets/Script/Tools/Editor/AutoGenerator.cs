@@ -77,10 +77,10 @@ namespace TsingPigSDK
                 }
             }
 
-            objectName = objectName.Substring(0, objectName.IndexOf("View"));
-
             if(isView)
             {
+                objectName = objectName.Substring(0, objectName.IndexOf("View"));
+
                 string folderPath = $"Assets/Script/UI/{objectName}View";
 
                 if(!Directory.Exists(folderPath))

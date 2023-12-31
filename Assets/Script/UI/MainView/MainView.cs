@@ -10,6 +10,10 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
 
     private ButtonManager _btnSetting;
 
+    private ButtonManager _btnCreatePhotoWallItem;
+
+    public ButtonManager BtnCreatePhotoWallItem => _btnCreatePhotoWallItem;
+
     public ButtonManager BtnSetting { get => _btnSetting; set => _btnSetting = value; }
 
     #endregion TopPanel
@@ -59,7 +63,10 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
         #region TopPanel
 
         _btnSetting = _root.Find<ButtonManager>("TopPanel/btnSetting");
+        _btnCreatePhotoWallItem = _root.Find<ButtonManager>("TopPanel/btnCreatePhotoWallItem");
+
         _btnSetting.onClick.AddListener(_presenter.ClearUserInformationCache);
+        _btnCreatePhotoWallItem.onClick.AddListener(_presenter.EnterCreatePhotoWallItemView);
 
         #endregion TopPanel
 

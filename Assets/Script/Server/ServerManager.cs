@@ -100,7 +100,7 @@ public class ServerManager : Singleton<ServerManager>
     /// <param name="account"></param>
     /// <param name="folderName"></param>
     /// <param name="callback"></param>
-    public void CreateAlbumFolder(string account, string folderName, Action<string> callback = null)
+    public void CreateAlbumFolder(string account, string folderName, Action callback = null)
     {
         StartCoroutine(CreateEmptyFolder($"{account}/{folderName}", callback));
     }
@@ -156,16 +156,35 @@ public class ServerManager : Singleton<ServerManager>
                     await Task.Yield();
                 }
 
-                Debug.Log($"{photoId}请求完毕");
+                Debug.Log($"{albumName}/{photoId}请求完毕");
                 Texture2D photoTex = texD1.texture;
                 image.sprite = Sprite.Create(photoTex, new Rect(0, 0, 200, 200), new Vector2(0.5f, 0.5f));
             }
         }
     }
 
+    /// <summary>
+    /// 删除图片
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="albumName"></param>
+    /// <param name="photoIndex">图片实际索引</param>
+    /// <param name="callback"></param>
     public void DeletePhoto(string account, string albumName, int photoIndex, Action<int> callback = null)
     {
         StartCoroutine(DeletePhoto($"{account}/{albumName}/{photoIndex}.jpg", callback));
+    }
+
+    /// <summary>
+    /// 创建照片墙动态
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="content"></param>
+    /// <param name="photoSize"></param>
+    /// <param name="callback"></param>
+    public void UploadMomentItem(string account, string content, int photoSize, Action callback = null)
+    {
+        StartCoroutine(UploadMoment(account, content, photoSize, callback));
     }
 
     /// <summary>
@@ -175,7 +194,7 @@ public class ServerManager : Singleton<ServerManager>
     /// <param name="folderName">相册名</param>
     /// <param name="callback">回调</param>
     /// <returns></returns>
-    private IEnumerator CreateEmptyFolder(string folderPath, Action<string> callback)
+    private IEnumerator CreateEmptyFolder(string folderPath, Action callback)
     {
         // 创建一个表单数据对象
         using(UnityWebRequest www = UnityWebRequest.Post($"{url}/createEmptyFolder/{folderPath}", ""))
@@ -185,12 +204,12 @@ public class ServerManager : Singleton<ServerManager>
             if(www.result == UnityWebRequest.Result.Success)
             {
                 Debug.Log($"文件夹创建成功：{folderPath}");
-                callback?.Invoke(www.result.ToString());
+                callback?.Invoke();
             }
             else
             {
                 Debug.LogError($"Error creating album: {www.error}");
-                callback?.Invoke(www.error);
+                callback?.Invoke();
             }
         }
     }
@@ -243,7 +262,7 @@ public class ServerManager : Singleton<ServerManager>
         form.AddField("album_name", albumName); // 添加账户信息到表单
 
         // 添加文件数据到表单
-        form.AddBinaryData("file", bytes, ((int)Time.time).ToString(), "image/png");
+        form.AddBinaryData("file", bytes, Time.time.ToString() + ".png", "image/png");
 
         if(bytes == null)
         {
@@ -431,7 +450,40 @@ public class ServerManager : Singleton<ServerManager>
             }
             else
             {
-                Debug.LogError($"Error delete photo: {www.error}");
+                Debug.LogWarning($"Error delete photo: {www.error}");
+            }
+        }
+    }
+
+    /// <summary>
+    /// 上传动态信息
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="content">动态文案</param>
+    /// <param name="photoSize">图片数量</param>
+    /// <param name="callback"></param>
+    /// <returns></returns>
+    private IEnumerator UploadMoment(string account, string content, int photoSize, Action callback = null)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("size", photoSize);
+        form.AddField("text", content);
+
+        //form.AddBinaryData("file", bytes, fileName, "image/jpg");
+
+        using(UnityWebRequest www = UnityWebRequest.Post($"{host}/upload_moments", form))
+        {
+            www.downloadHandler = new DownloadHandlerBuffer(); // 禁用压缩
+            yield return www.SendWebRequest();
+
+            if(www.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log("Moment uploaded successfully");
+                callback?.Invoke();
+            }
+            else
+            {
+                Debug.LogError("Error uploading Moment: " + www.error);
             }
         }
     }

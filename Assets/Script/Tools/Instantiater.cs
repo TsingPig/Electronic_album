@@ -23,6 +23,25 @@ namespace TsingPigSDK
             _objectPools.Clear();
         }
 
+        public static void ReleaseObject(string addressablePath, GameObject targetGameObject)
+        {
+            if(_objectPools.ContainsKey(addressablePath))
+            {
+                foreach(var gameObj in _objectPools[addressablePath])
+                {
+                    if(targetGameObject == gameObj)
+                    {
+                        _objectPools.Remove(addressablePath);
+                        Addressables.ReleaseInstance(targetGameObject);
+                    }
+                }
+            }
+            else
+            {
+                Debug.LogError($"无法析构：{addressablePath} {targetGameObject.name}");
+            }
+        }
+
         public static async Task<GameObject> InstantiateAsync(string addressablePath, Transform parent)
         {
             List<GameObject> objectPool;
@@ -85,11 +104,6 @@ namespace TsingPigSDK
             }
         }
 
-        private static void DeactivateObject(GameObject obj)
-        {
-            obj.SetActive(false);
-        }
-
         public static int DeactivateObjectById(string addressablePath, int id)
         {
             int index = 0;
@@ -116,6 +130,11 @@ namespace TsingPigSDK
                 Debug.LogWarning($"{addressablePath} not in object pool");
             }
             return index;
+        }
+
+        private static void DeactivateObject(GameObject obj)
+        {
+            obj.SetActive(false);
         }
     }
 }
