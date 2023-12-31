@@ -124,9 +124,9 @@ public class ServerManager : Singleton<ServerManager>
         }
     }
 
-    public void DeletePhoto(string account, string albumName, int photoId, Action<int> callback = null)
+    public void DeletePhoto(string account, string albumName, int photoIndex, Action<int> callback = null)
     {
-        StartCoroutine(DeletePhoto($"{account}/{albumName}/{photoId}.jpg", callback));
+        StartCoroutine(DeletePhoto($"{account}/{albumName}/{photoIndex}.jpg", callback));
     }
 
     /// <summary>

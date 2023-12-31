@@ -90,23 +90,32 @@ namespace TsingPigSDK
             obj.SetActive(false);
         }
 
-        public static void DeactivateObjectByIndex(string addressablePath, int idx)
+        public static int DeactivateObjectById(string addressablePath, int id)
         {
+            int index = 0;
+            for(int i = 0; i < id; i++)
+            {
+                if(_objectPools[addressablePath][i].activeSelf)
+                {
+                    index++;
+                }
+            }
             if(_objectPools.ContainsKey(addressablePath))
             {
-                if(idx < _objectPools[addressablePath].Count)
+                if(id < _objectPools[addressablePath].Count)
                 {
-                    _objectPools[addressablePath][idx].SetActive(false);
+                    _objectPools[addressablePath][id].SetActive(false);
                 }
                 else
                 {
-                    Debug.LogWarning($"{idx}下标越界");
+                    Debug.LogWarning($"{id} out of bound");
                 }
             }
             else
             {
-                Debug.LogWarning($"{addressablePath}不在对象池中");
+                Debug.LogWarning($"{addressablePath} not in object pool");
             }
+            return index;
         }
     }
 }

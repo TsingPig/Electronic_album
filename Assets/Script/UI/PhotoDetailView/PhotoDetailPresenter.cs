@@ -6,9 +6,8 @@ public class PhotoDetailPresenter : PresenterBase<IPhotoDetailView, IPhotoDetail
     public void DeletePhoto()
     {
         MVPFrameWork.UIManager.Instance.Quit(ViewId.PhotoDetailView);
-        Instantiater.DeactivateObjectByIndex(StrDef.PHOTO_ITEM_DATA_PATH, _model.PhotoId);
-        ServerManager.Instance.DeletePhoto(CacheManager.Instance.UserName, _model.AlbumName,
-            Instantiater.GetObjectIndex(StrDef.PHOTO_ITEM_DATA_PATH, _model.ImgPhotoDetail.gameObject));
+        ServerManager.Instance.DeletePhoto(CacheManager.Instance.UserName, _model.AlbumName, 
+            Instantiater.DeactivateObjectById(StrDef.PHOTO_ITEM_DATA_PATH, _model.PhotoId));
     }
 
     public override void OnCreateCompleted()

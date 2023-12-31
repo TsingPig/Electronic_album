@@ -19,7 +19,7 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
     }
 
     /// <summary>
-    /// ÍË³öµ±Ç°Ïà²á
+    /// é€€å‡ºå½“å‰ç›¸å†Œ
     /// </summary>
     public void Quit()
     {
@@ -27,14 +27,14 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
     }
 
     /// <summary>
-    /// ÉÏ´«µ¥ÕÅÕÕÆ¬
+    /// ä¸Šä¼ å•å¼ ç…§ç‰‡
     /// </summary>
     public void UploadPhoto()
     {
         Texture2D photoTex = null;
         NativeGallery.Permission permission = NativeGallery.GetImageFromGallery((path) =>
         {
-            Debug.Log("Í¼Æ¬Â·¾¶: " + path);
+            Debug.Log("å›¾ç‰‡è·¯å¾„: " + path);
             if(path != null)
             {
                 try
@@ -62,7 +62,7 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
     }
 
     /// <summary>
-    /// É¾³ıÏà²á
+    /// åˆ é™¤ç›¸å†Œ
     /// </summary>
     public void DeleteAlbum()
     {
@@ -73,12 +73,12 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
 
     public void DeletePhoto(int idx)
     {
-        Instantiater.DeactivateObjectByIndex(StrDef.PHOTO_ITEM_DATA_PATH, 0);
+        Instantiater.DeactivateObjectById(StrDef.PHOTO_ITEM_DATA_PATH, 0);
         //ServerManager.Instance.DeletePhoto(CacheManager.Instance.UserName, _model.AlbumName, )
     }
 
     /// <summary>
-    /// ³õÊ¼»¯Òì²½¼ÓÔØÕÕÆ¬
+    /// åˆå§‹åŒ–å¼‚æ­¥åŠ è½½ç…§ç‰‡
     /// </summary>
     /// <param name="albumSize"></param>
     private async void InitialPhotoItemsAsync(int albumSize)
@@ -96,7 +96,7 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
     }
 
     /// <summary>
-    /// Òì²½Ë¢ĞÂĞÂÉÏ´«µÄÕÕÆ¬Ïî
+    /// å¼‚æ­¥åˆ·æ–°æ–°ä¸Šä¼ çš„ç…§ç‰‡é¡¹
     /// </summary>
     private async void RefreshUploadedPhotoItemAsync(int albumSize)
     {
@@ -108,12 +108,12 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
     }
 
     /// <summary>
-    /// ÖØÉèÉÏ´«Í¼Æ¬³ß´ç£¬ÒÔ±ãÓÚËõĞ¡ÄÚ´æÕ¼ÓÃ£¬¼Ó¿ì¼ÓÔØËÙ¶È
+    /// é‡è®¾ä¸Šä¼ å›¾ç‰‡å°ºå¯¸ï¼Œä»¥ä¾¿äºç¼©å°å†…å­˜å ç”¨ï¼ŒåŠ å¿«åŠ è½½é€Ÿåº¦
     /// </summary>
     /// <param name="source"></param>
     /// <param name="targetWidth"></param>
     /// <param name="targetHeight"></param>
-    /// <returns>ÖØÉè³ß´çºóµÄÍ¼Æ¬</returns>
+    /// <returns>é‡è®¾å°ºå¯¸åçš„å›¾ç‰‡</returns>
     private Texture2D ScaleTexture(Texture2D source, float targetWidth, float targetHeight)
     {
         Texture2D result = new Texture2D((int)targetWidth, (int)targetHeight, source.format, false);
