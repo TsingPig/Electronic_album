@@ -468,5 +468,6 @@ public class ServerManager : Singleton<ServerManager>
     public class FolderList
     {
         public string[] folders;
+        // public Texture2D[] tex2DCovers;
     }
 }

@@ -181,6 +181,9 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
         {
             GameObject instantiatedObject = GameObject.Instantiate(obj, _view.GridAlbumContent.transform);
             instantiatedObject.name = item;
+            // todo: 从服务器获取相册封面
+            Image image = null;
+            ServerManager.Instance.GetPhotoAsync(CacheManager.Instance.UserName, item, -1, image);
         }
     }
 
