@@ -90,9 +90,19 @@ namespace TsingPigSDK
             obj.SetActive(false);
         }
 
-        public static void DeactivateObjectByIndex(string addressablePath, int idx)
+        public static int DeactivateObjectByIndex(string addressablePath, int idx)
         {
+            int count = 0;
+            for(int i=0; i<idx; i++)
+            {
+                if(_objectPools[addressablePath][i].activeSelf)
+                {
+                    count++;
+                }
+            }
+
             _objectPools[addressablePath][idx].SetActive(false);
+            return count;
         }
 
     }
