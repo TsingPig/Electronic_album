@@ -40,9 +40,25 @@ public class ServerManager : Singleton<ServerManager>
         StartCoroutine(UploadFile(account, "usericon.jpg", usericon));
     }
 
+    /// <summary>
+    /// 向服务器上传多图文件
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="albumName"></param>
+    /// <param name="photo"></param>
+    /// <param name="callback"></param>
     public void UploadPhoto(string account, string albumName, byte[] photo, Action callback = null)
     {
         StartCoroutine(UploadPhotoFile(account, albumName, photo, callback));
+    }
+
+    public void UploadPhotos(string account, string albumName, byte[][] photos, Action callback = null)
+    {
+        if(photos == null || photos.Length == 0)
+        {
+            return;
+        }
+        StartCoroutine(UploadPhotoFiles(account, albumName, photos, callback));
     }
 
     /// <summary>
@@ -189,14 +205,14 @@ public class ServerManager : Singleton<ServerManager>
     }
 
     /// <summary>
-    ///
+    /// 上传图像文件
     /// </summary>
     /// <param name="account"></param>
     /// <param name="albumName"></param>
     /// <param name="bytes"></param>
     /// <param name="callback"></param>
     /// <returns></returns>
-    private IEnumerator UploadPhotoFile(string account, string albumName, byte[] bytes, Action callback)
+    private IEnumerator UploadPhotoFile(string account, string albumName, byte[] bytes, Action callback = null)
     {
         // 创建一个表单数据对象
         WWWForm form = new WWWForm();
@@ -220,6 +236,28 @@ public class ServerManager : Singleton<ServerManager>
             {
                 Debug.LogError("Error uploading file: " + www.error);
             }
+        }
+    }
+
+    /// <summary>
+    /// 上传多图文件
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="albumName"></param>
+    /// <param name="photos"></param>
+    /// <param name="callback"></param>
+    /// <returns></returns>
+    private IEnumerator UploadPhotoFiles(string account, string albumName, byte[][] photos, Action callback = null)
+    {
+        for(int i = 0; i < photos.Length; i++)
+        {
+            yield return StartCoroutine(UploadPhotoFile(account, albumName, photos[i]));
+            Debug.Log($"上传进度:{i}/{photos.Length}");
+        }
+
+        if(callback != null)
+        {
+            callback.Invoke();
         }
     }
 

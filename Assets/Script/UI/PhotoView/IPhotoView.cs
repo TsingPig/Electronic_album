@@ -9,6 +9,8 @@ public interface IPhotoView : IView
 
     ButtonManager BtnUploadPhoto { get; }
 
+    ButtonManager BtnUploadMultiPhotos { get; }
+
     ButtonManager BtnDeleteAlbum { get; }
 
     TMP_Text TxtAlbumName { get; }

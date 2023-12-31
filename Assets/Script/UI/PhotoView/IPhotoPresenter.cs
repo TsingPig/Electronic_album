@@ -9,4 +9,6 @@ public interface IPhotoPresenter : IPresenter
     void DeleteAlbum();
 
     //void DeletePhoto(int idx);
+
+    void UploadMultiPhotos();
 }

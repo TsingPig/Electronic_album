@@ -39,11 +39,46 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
             {
                 try
                 {
-                    photoTex = CacheManager.LoadTexture(path);
-                    photoTex = ScaleTexture(photoTex, 200, 200);
+                    photoTex = CacheManager.LoadTexture(path).Scale(200, 200);
+                    //photoTex = ScaleTexture(photoTex, 200, 200);
                     if(photoTex != null)
                     {
                         ServerManager.Instance.UploadPhoto(CacheManager.Instance.UserName, _model.AlbumName, photoTex.EncodeToPNG(), () =>
+                        {
+                            ServerManager.Instance.GetAlbumSize(CacheManager.Instance.UserName, _model.AlbumName, RefreshUploadedPhotoItemAsync);
+                        });
+                    }
+                    else
+                    {
+                        Debug.Log($"Cannot load image from {path}");
+                    }
+                }
+                catch(Exception e)
+                {
+                    Debug.LogError($"Error loading image: {e.Message}");
+                }
+            }
+        });
+    }
+
+    /// <summary>
+    /// 上传多张图片
+    /// </summary>
+    public void UploadMultiPhotos()
+    {
+        Texture2D[] photoTextures = null;
+        NativeGallery.Permission permission = NativeGallery.GetImagesFromGallery((path) =>
+        {
+            Debug.Log("图片路径: " + path);
+            if(path != null)
+            {
+                try
+                {
+                    photoTextures = CacheManager.LoadTexture(path).Scale(200, 200);
+                    //photoTextures = ScaleTexture(photoTextures, 200, 200);
+                    if(photoTextures != null)
+                    {
+                        ServerManager.Instance.UploadPhotos(CacheManager.Instance.UserName, _model.AlbumName, photoTextures.EncodeToPNG(), () =>
                         {
                             ServerManager.Instance.GetAlbumSize(CacheManager.Instance.UserName, _model.AlbumName, RefreshUploadedPhotoItemAsync);
                         });
@@ -69,12 +104,6 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
         ServerManager.Instance.DeletaAlbumFolder(CacheManager.Instance.UserName, _model.AlbumName);
         MVPFrameWork.UIManager.Instance.Quit(ViewId.PhotoView);
     }
-
-    //public void DeletePhoto(int idx)
-    //{
-    //    Instantiater.DeactivateObjectById(StrDef.PHOTO_ITEM_DATA_PATH, 0);
-    //    //ServerManager.Instance.DeletePhoto(CacheManager.Instance.UserName, _model.AlbumName, )
-    //}
 
     /// <summary>
     /// 初始化异步加载照片
@@ -106,13 +135,7 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
         ServerManager.Instance.GetPhotoAsync(CacheManager.Instance.UserName, _model.AlbumName, albumSize - 1, photoImage);
     }
 
-    /// <summary>
-    /// 重设上传图片尺寸，以便于缩小内存占用，加快加载速度
-    /// </summary>
-    /// <param name="source"></param>
-    /// <param name="targetWidth"></param>
-    /// <param name="targetHeight"></param>
-    /// <returns>重设尺寸后的图片</returns>
+    [Obsolete("方法已经废弃，请改用Texture2D扩展方法")]
     private Texture2D ScaleTexture(Texture2D source, float targetWidth, float targetHeight)
     {
         Texture2D result = new Texture2D((int)targetWidth, (int)targetHeight, source.format, false);
