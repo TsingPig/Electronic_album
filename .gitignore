@@ -11,7 +11,15 @@
 /[Uu]ser[Ss]ettings/
 
 /AssetBundles/
-/UserInformation/
+# /Assets/Resources/UserInformation/*.*
+# /Assets/Resources/UserInformation/
+# /Assets/Resources/UserInformation/icons/
+# /Assets/Resources/UserInformation/icons/*.*
+# /Assets/Resources/UserInformation/userData.json 
+
+/Assets/Resources/UserInformation/
+/Assets/Resources/UserInformation/icons/
+/Assets/Resources/UserInformation/userData.json
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data

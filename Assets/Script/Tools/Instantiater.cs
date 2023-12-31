@@ -23,6 +23,25 @@ namespace TsingPigSDK
             _objectPools.Clear();
         }
 
+        public static void ReleaseObject(string addressablePath, GameObject targetGameObject)
+        {
+            if(_objectPools.ContainsKey(addressablePath))
+            {
+                foreach(var gameObj in _objectPools[addressablePath])
+                {
+                    if(targetGameObject == gameObj)
+                    {
+                        _objectPools.Remove(addressablePath);
+                        Addressables.ReleaseInstance(targetGameObject);
+                    }
+                }
+            }
+            else
+            {
+                Debug.LogError($"无法析构：{addressablePath} {targetGameObject.name}");
+            }
+        }
+
         public static async Task<GameObject> InstantiateAsync(string addressablePath, Transform parent)
         {
             List<GameObject> objectPool;
@@ -85,25 +104,37 @@ namespace TsingPigSDK
             }
         }
 
+        public static int DeactivateObjectById(string addressablePath, int id)
+        {
+            int index = 0;
+            for(int i = 0; i < id; i++)
+            {
+                if(_objectPools[addressablePath][i].activeSelf)
+                {
+                    index++;
+                }
+            }
+            if(_objectPools.ContainsKey(addressablePath))
+            {
+                if(id < _objectPools[addressablePath].Count)
+                {
+                    _objectPools[addressablePath][id].SetActive(false);
+                }
+                else
+                {
+                    Debug.LogWarning($"{id} out of bound");
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"{addressablePath} not in object pool");
+            }
+            return index;
+        }
+
         private static void DeactivateObject(GameObject obj)
         {
             obj.SetActive(false);
         }
-
-        public static int DeactivateObjectByIndex(string addressablePath, int idx)
-        {
-            int count = 0;
-            for(int i=0; i<idx; i++)
-            {
-                if(_objectPools[addressablePath][i].activeSelf)
-                {
-                    count++;
-                }
-            }
-
-            _objectPools[addressablePath][idx].SetActive(false);
-            return count;
-        }
-
     }
 }

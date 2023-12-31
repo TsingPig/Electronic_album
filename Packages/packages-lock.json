@@ -118,8 +118,23 @@
       "dependencies": {},
       "url": "https://packages.unity.cn"
     },
+<<<<<<< HEAD
     "com.unity.services.core": {
       "version": "1.12.0",
+=======
+    "com.unity.services.analytics": {
+      "version": "4.2.0",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.ugui": "1.0.0",
+        "com.unity.services.core": "1.4.0"
+      },
+      "url": "https://packages.unity.cn"
+    },
+    "com.unity.services.core": {
+      "version": "1.5.2",
+>>>>>>> 766e506baf7f0b7208df777a2e231be7306f4dca
       "depth": 1,
       "source": "registry",
       "dependencies": {

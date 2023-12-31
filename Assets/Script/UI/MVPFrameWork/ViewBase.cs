@@ -27,7 +27,7 @@ namespace MVPFrameWork
             }
             set
             {
-                CanvasAlpha(!value, 0.5f, () =>
+                CanvasAlpha(!value, 0.25f, () =>
                 {
                     _rootCanvasIsActive = value;
                     _rootCanvas.blocksRaycasts = value;
@@ -35,7 +35,7 @@ namespace MVPFrameWork
                 });
 
                 //_rootCanvasIsActive = value;
-                //_rootCanvas.alpha = value ? 1f : 0f;
+                //_rootCanvas.alpha = value ? 1f : 0f;  
                 //_rootCanvas.blocksRaycasts = value;
                 //_rootCanvas.interactable = value;
             }
@@ -261,7 +261,7 @@ namespace MVPFrameWork
                 string name = type.Name;
                 assetPath = "Assets/Res/UI/" + name + "/" + name + ".prefab";
             }
-            Debug.Log("ViewBase" + assetPath);
+            Debug.Log("ViewBase" + assetPath); 
         }
 
         private Transform ParseParentAttr()

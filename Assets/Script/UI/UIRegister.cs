@@ -7,6 +7,7 @@ public static class ViewId
     public const int AlbumCreateView = 1002;
     public const int PhotoView = 1003;
     public const int PhotoDetailView = 1004;
+    public const int CreatePhotoWallItemView = 1005;
 }
 
 public static class ConstDef
@@ -34,6 +35,10 @@ public static class UIRegister
         Container.Regist<IPhotoDetailPresenter, PhotoDetailPresenter>();
         Container.Regist<IView, PhotoDetailView>(ViewId.PhotoDetailView);
         Container.Regist<IPhotoDetailModel, PhotoDetailModel>();
+
+        Container.Regist<ICreatePhotoWallItemPresenter, CreatePhotoWallItemPresenter>();
+        Container.Regist<IView, CreatePhotoWallItemView>(ViewId.CreatePhotoWallItemView);
+        Container.Regist<ICreatePhotoWallItemModel, CreatePhotoWallItemModel>();
 
     }
 }
