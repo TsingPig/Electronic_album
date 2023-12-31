@@ -41,7 +41,7 @@ public class ServerManager : Singleton<ServerManager>
     }
 
     /// <summary>
-    /// 向服务器上传多图文件
+    /// 向服务器上传图像
     /// </summary>
     /// <param name="account"></param>
     /// <param name="albumName"></param>
@@ -52,6 +52,13 @@ public class ServerManager : Singleton<ServerManager>
         StartCoroutine(UploadPhotoFile(account, albumName, photo, callback));
     }
 
+    /// <summary>
+    /// 向服务器上传多图文件
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="albumName"></param>
+    /// <param name="photos"></param>
+    /// <param name="callback"></param>
     public void UploadPhotos(string account, string albumName, byte[][] photos, Action callback = null)
     {
         if(photos == null || photos.Length == 0)
@@ -59,6 +66,22 @@ public class ServerManager : Singleton<ServerManager>
             return;
         }
         StartCoroutine(UploadPhotoFiles(account, albumName, photos, callback));
+    }
+
+    /// <summary>
+    /// 向服务器上传多图文件
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="albumName"></param>
+    /// <param name="photoPath"></param>
+    /// <param name="callback"></param>
+    public void UploadPhotos(string account, string albumName, string[] photoPath, Action callback = null)
+    {
+        if(photoPath == null || photoPath.Length == 0)
+        {
+            return;
+        }
+        StartCoroutine(UploadPhotoFiles(account, albumName, photoPath, callback));
     }
 
     /// <summary>
@@ -220,7 +243,7 @@ public class ServerManager : Singleton<ServerManager>
         form.AddField("album_name", albumName); // 添加账户信息到表单
 
         // 添加文件数据到表单
-        form.AddBinaryData("file", bytes);
+        form.AddBinaryData("file", bytes, ((int)Time.time).ToString(), "image/png");
 
         if(bytes == null)
         {
@@ -246,7 +269,25 @@ public class ServerManager : Singleton<ServerManager>
     }
 
     /// <summary>
-    /// 上传多图文件
+    /// 通过文件路径，上传多图文件
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="albumName"></param>
+    /// <param name="photos"></param>
+    /// <param name="callback"></param>
+    /// <returns></returns>
+    private IEnumerator UploadPhotoFiles(string account, string albumName, string[] photoPath, Action callback = null)
+    {
+        for(int i = 0; i < photoPath.Length; i++)
+        {
+            Texture2D tex = CacheManager.LoadTexture(photoPath[i]).Scale(200, 200);
+            yield return StartCoroutine(UploadPhotoFile(account, albumName, tex.EncodeToPNG(), callback));
+            Debug.Log($"上传进度:{i}/{photoPath.Length}");
+        }
+    }
+
+    /// <summary>
+    /// 通过文件字节数组，上传多图文件
     /// </summary>
     /// <param name="account"></param>
     /// <param name="albumName"></param>
@@ -257,10 +298,9 @@ public class ServerManager : Singleton<ServerManager>
     {
         for(int i = 0; i < photos.Length; i++)
         {
-            yield return StartCoroutine(UploadPhotoFile(account, albumName, photos[i], callback));
+            yield return StartCoroutine(UploadPhotoFile(account, albumName, photos[i]));
             Debug.Log($"上传进度:{i}/{photos.Length}");
         }
-
         callback?.Invoke();
     }
 
