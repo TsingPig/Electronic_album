@@ -222,6 +222,12 @@ public class ServerManager : Singleton<ServerManager>
         // 添加文件数据到表单
         form.AddBinaryData("file", bytes);
 
+        if(bytes == null)
+        {
+            Debug.LogError("图像错误或图像内容为空");
+            yield break;
+        }
+
         using(UnityWebRequest www = UnityWebRequest.Post($"{host}/upload_photo", form))
         {
             www.downloadHandler = new DownloadHandlerBuffer(); // 禁用压缩
@@ -251,14 +257,11 @@ public class ServerManager : Singleton<ServerManager>
     {
         for(int i = 0; i < photos.Length; i++)
         {
-            yield return StartCoroutine(UploadPhotoFile(account, albumName, photos[i]));
+            yield return StartCoroutine(UploadPhotoFile(account, albumName, photos[i], callback));
             Debug.Log($"上传进度:{i}/{photos.Length}");
         }
 
-        if(callback != null)
-        {
-            callback.Invoke();
-        }
+        callback?.Invoke();
     }
 
     /// <summary>

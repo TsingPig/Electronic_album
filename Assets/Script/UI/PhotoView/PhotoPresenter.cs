@@ -69,7 +69,10 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
         Texture2D[] photoTextures = null;
         NativeGallery.Permission permission = NativeGallery.GetImagesFromGallery((path) =>
         {
-            Debug.Log("图片路径: " + path);
+            foreach(var p in path)
+            {
+                Debug.Log("图片路径: " + p);
+            }
             if(path != null)
             {
                 try

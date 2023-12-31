@@ -52,9 +52,9 @@ namespace TsingPigSDK
         public static Texture2D[] Scale(this Texture2D[] source, float targetWidth, float targetHeight)
         {
             Texture2D[] texture2Ds = new Texture2D[source.Length];
-            foreach(Texture2D texture2D in source)
+            for(int i = 0; i < source.Length; ++i)
             {
-                texture2D.Scale(targetWidth, targetHeight);
+                texture2Ds[i] = source[i].Scale(targetWidth, targetHeight);
             }
             return texture2Ds;
         }
