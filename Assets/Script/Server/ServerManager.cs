@@ -321,7 +321,7 @@ public class ServerManager : Singleton<ServerManager>
     /// <returns></returns>
     private IEnumerator DeleteFolder(string folderPath, string folderName, Action<FolderList> callback = null)
     {
-        using(UnityWebRequest www = UnityWebRequest.Post($"{url}/deletaFolder/{folderPath}/{folderName}", ""))
+        using(UnityWebRequest www = UnityWebRequest.Post($"{url}/deleta_folder/{folderPath}/{folderName}", ""))
         {
             yield return www.SendWebRequest();
 

@@ -67,15 +67,14 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
     public void DeleteAlbum()
     {
         ServerManager.Instance.DeletaAlbumFolder(CacheManager.Instance.UserName, _model.AlbumName);
-
-        //MVPFrameWork.UIManager.Instance.Quit(View)
+        MVPFrameWork.UIManager.Instance.Quit(ViewId.PhotoView);
     }
 
-    public void DeletePhoto(int idx)
-    {
-        Instantiater.DeactivateObjectById(StrDef.PHOTO_ITEM_DATA_PATH, 0);
-        //ServerManager.Instance.DeletePhoto(CacheManager.Instance.UserName, _model.AlbumName, )
-    }
+    //public void DeletePhoto(int idx)
+    //{
+    //    Instantiater.DeactivateObjectById(StrDef.PHOTO_ITEM_DATA_PATH, 0);
+    //    //ServerManager.Instance.DeletePhoto(CacheManager.Instance.UserName, _model.AlbumName, )
+    //}
 
     /// <summary>
     /// 初始化异步加载照片
