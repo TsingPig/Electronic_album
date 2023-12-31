@@ -68,7 +68,7 @@ public class CreatePhotoWallItemPresenter : PresenterBase<ICreatePhotoWallItemVi
     {
         for(int i = 0; i < uploadedPhotoCount; i++)
         {
-            PhotoItem photoItem = (await Instantiater.InstantiateAsync(StrDef.PHOTO_ITEM_DATA_PATH, _view.GridPhotoContent.transform)).GetComponent<PhotoItem>();
+            PhotoItem photoItem = (await Instantiater.InstantiateAsync(StrDef.PHOTO_UPLOAD_ITEM_DATA_PATH, _view.GridPhotoContent.transform)).GetComponent<PhotoItem>();
             Image photoImage = photoItem.Cover;
             photoImage.sprite = Sprite.Create(_model.Photos[i], new Rect(0, 0, 200, 200), new Vector2(0.5f, 0.5f));
         }
@@ -84,6 +84,7 @@ public class CreatePhotoWallItemPresenter : PresenterBase<ICreatePhotoWallItemVi
 
                 ServerManager.Instance.UploadPhotos(CacheManager.Instance.UserName, DefaultTargetAlbumName, _model.Photos.EncodeToPNG(), () =>
                 {
+
                 });
             }
             else
@@ -106,8 +107,7 @@ public class CreatePhotoWallItemPresenter : PresenterBase<ICreatePhotoWallItemVi
         {
             for(int i = 1; i < childCount; i++)
             {
-                Instantiater.ReleaseObject(StrDef.PHOTO_ITEM_DATA_PATH, _view.GridPhotoContent.transform.GetChild(i).gameObject);
-                //GameObject.Destroy();
+                Instantiater.ReleaseObject(StrDef.PHOTO_UPLOAD_ITEM_DATA_PATH, _view.GridPhotoContent.transform.GetChild(i).gameObject);
             }
         }
         _model.Photos = null;

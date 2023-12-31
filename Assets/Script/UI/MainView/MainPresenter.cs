@@ -41,8 +41,6 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
         MVPFrameWork.UIManager.Instance.Enter(ViewId.LoginView);
     }
 
-
-
     #endregion TopPanel
 
     #region UserInformation
@@ -193,7 +191,7 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
         {
             GameObject instantiatedObject = GameObject.Instantiate(obj, _view.GridAlbumContent.transform);
             instantiatedObject.name = item;
-            Transform secondChildTransform=instantiatedObject.transform.GetChild(1);
+            Transform secondChildTransform = instantiatedObject.transform.GetChild(1);
             Image image = secondChildTransform.GetComponent<Image>();
             ServerManager.Instance.GetPhotoAsync(CacheManager.Instance.UserName, item, -1, image);
         }

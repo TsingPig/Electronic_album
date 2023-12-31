@@ -156,7 +156,7 @@ public class ServerManager : Singleton<ServerManager>
                     await Task.Yield();
                 }
 
-                Debug.Log($"{photoId}请求完毕");
+                Debug.Log($"{albumName}/{photoId}请求完毕");
                 Texture2D photoTex = texD1.texture;
                 image.sprite = Sprite.Create(photoTex, new Rect(0, 0, 200, 200), new Vector2(0.5f, 0.5f));
             }
