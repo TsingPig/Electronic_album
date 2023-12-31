@@ -193,6 +193,9 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
         {
             GameObject instantiatedObject = GameObject.Instantiate(obj, _view.GridAlbumContent.transform);
             instantiatedObject.name = item;
+            Transform secondChildTransform=instantiatedObject.transform.GetChild(1);
+            Image image = secondChildTransform.GetComponent<Image>();
+            ServerManager.Instance.GetPhotoAsync(CacheManager.Instance.UserName, item, -1, image);
         }
     }
 
