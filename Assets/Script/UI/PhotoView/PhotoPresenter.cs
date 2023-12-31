@@ -1,5 +1,6 @@
 using MVPFrameWork;
 using System;
+using System.Collections;
 using TsingPigSDK;
 using UnityEngine;
 using UnityEngine.UI;
@@ -39,8 +40,8 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
             {
                 try
                 {
-                    photoTex = CacheManager.LoadTexture(path);
-                    photoTex = ScaleTexture(photoTex, 200, 200);
+                    photoTex = CacheManager.LoadTexture(path).Scale(200, 200);
+                    //photoTex = ScaleTexture(photoTex, 200, 200);
                     if(photoTex != null)
                     {
                         ServerManager.Instance.UploadPhoto(CacheManager.Instance.UserName, _model.AlbumName, photoTex.EncodeToPNG(), () =>
@@ -62,19 +63,54 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
     }
 
     /// <summary>
+    /// 上传多张图片
+    /// </summary>
+    public void UploadMultiPhotos()
+    {
+        Texture2D[] photoTextures = null;
+        NativeGallery.Permission permission = NativeGallery.GetImagesFromGallery((path) =>
+        {
+            foreach(var p in path)
+            {
+                Debug.Log("图片路径: " + p);
+            }
+            if(path != null)
+            {
+                try
+                {
+                    photoTextures = CacheManager.LoadTexture(path).Scale(200, 200);
+                    if(photoTextures != null)
+                    {
+                        ServerManager.Instance.UploadPhotos(CacheManager.Instance.UserName, _model.AlbumName, photoTextures.EncodeToPNG(), () =>
+                        {
+                            ServerManager.Instance.GetAlbumSize(CacheManager.Instance.UserName, _model.AlbumName, InitialPhotoItemsAsync);
+                        });
+                    }
+                    else
+                    {
+                        Debug.Log($"Cannot load image from {path}");
+                    }
+
+                    //ServerManager.Instance.UploadPhotos(CacheManager.Instance.UserName, _model.AlbumName, path, () =>
+                    //{
+                    //    ServerManager.Instance.GetAlbumSize(CacheManager.Instance.UserName, _model.AlbumName, RefreshUploadedPhotoItemAsync);
+                    //});
+                }
+                catch(Exception e)
+                {
+                    Debug.LogError($"Error loading image: {e.Message}");
+                }
+            }
+        });
+    }
+
+    /// <summary>
     /// 删除相册
     /// </summary>
     public void DeleteAlbum()
     {
         ServerManager.Instance.DeletaAlbumFolder(CacheManager.Instance.UserName, _model.AlbumName);
-
-        //MVPFrameWork.UIManager.Instance.Quit(View)
-    }
-
-    public void DeletePhoto(int idx)
-    {
-        Instantiater.DeactivateObjectById(StrDef.PHOTO_ITEM_DATA_PATH, 0);
-        //ServerManager.Instance.DeletePhoto(CacheManager.Instance.UserName, _model.AlbumName, )
+        MVPFrameWork.UIManager.Instance.Quit(ViewId.PhotoView);
     }
 
     /// <summary>
@@ -107,13 +143,8 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
         ServerManager.Instance.GetPhotoAsync(CacheManager.Instance.UserName, _model.AlbumName, albumSize - 1, photoImage);
     }
 
-    /// <summary>
-    /// 重设上传图片尺寸，以便于缩小内存占用，加快加载速度
-    /// </summary>
-    /// <param name="source"></param>
-    /// <param name="targetWidth"></param>
-    /// <param name="targetHeight"></param>
-    /// <returns>重设尺寸后的图片</returns>
+
+    [Obsolete("方法已经废弃，请改用Texture2D扩展方法")]
     private Texture2D ScaleTexture(Texture2D source, float targetWidth, float targetHeight)
     {
         Texture2D result = new Texture2D((int)targetWidth, (int)targetHeight, source.format, false);

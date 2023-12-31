@@ -43,10 +43,34 @@ public class CacheManager : Singleton<CacheManager>
     /// <returns></returns>
     public static Texture2D LoadTexture(string texturePath)
     {
+        if(texturePath == null)
+        {
+            Debug.Log($"{texturePath} is null");
+        }
         byte[] fileData = File.ReadAllBytes(texturePath);
         Texture2D texture = new Texture2D(200, 200);
         texture.LoadImage(fileData);
         return texture;
+    }
+
+    /// <summary>
+    /// 从路径数组中加载纹理数组。
+    /// </summary>
+    /// <param name="texturePath"></param>
+    /// <returns></returns>
+    public static Texture2D[] LoadTexture(string[] texturePaths)
+    {
+        if(texturePaths == null || texturePaths.Length == 0)
+        {
+            Debug.Log($"{texturePaths} is null or empty");
+            return null;
+        }
+        Texture2D[] texture2Ds = new Texture2D[texturePaths.Length];
+        for(int i = 0; i < texturePaths.Length; i++)
+        {
+            texture2Ds[i] = LoadTexture(texturePaths[i]);
+        }
+        return texture2Ds;
     }
 
     /// <summary>

@@ -40,9 +40,48 @@ public class ServerManager : Singleton<ServerManager>
         StartCoroutine(UploadFile(account, "usericon.jpg", usericon));
     }
 
+    /// <summary>
+    /// 向服务器上传图像
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="albumName"></param>
+    /// <param name="photo"></param>
+    /// <param name="callback"></param>
     public void UploadPhoto(string account, string albumName, byte[] photo, Action callback = null)
     {
         StartCoroutine(UploadPhotoFile(account, albumName, photo, callback));
+    }
+
+    /// <summary>
+    /// 向服务器上传多图文件
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="albumName"></param>
+    /// <param name="photos"></param>
+    /// <param name="callback"></param>
+    public void UploadPhotos(string account, string albumName, byte[][] photos, Action callback = null)
+    {
+        if(photos == null || photos.Length == 0)
+        {
+            return;
+        }
+        StartCoroutine(UploadPhotoFiles(account, albumName, photos, callback));
+    }
+
+    /// <summary>
+    /// 向服务器上传多图文件
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="albumName"></param>
+    /// <param name="photoPath"></param>
+    /// <param name="callback"></param>
+    public void UploadPhotos(string account, string albumName, string[] photoPath, Action callback = null)
+    {
+        if(photoPath == null || photoPath.Length == 0)
+        {
+            return;
+        }
+        StartCoroutine(UploadPhotoFiles(account, albumName, photoPath, callback));
     }
 
     /// <summary>
@@ -189,14 +228,14 @@ public class ServerManager : Singleton<ServerManager>
     }
 
     /// <summary>
-    ///
+    /// 上传图像文件
     /// </summary>
     /// <param name="account"></param>
     /// <param name="albumName"></param>
     /// <param name="bytes"></param>
     /// <param name="callback"></param>
     /// <returns></returns>
-    private IEnumerator UploadPhotoFile(string account, string albumName, byte[] bytes, Action callback)
+    private IEnumerator UploadPhotoFile(string account, string albumName, byte[] bytes, Action callback = null)
     {
         // 创建一个表单数据对象
         WWWForm form = new WWWForm();
@@ -204,7 +243,13 @@ public class ServerManager : Singleton<ServerManager>
         form.AddField("album_name", albumName); // 添加账户信息到表单
 
         // 添加文件数据到表单
-        form.AddBinaryData("file", bytes);
+        form.AddBinaryData("file", bytes, ((int)Time.time).ToString(), "image/png");
+
+        if(bytes == null)
+        {
+            Debug.LogError("图像错误或图像内容为空");
+            yield break;
+        }
 
         using(UnityWebRequest www = UnityWebRequest.Post($"{host}/upload_photo", form))
         {
@@ -221,6 +266,42 @@ public class ServerManager : Singleton<ServerManager>
                 Debug.LogError("Error uploading file: " + www.error);
             }
         }
+    }
+
+    /// <summary>
+    /// 通过文件路径，上传多图文件
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="albumName"></param>
+    /// <param name="photos"></param>
+    /// <param name="callback"></param>
+    /// <returns></returns>
+    private IEnumerator UploadPhotoFiles(string account, string albumName, string[] photoPath, Action callback = null)
+    {
+        for(int i = 0; i < photoPath.Length; i++)
+        {
+            Texture2D tex = CacheManager.LoadTexture(photoPath[i]).Scale(200, 200);
+            yield return StartCoroutine(UploadPhotoFile(account, albumName, tex.EncodeToPNG(), callback));
+            Debug.Log($"上传进度:{i}/{photoPath.Length}");
+        }
+    }
+
+    /// <summary>
+    /// 通过文件字节数组，上传多图文件
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="albumName"></param>
+    /// <param name="photos"></param>
+    /// <param name="callback"></param>
+    /// <returns></returns>
+    private IEnumerator UploadPhotoFiles(string account, string albumName, byte[][] photos, Action callback = null)
+    {
+        for(int i = 0; i < photos.Length; i++)
+        {
+            yield return StartCoroutine(UploadPhotoFile(account, albumName, photos[i]));
+            Debug.Log($"上传进度:{i}/{photos.Length}");
+        }
+        callback?.Invoke();
     }
 
     /// <summary>
@@ -321,7 +402,7 @@ public class ServerManager : Singleton<ServerManager>
     /// <returns></returns>
     private IEnumerator DeleteFolder(string folderPath, string folderName, Action<FolderList> callback = null)
     {
-        using(UnityWebRequest www = UnityWebRequest.Post($"{url}/deletaFolder/{folderPath}/{folderName}", ""))
+        using(UnityWebRequest www = UnityWebRequest.Get($"{url}/delete_folder/{folderPath}/{folderName}"))
         {
             yield return www.SendWebRequest();
 
