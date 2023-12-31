@@ -2,11 +2,17 @@ using MVPFrameWork;
 
 public interface IMainPresenter : IPresenter
 {
+    #region TopPanel
+
+    void EnterCreatePhotoWallItemView();
+
+    void ClearUserInformationCache();
+
+    #endregion TopPanel
+
     #region UserInformation
 
     UserInformation LoadUserInformation();
-
-    void ClearUserInformationCache();
 
     /// <summary>
     /// ¸üÐÂêÇ³Æ

@@ -51,6 +51,10 @@ MonoBehaviour:
     m_Address: Assets/Res/UI/PhotoDetailView/PhotoDetailView.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 5e37eda579e9ed844b84566be9538f91
+    m_Address: Assets/Res/UI/CreatePhotoItemView/CreatePhotoItemView.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 8376ae8e59f31754e9161a4f4bbee900, type: 2}
   m_SchemaSet:

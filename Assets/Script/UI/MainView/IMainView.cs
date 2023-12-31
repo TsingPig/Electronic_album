@@ -9,6 +9,8 @@ public interface IMainView : IView
 
     ButtonManager BtnSetting { get; set; }
 
+    ButtonManager BtnCreatePhotoWallItem { get; }
+
     #endregion TopPanel
 
     #region UserInformationView
@@ -44,4 +46,8 @@ public interface IMainView : IView
     GridLayoutGroup GridAlbumContent { get; }
 
     #endregion AlbumView
+
+    #region PhotoWallView
+
+    #endregion PhotoWallView
 }

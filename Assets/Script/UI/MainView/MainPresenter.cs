@@ -22,6 +22,28 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
         LoadUserInformation();
     }
 
+    #region TopPanel
+
+    public void EnterCreatePhotoWallItemView()
+    {
+        MVPFrameWork.UIManager.Instance.Enter(ViewId.CreatePhotoWallItemView);
+    }
+
+    /// <summary>
+    /// 用户退出登录时调用，清除用户信息和头像文件
+    /// </summary>
+    public void ClearUserInformationCache()
+    {
+        ClearAlbumList();
+        CacheManager.Instance.ClearUserInformationCache();
+        MVPFrameWork.UIManager.Instance.Quit(ViewId.MainView);
+        MVPFrameWork.UIManager.Instance.Enter(ViewId.LoginView);
+    }
+
+
+
+    #endregion TopPanel
+
     #region UserInformation
 
     #region Public
@@ -51,17 +73,6 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
             ServerManager.Instance.GetAlbumFolder(CacheManager.Instance.UserName);
         }
         return userInformation;
-    }
-
-    /// <summary>
-    /// 用户退出登录时调用，清除用户信息和头像文件
-    /// </summary>
-    public void ClearUserInformationCache()
-    {
-        ClearAlbumList();
-        CacheManager.Instance.ClearUserInformationCache();
-        MVPFrameWork.UIManager.Instance.Quit(ViewId.MainView);
-        MVPFrameWork.UIManager.Instance.Enter(ViewId.LoginView);
     }
 
     /// <summary>
