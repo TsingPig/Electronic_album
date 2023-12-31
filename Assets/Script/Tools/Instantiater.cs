@@ -92,8 +92,21 @@ namespace TsingPigSDK
 
         public static void DeactivateObjectByIndex(string addressablePath, int idx)
         {
-            _objectPools[addressablePath][idx].SetActive(false);
+            if(_objectPools.ContainsKey(addressablePath))
+            {
+                if(idx < _objectPools[addressablePath].Count)
+                {
+                    _objectPools[addressablePath][idx].SetActive(false);
+                }
+                else
+                {
+                    Debug.LogWarning($"{idx}下标越界");
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"{addressablePath}不在对象池中");
+            }
         }
-
     }
 }
