@@ -3,7 +3,7 @@ using MVPFrameWork;
 using TMPro;
 using UnityEngine.UI;
 
-public interface ICreatePhotoItemView : IView
+public interface ICreatePhotoWallItemView : IView
 {
     ButtonManager BtnQuit { get; }
 

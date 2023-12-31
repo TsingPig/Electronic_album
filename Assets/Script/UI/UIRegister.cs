@@ -36,8 +36,9 @@ public static class UIRegister
         Container.Regist<IView, PhotoDetailView>(ViewId.PhotoDetailView);
         Container.Regist<IPhotoDetailModel, PhotoDetailModel>();
 
-        Container.Regist<ICreatePhotoItemPresenter, CreatePhotoItemPresenter>();
-        Container.Regist<IView, CreatePhotoItemView>(ViewId.CreatePhotoWallItemView);
+        Container.Regist<ICreatePhotoWallItemPresenter, CreatePhotoWallItemPresenter>();
+        Container.Regist<IView, CreatePhotoWallItemView>(ViewId.CreatePhotoWallItemView);
+        Container.Regist<ICreatePhotoWallItemModel, CreatePhotoWallItemModel>();
 
     }
 }

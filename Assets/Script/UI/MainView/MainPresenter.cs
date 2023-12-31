@@ -26,7 +26,8 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
 
     public void EnterCreatePhotoWallItemView()
     {
-        MVPFrameWork.UIManager.Instance.Enter(ViewId.CreatePhotoWallItemView);
+        CreatePhotoWallItemModel createPhotoWallItemModel = new CreatePhotoWallItemModel();
+        MVPFrameWork.UIManager.Instance.Enter(ViewId.CreatePhotoWallItemView, createPhotoWallItemModel);
     }
 
     /// <summary>

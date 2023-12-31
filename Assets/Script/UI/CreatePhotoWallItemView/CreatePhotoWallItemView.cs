@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine.UI;
 
 [ParentInfo(FindType.FindWithName, ConstDef.CANVAS)]
-public class CreatePhotoItemView : ViewBase<ICreatePhotoItemPresenter>, ICreatePhotoItemView
+public class CreatePhotoWallItemView : ViewBase<ICreatePhotoWallItemPresenter>, ICreatePhotoWallItemView
 {
     private ButtonManager _btnQuit;
     private ButtonManager _btnUploadPhoto;
@@ -29,6 +29,11 @@ public class CreatePhotoItemView : ViewBase<ICreatePhotoItemPresenter>, ICreateP
         _btnCreatePhtotoWallItem = _root.Find<ButtonManager>("MainPanel/btnCreatePhotoItem");
         _inptContent = _root.Find<TMP_InputField>("MainPanel/inptContent");
         _gridPhotoContent = _root.Find<GridLayoutGroup>("MainPanel/ScrollbarView/Viewport/Content");
-        _btnUploadPhoto = _root.Find<ButtonManager>("MainPanel/ScrollbarView/Viewport/Content/btnUploadPhoto");
+        _btnUploadPhoto = _root.Find<ButtonManager>("MainPanel/ScrollbarView/Viewport/Content/btnUploadPhoto/btnUploadPhoto");
+
+        _btnQuit.onClick.AddListener(_presenter.Quit);
+        _btnUploadPhoto.onClick.AddListener(_presenter.UploadPhoto);
+        _btnCreatePhtotoWallItem.onClick.AddListener(_presenter.CreatePhotoWallItem);
+
     }
 }

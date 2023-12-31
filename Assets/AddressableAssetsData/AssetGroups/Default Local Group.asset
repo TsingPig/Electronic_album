@@ -52,7 +52,7 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 5e37eda579e9ed844b84566be9538f91
-    m_Address: Assets/Res/UI/CreatePhotoItemView/CreatePhotoItemView.prefab
+    m_Address: Assets/Res/UI/CreatePhotoWallItemView/CreatePhotoWallItemView.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0

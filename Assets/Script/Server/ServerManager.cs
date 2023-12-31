@@ -100,7 +100,7 @@ public class ServerManager : Singleton<ServerManager>
     /// <param name="account"></param>
     /// <param name="folderName"></param>
     /// <param name="callback"></param>
-    public void CreateAlbumFolder(string account, string folderName, Action<string> callback = null)
+    public void CreateAlbumFolder(string account, string folderName, Action callback = null)
     {
         StartCoroutine(CreateEmptyFolder($"{account}/{folderName}", callback));
     }
@@ -175,7 +175,7 @@ public class ServerManager : Singleton<ServerManager>
     /// <param name="folderName">相册名</param>
     /// <param name="callback">回调</param>
     /// <returns></returns>
-    private IEnumerator CreateEmptyFolder(string folderPath, Action<string> callback)
+    private IEnumerator CreateEmptyFolder(string folderPath, Action callback)
     {
         // 创建一个表单数据对象
         using(UnityWebRequest www = UnityWebRequest.Post($"{url}/createEmptyFolder/{folderPath}", ""))
@@ -185,12 +185,12 @@ public class ServerManager : Singleton<ServerManager>
             if(www.result == UnityWebRequest.Result.Success)
             {
                 Debug.Log($"文件夹创建成功：{folderPath}");
-                callback?.Invoke(www.result.ToString());
+                callback?.Invoke();
             }
             else
             {
                 Debug.LogError($"Error creating album: {www.error}");
-                callback?.Invoke(www.error);
+                callback?.Invoke();
             }
         }
     }
@@ -431,7 +431,7 @@ public class ServerManager : Singleton<ServerManager>
             }
             else
             {
-                Debug.LogError($"Error delete photo: {www.error}");
+                Debug.LogWarning($"Error delete photo: {www.error}");
             }
         }
     }

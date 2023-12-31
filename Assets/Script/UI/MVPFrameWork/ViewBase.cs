@@ -261,7 +261,7 @@ namespace MVPFrameWork
                 string name = type.Name;
                 assetPath = "Assets/Res/UI/" + name + "/" + name + ".prefab";
             }
-            Debug.Log("ViewBase" + assetPath);
+            Debug.Log("ViewBase" + assetPath); 
         }
 
         private Transform ParseParentAttr()
