@@ -25,6 +25,7 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
     public void Quit()
     {
         MVPFrameWork.UIManager.Instance.Quit(ViewId.PhotoView);
+        ServerManager.Instance.GetAlbumFolder(CacheManager.Instance.UserName);
     }
 
     /// <summary>
