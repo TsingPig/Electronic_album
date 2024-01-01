@@ -174,10 +174,10 @@ def delete_photo(account, album_name, rank):
 
 @app.route("/get_moments", methods=["GET"])
 def get_moments():
-    data = []
+    data = {"moments": []}
     MomentManager()
     for i in range(len(MomentManager.json_data)):
-        data.append(get_moments(i))
+        data["moments"].append(get_moments(i))
     return json.dumps(data)
 
 
@@ -222,15 +222,18 @@ def get_moments(rank):
     if moment.name not in MomentManager.user_json_data:
         return info_to_send
 
-    startid = 0
-    for idx in MomentManager.user_json_data[moment.name]:
-        if idx == rank:
-            break
-        startid += len(MomentManager.json_data[idx].photo_list)
-    info_to_send["PhotoUrls"] = [
-        f"http://1.12.46.157/get_photos/{path[0]}/{path[1]}/{i}.jpg"
-        for i in range(startid, startid + len(moment.photo_list))
-    ]
+    photos = get_photo_list_in_timeorder(path[0], path[1])
+    for photo, ctime in moment.photo_list:
+        try:
+            i = photos.index((photo, ctime))
+            info_to_send["PhotoUrls"].append(
+                f"http://1.12.46.157/get_photos/{path[0]}/{path[1]}/{i}.jpg"
+            )
+        except ValueError:
+            info_to_send["PhotoUrls"].append(
+                f"http://1.12.46.157/get_photos/{path[0]}/{path[1]}/{-1}.jpg"
+            )
+
     print(info_to_send)
     return info_to_send
 
