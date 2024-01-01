@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2258575983884340790}
   - component: {fileID: 3984459489480661977}
   m_Layer: 5
-  m_Name: Publisher & Content
+  m_Name: 'UserIcon & UserName & Content '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -319,13 +319,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc93992dab7e86f48a1b23515457f841, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BtnEnterManager: {fileID: 0}
   UserIcon: {fileID: 2737610029310299179}
-  TxtNickName: {fileID: 5253886921964767381}
+  TxtUserName: {fileID: 5253886921964767381}
   TxtContent: {fileID: 4367624745131776704}
-  TxtHeartCount: {fileID: 0}
-  BtnHeart: {fileID: 0}
-  BtnComment: {fileID: 0}
+  TxtHeartCount: {fileID: 1016602424182603238}
+  BtnHeart: {fileID: 3758182624186732607}
+  BtnComment: {fileID: 7053009633754564470}
   DetailPhotoItemRoot: {fileID: 7496541922123970474}
 --- !u!1 &2822831395054663341
 GameObject:
@@ -1009,7 +1008,7 @@ GameObject:
   - component: {fileID: 2948928007305647234}
   - component: {fileID: 5253886921964767381}
   m_Layer: 5
-  m_Name: txtNickName
+  m_Name: txtUserName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

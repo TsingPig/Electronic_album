@@ -1,3 +1,3 @@
 using MVPFrameWork;
-[ParentInfo(FindType.FindWithName, ConstDef.CANVAS)]
+[ParentInfo(FindType.FindWithName, StrDef.CANVAS)]
 public class MomentView : ViewBase<IMomentPresenter>, IMomentView { protected override void OnCreate() { throw new System.NotImplementedException(); } }

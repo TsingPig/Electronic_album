@@ -2,7 +2,7 @@ using Michsky.MUIP;
 using MVPFrameWork;
 using TMPro;
 
-[ParentInfo(FindType.FindWithName, ConstDef.CANVAS)]
+[ParentInfo(FindType.FindWithName, StrDef.CANVAS)]
 public class AlbumCreateView : ViewBase<IAlbumCreatePresenter>, IAlbumCreateView
 {
     private TMP_InputField _inptAlbumName;

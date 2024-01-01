@@ -1,18 +1,12 @@
 using MVPFrameWork;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using TsingPigSDK;
 using UnityEngine;
 using UnityEngine.UI;
 
-[Serializable]
-public class UserInformation
-{
-    public string userName;
-    public string nickName;
-    public string iconPath;
-}
-
-public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
+public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresenter
 {
     public override void OnCreateCompleted()
     {
@@ -20,7 +14,14 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
         CacheManager.Instance.UserInformUpdate_Event += LoadUserInformation;
         ServerManager.Instance.UpdateAlbum_Event += PresenterAlbumList;
         LoadUserInformation();
-        RefreshLayout();
+        OnShowCompleted();
+    }
+
+    public override void OnShowCompleted()
+    {
+        base.OnShowCompleted();
+        ClearPhotoWallItem();
+        RefreshModel(() => RefreshPhotoWallItem(RefreshLayout));
     }
 
     #region TopPanel
@@ -46,7 +47,52 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
 
     #region PhotoWallView
 
+    private async void RefreshModel(Action callback = null)
+    {
+        _model.Moments = new List<IMainModel.Moment>(2)
+        {
+            new IMainModel.Moment(){
+                UserName = "湿非酎",
+                Content = "込込込込込込込込込込込込込込込込"
+            },
+            new IMainModel.Moment(){
+                UserName = "幀屎剩",
+                Content = "込込込込込込込込込込込込込込込込厘寔頁涙囂麼薦"
+            }
+        };
+        callback?.Invoke();
+    }
 
+    private async void RefreshPhotoWallItem(Action callback = null)
+    {
+        //foreach(IMainModel.Moment moment in _model.Moments)
+        //{
+        //    PhotoWallItem photoWallItem = (await Instantiater.InstantiateAsync(StrDef.PHOTO_WALL_ITEM_DATA_PATH, _view.PhotoWallItemRoot.transform)).GetComponent<PhotoWallItem>();
+        //    photoWallItem.TxtContent.text = moment.Content;
+        //    photoWallItem.TxtUserName.text = moment.UserName;
+        //    photoWallItem.TxtHeartCount.text = UnityEngine.Random.Range(0, 100).ToString();
+
+        //}
+
+        foreach(IMainModel.Moment moment in _model.Moments)
+        {
+            PhotoWallItem photoWallItem = (await Instantiater.InstantiateAsync(StrDef.PHOTO_WALL_ITEM_DATA_PATH, _view.PhotoWallItemRoot.transform)).GetComponent<PhotoWallItem>();
+            photoWallItem.TxtContent.text = moment.Content;
+            photoWallItem.TxtUserName.text = moment.UserName;
+            photoWallItem.TxtHeartCount.text = UnityEngine.Random.Range(0, 100).ToString();
+        }
+        callback?.Invoke();
+    }
+
+    private void ClearPhotoWallItem()
+    {
+        //Transform root = _view.PhotoWallItemRoot.transform;
+        //foreach(Transform child in root)
+        //{
+        //    Instantiater.Release(StrDef.PHOTO_WALL_ITEM_DATA_PATH, child.gameObject);
+        //}
+        Instantiater.Release(StrDef.PHOTO_WALL_ITEM_DATA_PATH);
+    }
 
     private void RefreshLayout()
     {
@@ -214,4 +260,12 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
     #endregion Private
 
     #endregion AlbumView
+}
+
+[Serializable]
+public class UserInformation
+{
+    public string userName;
+    public string nickName;
+    public string iconPath;
 }

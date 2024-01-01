@@ -13,17 +13,30 @@ namespace TsingPigSDK
 
         public static void Release()
         {
-            foreach(var objectList in _objectPools.Values)
+            foreach(var addressablePath in _objectPools.Keys)
             {
-                foreach(var obj in objectList)
-                {
-                    Addressables.ReleaseInstance(obj);
-                }
+                Release(addressablePath);
             }
             _objectPools.Clear();
         }
 
-        public static void ReleaseObject(string addressablePath, GameObject targetGameObject)
+        public static void Release(string addressablePath)
+        {
+            if(_objectPools.ContainsKey(addressablePath))
+            {
+                foreach(var obj in _objectPools[addressablePath])
+                {
+                    Addressables.ReleaseInstance(obj);
+                }
+                _objectPools[addressablePath].Clear();
+            }
+            else
+            {
+                Log.Warning($"{addressablePath}为空，不需要析构");
+            }
+        }
+
+        public static void Release(string addressablePath, GameObject targetGameObject)
         {
             if(_objectPools.ContainsKey(addressablePath))
             {

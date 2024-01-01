@@ -3,7 +3,7 @@ using MVPFrameWork;
 using TMPro;
 using UnityEngine.UI;
 
-[ParentInfo(FindType.FindWithName, ConstDef.CANVAS)]
+[ParentInfo(FindType.FindWithName, StrDef.CANVAS)]
 public class LoginView : ViewBase<ILoginPresenter>, ILoginView
 {
     private TMP_InputField _inptRegisterInputAccount;

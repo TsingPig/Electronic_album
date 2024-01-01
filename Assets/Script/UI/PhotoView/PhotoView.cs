@@ -3,7 +3,7 @@ using MVPFrameWork;
 using TMPro;
 using UnityEngine.UI;
 
-[ParentInfo(FindType.FindWithName, ConstDef.CANVAS)]
+[ParentInfo(FindType.FindWithName, StrDef.CANVAS)]
 public class PhotoView : ViewBase<IPhotoPresenter>, IPhotoView
 {
     private ButtonManager _btnQuit;

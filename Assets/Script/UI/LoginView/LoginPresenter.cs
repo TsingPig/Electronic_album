@@ -27,7 +27,7 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
             randomIcon.RandomGenerate();
 
             CacheManager.Instance.SaveUserInformation(LoginInputAccount, NickName, randomIcon);
-            UIManager.Instance.Enter(ViewId.MainView);
+            UIManager.Instance.Enter(ViewId.MainView, new MainModel());
 
             //从服务器下载头像数据
             ServerManager.Instance.DownLoadUserIcon(LoginInputAccount);
@@ -55,7 +55,7 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
                 CacheManager.Instance.UpdateIcon(randomIcon);
 
                 UIManager.Instance.Quit(ViewId.LoginView);
-                UIManager.Instance.Enter(ViewId.MainView);
+                UIManager.Instance.Enter(ViewId.MainView, new MainModel());
             }
         }
     }
