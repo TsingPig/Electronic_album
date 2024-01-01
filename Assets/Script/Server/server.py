@@ -234,7 +234,6 @@ def get_moments(rank):
                 f"http://1.12.46.157/get_photos/{path[0]}/{path[1]}/{-1}.jpg"
             )
 
-    print(info_to_send)
     return info_to_send
 
 
