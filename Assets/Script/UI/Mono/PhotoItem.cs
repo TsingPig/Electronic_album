@@ -1,7 +1,5 @@
 using Michsky.MUIP;
-using System.Drawing;
 using UnityEngine;
-using UnityEngine.UI;
 using Image = UnityEngine.UI.Image;
 
 /// <summary>

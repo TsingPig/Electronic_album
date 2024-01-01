@@ -1,6 +1,5 @@
 using MVPFrameWork;
 using System;
-using System.Collections;
 using TsingPigSDK;
 using UnityEngine;
 using UnityEngine.UI;
@@ -143,7 +142,6 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
         photoItem.photoId = albumSize - 1;
         ServerManager.Instance.GetPhotoAsync(CacheManager.Instance.UserName, _model.AlbumName, albumSize - 1, photoImage);
     }
-
 
     [Obsolete("方法已经废弃，请改用Texture2D扩展方法")]
     private Texture2D ScaleTexture(Texture2D source, float targetWidth, float targetHeight)

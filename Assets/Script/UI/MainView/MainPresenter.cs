@@ -77,7 +77,6 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
         Instantiater.DeactivateObjectPool(StrDef.MOMENT_PHOTO_ITEM_DATA_PATH);
         Instantiater.Release(StrDef.PHOTO_WALL_ITEM_DATA_PATH);
         Instantiater.Release(StrDef.MOMENT_PHOTO_ITEM_DATA_PATH);
-
     }
 
     private void RefreshLayout()
