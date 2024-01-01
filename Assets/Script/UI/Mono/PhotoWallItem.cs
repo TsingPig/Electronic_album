@@ -13,14 +13,15 @@ public class PhotoWallItem : ItemBase
     public Image UserIcon;
     public TMP_Text TxtNickName;
     public TMP_Text TxtContent;
+    public TMP_Text TxtHeartCount;
+    public Button BtnHeart;
+    public Button BtnComment;
     public GridLayoutGroup DetailPhotoItemRoot;
-
 
     protected override void OnClick()
     {
         base.OnClick();
         Debug.Log($"PhotoItem OnClick");
-
     }
 
     private void Start()

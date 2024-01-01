@@ -1,2 +1,5 @@
 using MVPFrameWork;
-public class MomentPresenter : PresenterBase<IMomentView>, IMomentPresenter {}
+public class MomentPresenter : PresenterBase<IMomentView>, IMomentPresenter
+{
+
+}

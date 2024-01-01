@@ -1,6 +1,5 @@
 using MVPFrameWork;
 using System;
-using System.Collections.Generic;
 using TsingPigSDK;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,9 +19,8 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
         ServerManager.Instance.DownLoadUserIcon_Event += LoadUserInformation;
         CacheManager.Instance.UserInformUpdate_Event += LoadUserInformation;
         ServerManager.Instance.UpdateAlbum_Event += PresenterAlbumList;
-        //LayoutRebuilder.ForceRebuildLayoutImmediate(_view.PhotoWallItemRoot.GetComponent<RectTransform>());
-        _view.PhotoWallItemRoot.RebuildLayout();
         LoadUserInformation();
+        RefreshLayout();
     }
 
     #region TopPanel
@@ -50,8 +48,10 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
 
 
 
-
-
+    private void RefreshLayout()
+    {
+        _view.PhotoWallItemRoot.RebuildLayout();
+    }
 
     #endregion PhotoWallView
 
