@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public interface IMainView : IView
 {
+    WindowManager WindowsManager { get; set; }
+
     #region TopPanel
 
     ButtonManager BtnSetting { get; set; }
@@ -12,6 +14,12 @@ public interface IMainView : IView
     ButtonManager BtnCreatePhotoWallItem { get; }
 
     #endregion TopPanel
+
+    #region PhotoWallView
+
+    VerticalLayoutGroup PhotoWallItemRoot { get; set; }
+
+    #endregion PhotoWallView
 
     #region UserInformationView
 
@@ -46,8 +54,4 @@ public interface IMainView : IView
     GridLayoutGroup GridAlbumContent { get; }
 
     #endregion AlbumView
-
-    #region PhotoWallView
-
-    #endregion PhotoWallView
 }

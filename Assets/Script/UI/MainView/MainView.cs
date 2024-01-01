@@ -6,6 +6,10 @@ using UnityEngine.UI;
 [ParentInfo(FindType.FindWithName, ConstDef.CANVAS)]
 public class MainView : ViewBase<IMainPresenter>, IMainView
 {
+    private WindowManager _windowsManager;
+
+    public WindowManager WindowsManager { get => _windowsManager; set => _windowsManager = value; }
+
     #region TopPanel
 
     private ButtonManager _btnSetting;
@@ -17,6 +21,14 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
     public ButtonManager BtnSetting { get => _btnSetting; set => _btnSetting = value; }
 
     #endregion TopPanel
+
+    #region PhotoWallView
+
+    private VerticalLayoutGroup _photoWallItemRoot;
+
+    public VerticalLayoutGroup PhotoWallItemRoot { get => _photoWallItemRoot; set => _photoWallItemRoot = value; }
+
+    #endregion PhotoWallView
 
     #region UserInformationView
 
@@ -60,6 +72,8 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
 
     protected override void OnCreate()
     {
+        _windowsManager = _root.Find<WindowManager>("Window Manager");
+
         #region TopPanel
 
         _btnSetting = _root.Find<ButtonManager>("TopPanel/btnSetting");
@@ -69,6 +83,12 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
         _btnCreatePhotoWallItem.onClick.AddListener(_presenter.EnterCreatePhotoWallItemView);
 
         #endregion TopPanel
+
+        #region PhotoWallView
+
+        _photoWallItemRoot = _root.Find<VerticalLayoutGroup>("Window Manager/Windows/PhotoWallView/ScrollbarView/Viewport/PhotoWallItemRoot"); ;
+
+        #endregion PhotoWallView
 
         #region UserInformationView
 

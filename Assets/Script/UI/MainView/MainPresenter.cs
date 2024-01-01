@@ -1,5 +1,6 @@
 using MVPFrameWork;
 using System;
+using System.Collections.Generic;
 using TsingPigSDK;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,6 +20,8 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
         ServerManager.Instance.DownLoadUserIcon_Event += LoadUserInformation;
         CacheManager.Instance.UserInformUpdate_Event += LoadUserInformation;
         ServerManager.Instance.UpdateAlbum_Event += PresenterAlbumList;
+        //LayoutRebuilder.ForceRebuildLayoutImmediate(_view.PhotoWallItemRoot.GetComponent<RectTransform>());
+        _view.PhotoWallItemRoot.RebuildLayout();
         LoadUserInformation();
     }
 
@@ -43,6 +46,15 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
 
     #endregion TopPanel
 
+    #region PhotoWallView
+
+
+
+
+
+
+    #endregion PhotoWallView
+
     #region UserInformation
 
     #region Public
@@ -56,19 +68,9 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
     {
         UserInformation userInformation = CacheManager.Instance.UserInform;
 
-        // string filePath = Path.Combine(CacheManager.CACHA_PATH, CacheManager.USER_DATA_FILE);
-
         if(CacheManager.Instance.UserInformationCached)
         {
-            //string json = File.ReadAllText(CacheManager.USER_DATA_FILE);
-            //userInformation = JsonUtility.FromJson<UserInformation>(json);
-            //Debug.Log(json);
-            // 加载头像
-
-            // 加载用户信息
             PresentUserInformation(userInformation);
-
-            // 异步加载相册列表
             ServerManager.Instance.GetAlbumFolder(CacheManager.Instance.UserName);
         }
         return userInformation;
