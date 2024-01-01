@@ -26,7 +26,7 @@ public class CacheManager : Singleton<CacheManager>
         string filePath = USER_DATA_FILE;
         if(File.Exists(filePath))
         {
-            UIManager.Instance.Enter(ViewId.MainView);
+            UIManager.Instance.Enter(ViewId.MainView, new MainModel());
 
             UserInformationCached = true;
         }

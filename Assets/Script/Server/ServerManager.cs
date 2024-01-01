@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TsingPigSDK;
 using UnityEngine;
@@ -324,6 +325,40 @@ public class ServerManager : Singleton<ServerManager>
     }
 
     /// <summary>
+    /// 上传动态信息
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="content">动态文案</param>
+    /// <param name="photoSize">图片数量</param>
+    /// <param name="callback"></param>
+    /// <returns></returns>
+    private IEnumerator UploadMoment(string account, string content, int photoSize, Action callback = null)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("account", account);
+        form.AddField("size", photoSize);
+        form.AddField("text", content);
+
+        //form.AddBinaryData("file", bytes, fileName, "image/jpg");
+
+        using(UnityWebRequest www = UnityWebRequest.Post($"{host}/upload_moments", form))
+        {
+            www.downloadHandler = new DownloadHandlerBuffer(); // 禁用压缩
+            yield return www.SendWebRequest();
+
+            if(www.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log("Moment uploaded successfully");
+                callback?.Invoke();
+            }
+            else
+            {
+                Debug.LogError("Error uploading Moment: " + www.error);
+            }
+        }
+    }
+
+    /// <summary>
     /// 从服务器下载文件
     /// </summary>
     /// <param name="account"></param>
@@ -348,6 +383,27 @@ public class ServerManager : Singleton<ServerManager>
         {
             Debug.LogError($"网络请求错误: {url}/download/{filePath} {www.error}");
         }
+    }
+
+    /// <summary>
+    /// 获取服务器中所有的动态Json信息
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator GetMoments(Action<List<IMainModel.Moment>> callback)
+    {
+
+        yield return null;
+    }
+
+    /// <summary>
+    /// 获取单条Json信息
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator GetMoment(Action<IMainModel.Moment> callback = null)
+    {
+
+        yield return null;
+
     }
 
     /// <summary>
@@ -451,39 +507,6 @@ public class ServerManager : Singleton<ServerManager>
             else
             {
                 Debug.LogWarning($"Error delete photo: {www.error}");
-            }
-        }
-    }
-
-    /// <summary>
-    /// 上传动态信息
-    /// </summary>
-    /// <param name="account"></param>
-    /// <param name="content">动态文案</param>
-    /// <param name="photoSize">图片数量</param>
-    /// <param name="callback"></param>
-    /// <returns></returns>
-    private IEnumerator UploadMoment(string account, string content, int photoSize, Action callback = null)
-    {
-        WWWForm form = new WWWForm();
-        form.AddField("size", photoSize);
-        form.AddField("text", content);
-
-        //form.AddBinaryData("file", bytes, fileName, "image/jpg");
-
-        using(UnityWebRequest www = UnityWebRequest.Post($"{host}/upload_moments", form))
-        {
-            www.downloadHandler = new DownloadHandlerBuffer(); // 禁用压缩
-            yield return www.SendWebRequest();
-
-            if(www.result == UnityWebRequest.Result.Success)
-            {
-                Debug.Log("Moment uploaded successfully");
-                callback?.Invoke();
-            }
-            else
-            {
-                Debug.LogError("Error uploading Moment: " + www.error);
             }
         }
     }

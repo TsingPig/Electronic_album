@@ -10,6 +10,10 @@ public interface IMainPresenter : IPresenter
 
     #endregion TopPanel
 
+    #region PhotoWallView
+
+    #endregion PhotoWallView
+
     #region UserInformation
 
     UserInformation LoadUserInformation();

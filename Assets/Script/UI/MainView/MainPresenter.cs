@@ -1,18 +1,12 @@
 using MVPFrameWork;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using TsingPigSDK;
 using UnityEngine;
 using UnityEngine.UI;
 
-[Serializable]
-public class UserInformation
-{
-    public string userName;
-    public string nickName;
-    public string iconPath;
-}
-
-public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
+public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresenter
 {
     public override void OnCreateCompleted()
     {
@@ -20,6 +14,14 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
         CacheManager.Instance.UserInformUpdate_Event += LoadUserInformation;
         ServerManager.Instance.UpdateAlbum_Event += PresenterAlbumList;
         LoadUserInformation();
+        OnShowCompleted();
+    }
+
+    public override void OnShowCompleted()
+    {
+        base.OnShowCompleted();
+        ClearPhotoWallItem();
+        RefreshModel(() => RefreshPhotoWallItem(RefreshLayout));
     }
 
     #region TopPanel
@@ -43,6 +45,62 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
 
     #endregion TopPanel
 
+    #region PhotoWallView
+
+    private async void RefreshModel(Action callback = null)
+    {
+        _model.Moments = new List<IMainModel.Moment>(2)
+        {
+            new IMainModel.Moment(){
+                UserName = "¼¾ÈóÃñ",
+                Content = "¹þ¹þ¹þ¹þ¹þ¹þ¹þ¹þ¹þ¹þ¹þ¹þ¹þ¹þ¹þ¹þ"
+            },
+            new IMainModel.Moment(){
+                UserName = "ÖìÕýÑô",
+                Content = "¹þ¹þ¹þ¹þ¹þ¹þ¹þ¹þ¹þ¹þ¹þ¹þ¹þ¹þ¹þ¹þÎÒÕæÊÇÎÞÓïÖ÷Á¦"
+            }
+        };
+        callback?.Invoke();
+    }
+
+    private async void RefreshPhotoWallItem(Action callback = null)
+    {
+        //foreach(IMainModel.Moment moment in _model.Moments)
+        //{
+        //    PhotoWallItem photoWallItem = (await Instantiater.InstantiateAsync(StrDef.PHOTO_WALL_ITEM_DATA_PATH, _view.PhotoWallItemRoot.transform)).GetComponent<PhotoWallItem>();
+        //    photoWallItem.TxtContent.text = moment.Content;
+        //    photoWallItem.TxtUserName.text = moment.UserName;
+        //    photoWallItem.TxtHeartCount.text = UnityEngine.Random.Range(0, 100).ToString();
+
+        //}
+
+        foreach(IMainModel.Moment moment in _model.Moments)
+        {
+            PhotoWallItem photoWallItem = (await Instantiater.InstantiateAsync(StrDef.PHOTO_WALL_ITEM_DATA_PATH, _view.PhotoWallItemRoot.transform)).GetComponent<PhotoWallItem>();
+            photoWallItem.TxtContent.text = moment.Content;
+            photoWallItem.TxtUserName.text = moment.UserName;
+            photoWallItem.TxtHeartCount.text = UnityEngine.Random.Range(0, 100).ToString();
+        }
+        callback?.Invoke();
+    }
+
+    private void ClearPhotoWallItem()
+    {
+        //Transform root = _view.PhotoWallItemRoot.transform;
+        //foreach(Transform child in root)
+        //{
+        //    Instantiater.Release(StrDef.PHOTO_WALL_ITEM_DATA_PATH, child.gameObject);
+        //}
+        Instantiater.Release(StrDef.PHOTO_WALL_ITEM_DATA_PATH);
+    }
+
+    private void RefreshLayout()
+    {
+        _view.PhotoWallItemRoot.RebuildLayout();
+    }
+
+    #endregion PhotoWallView
+
     #region UserInformation
 
     #region Public
@@ -56,19 +114,9 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
     {
         UserInformation userInformation = CacheManager.Instance.UserInform;
 
-        // string filePath = Path.Combine(CacheManager.CACHA_PATH, CacheManager.USER_DATA_FILE);
-
         if(CacheManager.Instance.UserInformationCached)
         {
-            //string json = File.ReadAllText(CacheManager.USER_DATA_FILE);
-            //userInformation = JsonUtility.FromJson<UserInformation>(json);
-            //Debug.Log(json);
-            // ¼ÓÔØÍ·Ïñ
-
-            // ¼ÓÔØÓÃ»§ÐÅÏ¢
             PresentUserInformation(userInformation);
-
-            // Òì²½¼ÓÔØÏà²áÁÐ±í
             ServerManager.Instance.GetAlbumFolder(CacheManager.Instance.UserName);
         }
         return userInformation;
@@ -212,4 +260,12 @@ public class MainPresenter : PresenterBase<IMainView>, IMainPresenter
     #endregion Private
 
     #endregion AlbumView
+}
+
+[Serializable]
+public class UserInformation
+{
+    public string userName;
+    public string nickName;
+    public string iconPath;
 }

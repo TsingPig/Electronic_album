@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class CreatePhotoWallItemPresenter : PresenterBase<ICreatePhotoWallItemView, ICreatePhotoWallItemModel>, ICreatePhotoWallItemPresenter
 {
-    public static string DefaultTargetAlbumName = "¶¯Ì¬";
+    public static string DefaultTargetAlbumName = "Moment";
 
     public override void OnCreateCompleted()
     {
@@ -110,7 +110,7 @@ public class CreatePhotoWallItemPresenter : PresenterBase<ICreatePhotoWallItemVi
         {
             for(int i = 1; i < childCount; i++)
             {
-                Instantiater.ReleaseObject(StrDef.PHOTO_UPLOAD_ITEM_DATA_PATH, _view.GridPhotoContent.transform.GetChild(i).gameObject);
+                Instantiater.Release(StrDef.PHOTO_UPLOAD_ITEM_DATA_PATH, _view.GridPhotoContent.transform.GetChild(i).gameObject);
             }
         }
 
