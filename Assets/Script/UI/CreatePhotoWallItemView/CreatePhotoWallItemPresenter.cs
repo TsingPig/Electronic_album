@@ -20,31 +20,37 @@ public class CreatePhotoWallItemPresenter : PresenterBase<ICreatePhotoWallItemVi
         Initialize();
     }
 
+    /// <summary>
+    /// 上传多图
+    /// </summary>
+    public void UploadPhotos()
+    {
+        Texture2D[] photoTextures = null;
+        NativeGallery.Permission permission = NativeGallery.GetImagesFromGallery((path) =>
+        {
+            foreach(var p in path)
+            {
+                Debug.Log("图片路径: " + p);
+            }
+            if(path != null)
+            {
+                try
+                {
+                    photoTextures = CacheManager.LoadTexture(path).Scale(200, 200);
+                    _model.Photos = photoTextures;
+                    VisualizeUploadedPhotos(path.Length);
+                }
+                catch(Exception e)
+                {
+                    Debug.LogError($"Error loading image: {e.Message}");
+                }
+            }
+        });
+    }
+
+    [Obsolete("上传单图已经过时，请改用上传多图")]
     public void UploadPhoto()
     {
-        //Texture2D[] photoTextures = null;
-        //NativeGallery.Permission permission = NativeGallery.GetImagesFromGallery((path) =>
-        //{
-        //    foreach(var p in path)
-        //    {
-        //        Debug.Log("图片路径: " + p);
-        //    }
-        //    if(path != null)
-        //    {
-        //        try
-        //        {
-        //            photoTextures = CacheManager.LoadTexture(path).Scale(200, 200);
-        //            _model.Photos = photoTextures;
-        //            VisualizeUploadedPhotos(path.Length);
-        //
-        //        }
-        //        catch(Exception e)
-        //        {
-        //            Debug.LogError($"Error loading image: {e.Message}");
-        //        }
-        //    }
-        //});
-
         Texture2D[] photoTextures = null;
         NativeGallery.Permission permission = NativeGallery.GetImageFromGallery((path) =>
         {
@@ -64,6 +70,9 @@ public class CreatePhotoWallItemPresenter : PresenterBase<ICreatePhotoWallItemVi
         });
     }
 
+    /// <summary>
+    /// 创建一条新的动态项
+    /// </summary>
     public void CreatePhotoWallItem()
     {
         ServerManager.Instance.CreateAlbumFolder(CacheManager.Instance.UserName, DefaultTargetAlbumName, () =>
@@ -106,15 +115,7 @@ public class CreatePhotoWallItemPresenter : PresenterBase<ICreatePhotoWallItemVi
     private void Initialize()
     {
         _view.InptContent.text = string.Empty;
-        int childCount = _view.GridPhotoContent.transform.childCount;
-        if(childCount > 1)
-        {
-            for(int i = 1; i < childCount; i++)
-            {
-                Instantiater.Release(StrDef.PHOTO_UPLOAD_ITEM_DATA_PATH, _view.GridPhotoContent.transform.GetChild(i).gameObject);
-            }
-        }
-
+        Instantiater.DeactivateObjectPool(StrDef.PHOTO_UPLOAD_ITEM_DATA_PATH);
         _model.Photos = null;
         _model.Content = null;
     }

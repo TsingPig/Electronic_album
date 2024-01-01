@@ -22,7 +22,6 @@ public class CreatePhotoWallItemView : ViewBase<ICreatePhotoWallItemPresenter>, 
 
     public TMP_InputField InptContent => _inptContent;
 
-
     protected override void OnCreate()
     {
         _btnQuit = _root.Find<ButtonManager>("MainPanel/btnQuit");
@@ -32,8 +31,7 @@ public class CreatePhotoWallItemView : ViewBase<ICreatePhotoWallItemPresenter>, 
         _btnUploadPhoto = _root.Find<ButtonManager>("MainPanel/ScrollbarView/Viewport/Content/btnUploadPhoto/btnUploadPhoto");
 
         _btnQuit.onClick.AddListener(_presenter.Quit);
-        _btnUploadPhoto.onClick.AddListener(_presenter.UploadPhoto);
+        _btnUploadPhoto.onClick.AddListener(_presenter.UploadPhotos);
         _btnCreatePhtotoWallItem.onClick.AddListener(_presenter.CreatePhotoWallItem);
-
     }
 }

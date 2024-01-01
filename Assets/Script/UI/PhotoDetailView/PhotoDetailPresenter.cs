@@ -6,7 +6,7 @@ public class PhotoDetailPresenter : PresenterBase<IPhotoDetailView, IPhotoDetail
     public void DeletePhoto()
     {
         MVPFrameWork.UIManager.Instance.Quit(ViewId.PhotoDetailView);
-        ServerManager.Instance.DeletePhoto(CacheManager.Instance.UserName, _model.AlbumName, 
+        ServerManager.Instance.DeletePhoto(CacheManager.Instance.UserName, _model.AlbumName,
             Instantiater.DeactivateObjectById(StrDef.PHOTO_ITEM_DATA_PATH, _model.PhotoId));
     }
 
@@ -20,6 +20,10 @@ public class PhotoDetailPresenter : PresenterBase<IPhotoDetailView, IPhotoDetail
     {
         base.OnCreateCompleted();
         _view.ImgDetailPhoto.sprite = _model.ImgPhotoDetail.sprite;
+        if(!_model.AllowDelete)
+        {
+            _view.BtnDeletePhoto.gameObject.SetActive(false);
+        }
     }
 
     public void Quit()

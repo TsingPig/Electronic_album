@@ -17,7 +17,7 @@ public class MomentPhotoItem : ItemBase
 
         PhotoDetailModel model = new PhotoDetailModel();
 
-        model.SetModel(ImgPhoto, 0, CreatePhotoWallItemPresenter.DefaultTargetAlbumName);
+        model.SetModel(ImgPhoto, -1, CreatePhotoWallItemPresenter.DefaultTargetAlbumName, false);
 
         MVPFrameWork.UIManager.Instance.Enter(ViewId.PhotoDetailView, model);
     }
