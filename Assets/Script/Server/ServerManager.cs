@@ -31,7 +31,15 @@ public class ServerManager : Singleton<ServerManager>
     /// </summary>
     public Action<FolderList> UpdateAlbumEvent;
 
+    /// <summary>
+    /// 动态更新回调事件
+    /// </summary>
     public Action UpdateMomentEvent;
+
+    /// <summary>
+    /// 图片缓存
+    /// </summary>
+    private Dictionary<string, Sprite> _dicPhotoCache = new Dictionary<string, Sprite>();
 
     /// <summary>
     /// 向服务器上传头像
@@ -168,6 +176,11 @@ public class ServerManager : Singleton<ServerManager>
     /// <param name="image">图片组件</param>
     public async Task GetPhotoAsync(string photoUrl, Image image)
     {
+        if(_dicPhotoCache.ContainsKey(photoUrl))
+        {
+            image.sprite = _dicPhotoCache[photoUrl];
+            return;
+        }
         using(UnityWebRequest www = UnityWebRequest.Get(photoUrl))
         {
             using(DownloadHandlerTexture texD1 = new DownloadHandlerTexture(true))
@@ -184,6 +197,7 @@ public class ServerManager : Singleton<ServerManager>
                 Debug.Log($"{photoUrl}请求完毕");
                 Texture2D photoTex = texD1.texture;
                 image.sprite = Sprite.Create(photoTex, new Rect(0, 0, 200, 200), new Vector2(0.5f, 0.5f));
+                _dicPhotoCache[photoUrl] = image.sprite;
             }
         }
     }
@@ -218,10 +232,10 @@ public class ServerManager : Singleton<ServerManager>
     }
 
     /// <summary>
-    /// 删除用户的某个相册
+    /// 删除用户相册文件夹
     /// </summary>
-    /// <param name="account">用户名</param>
-    /// <param name="albumName">相册名</param>
+    /// <param name="account"></param>
+    /// <param name="albumName"></param>
     public void DeletaAlbumFolder(string account, string albumName)
     {
         StartCoroutine(DeleteFolder(account, albumName, UpdateAlbumEvent));
@@ -418,7 +432,7 @@ public class ServerManager : Singleton<ServerManager>
             else
             {
                 Debug.LogError("Error uploading Moment: " + www.error);
-            }   
+            }
         }
     }
 
