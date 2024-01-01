@@ -1,6 +1,5 @@
 using MVPFrameWork;
 using System;
-using System.Threading.Tasks;
 using TsingPigSDK;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,7 +14,6 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
         CacheManager.Instance.UserInformUpdateEvent += LoadUserInformation;
         LoadUserInformation();
         RefreshModel(() => RefreshPhotoWallItem(RefreshLayout));
-
     }
 
     public override void OnShowCompleted()
@@ -51,7 +49,6 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
     {
         ClearPhotoWallItem();
         RefreshModel(() => RefreshPhotoWallItem(RefreshLayout));
-
     }
 
     private async void RefreshModel(Action callback = null)
@@ -76,9 +73,11 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
 
     private void ClearPhotoWallItem()
     {
-
         Instantiater.DeactivateObjectPool(StrDef.PHOTO_WALL_ITEM_DATA_PATH);
         Instantiater.DeactivateObjectPool(StrDef.MOMENT_PHOTO_ITEM_DATA_PATH);
+        Instantiater.Release(StrDef.PHOTO_WALL_ITEM_DATA_PATH);
+        Instantiater.Release(StrDef.MOMENT_PHOTO_ITEM_DATA_PATH);
+
     }
 
     private void RefreshLayout()

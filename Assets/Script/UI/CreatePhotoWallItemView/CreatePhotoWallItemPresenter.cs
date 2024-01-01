@@ -102,6 +102,10 @@ public class CreatePhotoWallItemPresenter : PresenterBase<ICreatePhotoWallItemVi
         MVPFrameWork.UIManager.Instance.Quit(ViewId.CreatePhotoWallItemView);
     }
 
+    /// <summary>
+    /// 刷新上传列表的图片
+    /// </summary>
+    /// <param name="uploadedPhotoCount"></param>
     private async void VisualizeUploadedPhotos(int uploadedPhotoCount)
     {
         for(int i = 0; i < uploadedPhotoCount; i++)
