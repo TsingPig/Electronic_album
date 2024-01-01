@@ -77,6 +77,7 @@ public class CreatePhotoWallItemPresenter : PresenterBase<ICreatePhotoWallItemVi
                     ServerManager.Instance.UploadMomentItem(CacheManager.Instance.UserName, _view.InptContent.text, _model.Photos.Length, () =>
                     {
                         Debug.Log($"上传动态成功");
+
                     });
                 });
             }

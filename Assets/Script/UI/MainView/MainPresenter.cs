@@ -1,7 +1,5 @@
 using MVPFrameWork;
 using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using TsingPigSDK;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,18 +8,18 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
 {
     public override void OnCreateCompleted()
     {
-        ServerManager.Instance.DownLoadUserIcon_Event += LoadUserInformation;
+        ServerManager.Instance.UpdateAlbumEvent += PresenterAlbumList;
+        ServerManager.Instance.UpdateMomentEvent += RefreshPhotoWallView;
+        ServerManager.Instance.DownLoadUserIconEvent += LoadUserInformation;
         CacheManager.Instance.UserInformUpdate_Event += LoadUserInformation;
-        ServerManager.Instance.UpdateAlbum_Event += PresenterAlbumList;
         LoadUserInformation();
-        OnShowCompleted();
+        RefreshPhotoWallView();
     }
 
     public override void OnShowCompleted()
     {
         base.OnShowCompleted();
-        ClearPhotoWallItem();
-        RefreshModel(() => RefreshPhotoWallItem(RefreshLayout));
+        RefreshPhotoWallView();
     }
 
     #region TopPanel
@@ -47,40 +45,28 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
 
     #region PhotoWallView
 
+    private void RefreshPhotoWallView()
+    {
+        ClearPhotoWallItem();
+        RefreshModel(() => RefreshPhotoWallItem(RefreshLayout));
+    }
+
     private async void RefreshModel(Action callback = null)
     {
-        //_model.Moments = new List<IMainModel.Moment>(2)
-        //{
-        //    new IMainModel.Moment(){
-        //        UserName = "湿非酎",
-        //        Content = "込込込込込込込込込込込込込込込込"
-        //    },
-        //    new IMainModel.Moment(){
-        //        UserName = "幀屎剩",
-        //        Content = "込込込込込込込込込込込込込込込込厘寔頁涙囂麼薦"
-        //    }
-        //};
         _model.Moments = await ServerManager.Instance.GetAllPhotoWallItems();
         callback?.Invoke();
     }
 
     private async void RefreshPhotoWallItem(Action callback = null)
     {
-        //foreach(IMainModel.Moment moment in _model.Moments)
-        //{
-        //    PhotoWallItem photoWallItem = (await Instantiater.InstantiateAsync(StrDef.PHOTO_WALL_ITEM_DATA_PATH, _view.PhotoWallItemRoot.transform)).GetComponent<PhotoWallItem>();
-        //    photoWallItem.TxtContent.text = moment.Content;
-        //    photoWallItem.TxtUserName.text = moment.UserName;
-        //    photoWallItem.TxtHeartCount.text = UnityEngine.Random.Range(0, 100).ToString();
-
-        //}
-
         foreach(IMainModel.Moment moment in _model.Moments)
         {
             PhotoWallItem photoWallItem = (await Instantiater.InstantiateAsync(StrDef.PHOTO_WALL_ITEM_DATA_PATH, _view.PhotoWallItemRoot.transform)).GetComponent<PhotoWallItem>();
             photoWallItem.TxtContent.text = moment.Content;
             photoWallItem.TxtUserName.text = moment.UserName;
             photoWallItem.TxtHeartCount.text = UnityEngine.Random.Range(0, 100).ToString();
+            photoWallItem.PhotoUrls = moment.PhotoUrls;
+            await photoWallItem.LoadMomentPhotoItems();
         }
         callback?.Invoke();
     }

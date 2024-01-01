@@ -20,6 +20,13 @@ public interface IMainModel : IModel
         public List<string> PhotoUrls;
     }
 
+    [Serializable]
+    class MomentsWrapper
+    {
+        [JsonProperty("moments")]
+        public List<Moment> moments;
+    }
+
 
     public List<Moment> Moments { get; set; }
 
