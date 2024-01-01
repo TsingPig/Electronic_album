@@ -1,34 +1,23 @@
 using Michsky.MUIP;
-using System.Drawing;
 using UnityEngine;
-using UnityEngine.UI;
 using Image = UnityEngine.UI.Image;
 
-/// <summary>
-/// 相册列表项的点击事件
-/// </summary>
 public class MomentPhotoItem : ItemBase
 {
     public ButtonManager BtnEnterManager;
-    public Image Cover;
+    public Image ImgPhoto;
 
     [HideInInspector]
-    public string AlbumName;
-
-    /// <summary>
-    /// 图片索引
-    /// </summary>
-    //[HideInInspector]
-    public int photoId;
+    public string PhotoUrl;
 
     protected override void OnClick()
     {
         base.OnClick();
-        Debug.Log($"PhotoItem OnClick");
+        Debug.Log($"MomentPhotoItem OnClick");
 
         PhotoDetailModel model = new PhotoDetailModel();
 
-        model.SetModel(Cover, photoId, AlbumName);
+        model.SetModel(ImgPhoto, 0, CreatePhotoWallItemPresenter.DefaultTargetAlbumName);
 
         MVPFrameWork.UIManager.Instance.Enter(ViewId.PhotoDetailView, model);
     }
@@ -36,5 +25,10 @@ public class MomentPhotoItem : ItemBase
     private void Start()
     {
         BtnItem = BtnEnterManager;
+    }
+
+    public void GetPhotoAsync()
+    {
+        ServerManager.Instance.GetPhotoAsync(PhotoUrl, ImgPhoto);
     }
 }
