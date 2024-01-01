@@ -176,7 +176,7 @@ def delete_photo(account, album_name, rank):
 def get_moments():
     data = {"moments": []}
     MomentManager()
-    for i in range(len(MomentManager.json_data)):
+    for i in range(len(MomentManager.json_data)-1, -1, -1):
         data["moments"].append(get_moments(i))
     return json.dumps(data)
 
