@@ -418,7 +418,7 @@ public class ServerManager : Singleton<ServerManager>
             else
             {
                 Debug.LogError("Error uploading Moment: " + www.error);
-            }
+            }   
         }
     }
 
