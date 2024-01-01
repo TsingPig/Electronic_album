@@ -95,11 +95,11 @@ public class CacheManager : Singleton<CacheManager>
         set
         {
             _userInform = value;
-            UserInformUpdate_Event?.Invoke();
+            UserInformUpdateEvent?.Invoke();
         }
     }
 
-    public Func<UserInformation> UserInformUpdate_Event = null;
+    public Func<UserInformation> UserInformUpdateEvent = null;
 
     public string UserName
     {

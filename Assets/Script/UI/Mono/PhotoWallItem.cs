@@ -25,6 +25,7 @@ public class PhotoWallItem : ItemBase
 
     public async Task LoadMomentPhotoItems()
     {
+
         foreach(string photoUrl in PhotoUrls)
         {
             GameObject momentPhotoItemObj = await Instantiater.InstantiateAsync(StrDef.MOMENT_PHOTO_ITEM_DATA_PATH, MomentPhotoItemRoot.transform);
