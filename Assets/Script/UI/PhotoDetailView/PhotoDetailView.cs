@@ -2,7 +2,7 @@ using Michsky.MUIP;
 using MVPFrameWork;
 using UnityEngine.UI;
 
-[ParentInfo(FindType.FindWithName, StrDef.CANVAS)]
+[ParentInfo(FindType.FindWithName, StrDef.CANVAS_1)]
 public class PhotoDetailView : ViewBase<IPhotoDetailPresenter>, IPhotoDetailView
 {
     public ButtonManager _btnQuit;

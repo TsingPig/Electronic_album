@@ -14,5 +14,7 @@ public interface IPhotoDetailModel : IModel
 
     string AlbumName { get; }
 
-    void SetModel(Image imgPhotoDetail, int photoId, string albumName);
+    bool AllowDelete { get; }   
+
+    void SetModel(Image imgPhotoDetail, int photoId, string albumName, bool allowDelete);
 }
