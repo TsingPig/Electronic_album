@@ -1,5 +1,7 @@
 from flask import Flask, request, send_file
 from werkzeug.utils import secure_filename
+from MomentManager import MomentManager
+from Moment import Moment
 import os
 import json
 import time
@@ -131,31 +133,22 @@ def connect_size(account, album_name):
 def get_photos(account, album_name, rank):
     album_path = os.path.join(app.config["UPLOAD_FOLDER"], account, album_name)
     if os.path.exists(album_path):
-        photos = {"photos": []}
-        # 遍历相册目录下的所有文件
-        for photo in os.listdir(album_path):
-            # 如果是文件，将其加入photos字典中
-            if os.path.isfile(os.path.join(album_path, photo)):
-                photo_ctime = os.path.getctime(os.path.join(album_path, photo))
-                photos["photos"].append((photo, photo_ctime))
-        photos["photos"].sort(key=lambda x: x[1], reverse=False)
-
+        photos = get_photo_list_in_timeorder(account, album_name)
         rank = int(rank.split(".")[0])
 
         if rank == -1:
-            if len(photos["photos"]) == 0:
+            if len(photos) == 0:
                 return send_file(default_path)
-            photo_to_send = os.path.join(album_path, photos["photos"][0][0])
+            photo_to_send = os.path.join(album_path, photos[0][0])
             return send_file(photo_to_send)
 
-        if rank < len(photos["photos"]):
-            print(photos["photos"][rank][0])
-            photo_to_send = os.path.join(album_path, photos["photos"][rank][0])
+        if rank < len(photos):
+            photo_to_send = os.path.join(album_path, photos[rank][0])
             print(photo_to_send)
             return send_file(photo_to_send)
 
         else:
-            return "photo not found", 404
+            return send_file(default_path)
     else:
         return "Album not found", 404
 
@@ -165,19 +158,12 @@ def get_photos(account, album_name, rank):
 def delete_photo(account, album_name, rank):
     album_path = os.path.join(app.config["UPLOAD_FOLDER"], account, album_name)
     if os.path.exists(album_path):
-        photos = {"photos": []}
-        # 遍历相册目录下的所有文件
-        for photo in os.listdir(album_path):
-            # 如果是文件，将其加入photos字典中
-            if os.path.isfile(os.path.join(album_path, photo)):
-                photo_ctime = os.path.getctime(os.path.join(album_path, photo))
-                photos["photos"].append((photo, photo_ctime))
-        photos["photos"].sort(key=lambda x: x[1], reverse=False)
-
+        photos = get_photo_list_in_timeorder(account, album_name)
         rank = int(rank.split(".")[0])
 
-        if rank < len(photos["photos"]):
-            photo_to_delete = os.path.join(album_path, photos["photos"][rank][0])
+        if rank < len(photos):
+            photo_to_delete = os.path.join(album_path, photos[rank][0])
+            print(photo_to_delete)
             os.remove(photo_to_delete)
             return "photo deleted"
         else:
@@ -188,15 +174,65 @@ def delete_photo(account, album_name, rank):
 
 @app.route("/get_moments", methods=["GET"])
 def get_moments():
-    pass
+    data = []
+    MomentManager()
+    for i in range(len(MomentManager.json_data)):
+        data.append(get_moments(i))
+    return json.dumps(data)
 
 
 @app.route("/upload_moments", methods=["POST"])
 def upload_moments():
-    photo_size = request.form["size"]
+    user_name = request.form["account"]
+    photo_size = int(request.form["size"])
     text = request.form["text"]
-    print(photo_size, text)
+    print(user_name, photo_size, text)
+    photos = get_photo_list_in_timeorder(user_name, "Moment")
+    start_id = MomentManager.get_total_photosize_by_name(user_name)
+    photos = photos[start_id : start_id + photo_size]
+    MomentManager.add_moment(Moment(user_name, photos, text))
+    MomentManager.save_json_data()
     return "moment upload"
+
+
+def get_photo_list_in_timeorder(account, album_name):
+    album_path = os.path.join(app.config["UPLOAD_FOLDER"], account, album_name)
+
+    photos = {"photos": []}
+    # 遍历相册目录下的所有文件
+    for photo in os.listdir(album_path):
+        # 如果是文件，将其加入photos字典中
+        if os.path.isfile(os.path.join(album_path, photo)):
+            photo_ctime = os.path.getctime(os.path.join(album_path, photo))
+            photos["photos"].append((photo, photo_ctime))
+    photos["photos"].sort(key=lambda x: x[1], reverse=False)
+
+    return photos["photos"]
+
+
+def get_moments(rank):
+    moment: Moment = MomentManager.json_data[rank]
+    info_to_send = {}
+    info_to_send["UserName"] = moment.name
+    info_to_send["Content"] = moment.text
+    info_to_send["PhotoCount"] = len(moment.photo_list)
+    info_to_send["PhotoUrls"] = []
+    path = (moment.name, "Moment")
+
+    if moment.name not in MomentManager.user_json_data:
+        return info_to_send
+
+    startid = 0
+    for idx in MomentManager.user_json_data[moment.name]:
+        if idx == rank:
+            break
+        startid += len(MomentManager.json_data[idx].photo_list)
+    info_to_send["PhotoUrls"] = [
+        f"http://1.12.46.157/get_photos/{path[0]}/{path[1]}/{i}.jpg"
+        for i in range(startid, startid + len(moment.photo_list))
+    ]
+    print(info_to_send)
+    return info_to_send
 
 
 if __name__ == "__main__":
