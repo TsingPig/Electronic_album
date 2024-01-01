@@ -6,6 +6,7 @@ using TsingPigSDK;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using static IMainModel;
 
 public class ServerManager : Singleton<ServerManager>
 {
@@ -116,16 +117,6 @@ public class ServerManager : Singleton<ServerManager>
     }
 
     /// <summary>
-    /// 删除用户的某个相册
-    /// </summary>
-    /// <param name="account">用户名</param>
-    /// <param name="albumName">相册名</param>
-    public void DeletaAlbumFolder(string account, string albumName)
-    {
-        StartCoroutine(DeleteFolder(account, albumName, UpdateAlbum_Event));
-    }
-
-    /// <summary>
     /// 获取用户相册的所有图片
     /// </summary>
     /// <param name="account"></param>
@@ -133,6 +124,39 @@ public class ServerManager : Singleton<ServerManager>
     public void GetAlbumSize(string account, string albumName, Action<int> callback = null)
     {
         StartCoroutine(GetConnectSize($"{account}/{albumName}", callback));
+    }
+
+    /// <summary>
+    /// 请求所有动态数据
+    /// </summary>
+    /// <returns></returns>
+    public async Task<List<IMainModel.Moment>> GetAllPhotoWallItems()
+    {
+        using(UnityWebRequest www = UnityWebRequest.Get($"{url}/get_moments"))
+        {
+
+            Debug.Log($"开始请求动态数据");
+            www.SendWebRequest();
+
+            while(!www.isDone)
+            {
+                await Task.Yield();
+            }
+
+            if(www.result == UnityWebRequest.Result.Success)
+            {
+                string jsonResult = www.downloadHandler.text;
+                Debug.Log($"动态数据请求成功：{jsonResult}");
+                List<IMainModel.Moment> moments = JsonUtility.FromJson<List<IMainModel.Moment>>(jsonResult);
+
+                return moments;
+            }
+            else
+            {
+                Debug.LogError($"Error: {www.error}");
+                return null;
+            }
+        }
     }
 
     /// <summary>
@@ -162,6 +186,16 @@ public class ServerManager : Singleton<ServerManager>
                 image.sprite = Sprite.Create(photoTex, new Rect(0, 0, 200, 200), new Vector2(0.5f, 0.5f));
             }
         }
+    }
+
+    /// <summary>
+    /// 删除用户的某个相册
+    /// </summary>
+    /// <param name="account">用户名</param>
+    /// <param name="albumName">相册名</param>
+    public void DeletaAlbumFolder(string account, string albumName)
+    {
+        StartCoroutine(DeleteFolder(account, albumName, UpdateAlbum_Event));
     }
 
     /// <summary>
@@ -385,25 +419,24 @@ public class ServerManager : Singleton<ServerManager>
         }
     }
 
+    [Obsolete]
     /// <summary>
     /// 获取服务器中所有的动态Json信息
     /// </summary>
     /// <returns></returns>
     private IEnumerator GetMoments(Action<List<IMainModel.Moment>> callback)
     {
-
         yield return null;
     }
 
+    [Obsolete]
     /// <summary>
     /// 获取单条Json信息
     /// </summary>
     /// <returns></returns>
     private IEnumerator GetMoment(Action<IMainModel.Moment> callback = null)
     {
-
         yield return null;
-
     }
 
     /// <summary>

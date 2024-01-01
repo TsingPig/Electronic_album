@@ -49,17 +49,18 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
 
     private async void RefreshModel(Action callback = null)
     {
-        _model.Moments = new List<IMainModel.Moment>(2)
-        {
-            new IMainModel.Moment(){
-                UserName = "湿非酎",
-                Content = "込込込込込込込込込込込込込込込込"
-            },
-            new IMainModel.Moment(){
-                UserName = "幀屎剩",
-                Content = "込込込込込込込込込込込込込込込込厘寔頁涙囂麼薦"
-            }
-        };
+        //_model.Moments = new List<IMainModel.Moment>(2)
+        //{
+        //    new IMainModel.Moment(){
+        //        UserName = "湿非酎",
+        //        Content = "込込込込込込込込込込込込込込込込"
+        //    },
+        //    new IMainModel.Moment(){
+        //        UserName = "幀屎剩",
+        //        Content = "込込込込込込込込込込込込込込込込厘寔頁涙囂麼薦"
+        //    }
+        //};
+        _model.Moments = await ServerManager.Instance.GetAllPhotoWallItems();
         callback?.Invoke();
     }
 
