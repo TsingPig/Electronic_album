@@ -12,6 +12,8 @@ class MomentManager:
     user_json_data: Dict[str, List[int]] = {}
 
     def __init__(self) -> None:
+        MomentManager.json_data = []
+        MomentManager.user_json_data = {}
         with open(path, "r") as f:
             data = json.load(f)
         for items in data:
