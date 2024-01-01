@@ -466,6 +466,7 @@ public class ServerManager : Singleton<ServerManager>
     private IEnumerator UploadMoment(string account, string content, int photoSize, Action callback = null)
     {
         WWWForm form = new WWWForm();
+        form.AddField("account", account);
         form.AddField("size", photoSize);
         form.AddField("text", content);
 
