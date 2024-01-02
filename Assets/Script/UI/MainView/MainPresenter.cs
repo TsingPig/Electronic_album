@@ -31,7 +31,7 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
     }
 
     /// <summary>
-    /// ÓÃ»§ÍË³öµÇÂ¼Ê±µ÷ÓÃ£¬Çå³ýÓÃ»§ÐÅÏ¢ºÍÍ·ÏñÎÄ¼þ
+    /// ï¿½Ã»ï¿½ï¿½Ë³ï¿½ï¿½ï¿½Â¼Ê±ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Í·ï¿½ï¿½ï¿½Ä¼ï¿½
     /// </summary>
     public void ClearUserInformationCache()
     {
@@ -92,7 +92,7 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
     #region Public
 
     /// <summary>
-    /// ¼ÓÔØ±¾µØ»º´æµÄÓÃ»§ÐÅÏ¢
+    /// ï¿½ï¿½ï¿½Ø±ï¿½ï¿½Ø»ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Ï¢
     /// </summary>
     /// <param name="userData"></param>
     /// <returns></returns>
@@ -109,7 +109,7 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
     }
 
     /// <summary>
-    /// ¸üÐÂêÇ³Æ
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½Ç³ï¿½
     /// </summary>
     public void UpdateNickName()
     {
@@ -119,7 +119,7 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
     }
 
     /// <summary>
-    /// È·ÈÏ¸üÐÂ
+    /// È·ï¿½Ï¸ï¿½ï¿½ï¿½
     /// </summary>
     public void SureUpdateNickName()
     {
@@ -134,16 +134,16 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
 
             CacheManager.Instance.UpdateNickName(updatedNickName);
 
-            Debug.Log($"êÇ³Æ¸üÐÂÎª£º{updatedNickName}");
+            Debug.Log($"ï¿½Ç³Æ¸ï¿½ï¿½ï¿½Îªï¿½ï¿½{updatedNickName}");
         }
         else
         {
-            Debug.LogWarning("êÇ³Æ²»¿ÉÎª¿Õ");
+            Debug.LogWarning("ï¿½Ç³Æ²ï¿½ï¿½ï¿½Îªï¿½ï¿½");
         }
     }
 
     /// <summary>
-    /// ¸üÐÂÓÃ»§Í·Ïñ
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Í·ï¿½ï¿½
     /// </summary>
     /// <param name="icon"></param>
     public void UpdateUserIcon()
@@ -151,17 +151,17 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
         Texture2D icon = null;
         NativeGallery.Permission permission = NativeGallery.GetImageFromGallery((path) =>
         {
-            Debug.Log("Í¼Æ¬Â·¾¶: " + path);
+            Debug.Log("Í¼Æ¬Â·ï¿½ï¿½: " + path);
             if(path != null)
             {
                 try
                 {
-                    icon = CacheManager.LoadTexture(path);
+                    icon = CacheManager.LoadTexture(path).Scale(200, 200);
                     if(icon != null)
                     {
                         _view.BtnUserIcon.image.sprite = Sprite.Create(icon, new Rect(0, 0, icon.width, icon.height), new Vector2(0.5f, 0.5f));
 
-                        Debug.Log("Í·Ïñ¸üÐÂ³É¹¦");
+                        Debug.Log("Í·ï¿½ï¿½ï¿½ï¿½Â³É¹ï¿½");
 
                         CacheManager.Instance.UpdateIcon(icon);
                     }
@@ -177,7 +177,7 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
             }
         });
 
-        Debug.Log("È¨ÏÞ½á¹û£º" + permission);
+        Debug.Log("È¨ï¿½Þ½ï¿½ï¿½ï¿½ï¿½" + permission);
     }
 
     #endregion Public
@@ -185,7 +185,7 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
     #region Private
 
     /// <summary>
-    /// ³ÊÏÖÊÓÍ¼²ãÖÐµÄÓÃ»§ÐÅÏ¢
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½Ðµï¿½ï¿½Ã»ï¿½ï¿½ï¿½Ï¢
     /// </summary>
     /// <param name="userInformation"></param>
     private void PresentUserInformation(UserInformation userInformation)
@@ -214,7 +214,7 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
     #region Private
 
     /// <summary>
-    /// äÖÈ¾Ïà²áÁÐ±íÏî
+    /// ï¿½ï¿½È¾ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½
     /// </summary>
     /// <param name="albumList"></param>
     private async void PresenterAlbumList(ServerManager.FolderList albumList)
@@ -232,7 +232,7 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
     }
 
     /// <summary>
-    ///  Çå¿ÕÏà²áÁÐ±íUI
+    ///  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½UI
     /// </summary>
     private void ClearAlbumList()
     {

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using TMPro;
 using TsingPigSDK;
@@ -25,7 +26,8 @@ public class PhotoWallItem : ItemBase
 
     public async Task LoadMomentPhotoItems()
     {
-
+        string url = $"{ServerManager.Instance.host}/download/{TxtUserName.text}/usericon.jpg";
+        await ServerManager.Instance.GetPhotoAsync(url, UserIcon);
         foreach(string photoUrl in PhotoUrls)
         {
             GameObject momentPhotoItemObj = await Instantiater.InstantiateAsync(StrDef.MOMENT_PHOTO_ITEM_DATA_PATH, MomentPhotoItemRoot.transform);
