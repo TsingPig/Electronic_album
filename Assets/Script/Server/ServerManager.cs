@@ -145,7 +145,6 @@ public class ServerManager : Singleton<ServerManager>
         {
             Debug.Log($"开始请求动态数据");
             www.SendWebRequest();
-
             while(!www.isDone)
             {
                 await Task.Yield();
@@ -196,7 +195,7 @@ public class ServerManager : Singleton<ServerManager>
 
                 Debug.Log($"{photoUrl}请求完毕");
                 Texture2D photoTex = texD1.texture;
-                image.sprite = Sprite.Create(photoTex, new Rect(0, 0, 200, 200), new Vector2(0.5f, 0.5f));
+                image.sprite = Sprite.Create(photoTex, new Rect(0, 0, ConstDef.ScaleSize, ConstDef.ScaleSize), new Vector2(0.5f, 0.5f));
                 _dicPhotoCache[photoUrl] = image.sprite;
             }
         }
@@ -226,7 +225,7 @@ public class ServerManager : Singleton<ServerManager>
 
                 Debug.Log($"{albumName}/{photoId}请求完毕");
                 Texture2D photoTex = texD1.texture;
-                image.sprite = Sprite.Create(photoTex, new Rect(0, 0, 200, 200), new Vector2(0.5f, 0.5f));
+                image.sprite = Sprite.Create(photoTex, new Rect(0, 0, ConstDef.ScaleSize, ConstDef.ScaleSize), new Vector2(0.5f, 0.5f));
             }
         }
     }
@@ -377,7 +376,7 @@ public class ServerManager : Singleton<ServerManager>
     {
         for(int i = 0; i < photoPath.Length; i++)
         {
-            Texture2D tex = CacheManager.LoadTexture(photoPath[i]).Scale(200, 200);
+            Texture2D tex = CacheManager.LoadTexture(photoPath[i]).Scale(ConstDef.ScaleSize, ConstDef.ScaleSize);
             yield return StartCoroutine(UploadPhotoFile(account, albumName, tex.EncodeToPNG(), callback));
             Debug.Log($"上传进度:{i}/{photoPath.Length}");
         }
