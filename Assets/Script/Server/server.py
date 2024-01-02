@@ -56,7 +56,7 @@ def upload_photo():
         filename = secure_filename(filename)
         
         upload_path = os.path.join(app.config["UPLOAD_FOLDER"], account, album_name)
-        print(upload_path)
+
         if not os.path.exists(upload_path):
             os.makedirs(upload_path)
         file.save(os.path.join(upload_path, filename))
@@ -106,6 +106,8 @@ def get_folders(account):
 def delete_folder(account, album_name):
     album_path = os.path.join(app.config["UPLOAD_FOLDER"], account, album_name)
     if os.path.exists(album_path):
+        if album_name == "Moment":
+            return "album can not delete"
         # 删除album_path和其目录里的所有文件
         for photo in os.listdir(album_path):
             os.remove(os.path.join(album_path, photo))
@@ -146,7 +148,7 @@ def get_photos(account, album_name, rank):
 
         if rank < len(photos):
             photo_to_send = os.path.join(album_path, photos[rank][0])
-            print(photo_to_send)
+
             return send_file(photo_to_send)
 
         else:
@@ -154,6 +156,18 @@ def get_photos(account, album_name, rank):
     else:
         return "Album not found", 404
 
+# 输入用户名，相册名，照片名，返回对应图片
+@app.route("/get_photos_byid/<account>/<album_name>/<photo_name>", methods=["GET"])
+def get_photos_byid(account, album_name, photo_name):
+    album_path = os.path.join(app.config["UPLOAD_FOLDER"], account, album_name)
+    if os.path.exists(album_path):
+        photo_to_send = os.path.join(album_path, photo_name)
+        if os.path.exists(photo_to_send):
+            return send_file(photo_to_send)
+        else:
+            return send_file(default_path)
+    else:
+        return "Album not found", 404
 
 # 输入用户名和相册名以及rank，删除按照时间排序后rank的图片
 @app.route("/delete_photo/<account>/<album_name>/<rank>", methods=["GET"])
@@ -167,7 +181,7 @@ def delete_photo(account, album_name, rank):
 
         if rank < len(photos):
             photo_to_delete = os.path.join(album_path, photos[rank][0])
-            print(photo_to_delete)
+
             os.remove(photo_to_delete)
             return "photo deleted"
         else:
@@ -189,10 +203,19 @@ def upload_moments():
     user_name = request.form["account"]
     photo_size = int(request.form["size"])
     text = request.form["text"]
-    print(user_name, photo_size, text)
+
     photos = get_photo_list_in_timeorder(user_name, "Moment")
     start_id = MomentManager.get_total_photosize_by_name(user_name)
-    photos = photos[start_id : start_id + photo_size]
+
+    if start_id == -1:
+        print("对不起做不到")
+        return "对不起做不到"
+    
+    try:
+        photos = photos[start_id : start_id + photo_size]
+    except IndexError:
+        photos = []
+
     MomentManager.add_moment(Moment(user_name, photos, text))
     MomentManager.save_json_data()
     return "moment upload"
@@ -211,7 +234,7 @@ def delete_moment(rank):
         try:
             _ = photos.index((photo, ctime))
             photo_to_delete = os.path.join(album_path, photo)
-            print(photo_to_delete)
+
             os.remove(photo_to_delete)
         except ValueError:
             pass
@@ -224,6 +247,9 @@ def get_photo_list_in_timeorder(account, album_name):
     album_path = os.path.join(app.config["UPLOAD_FOLDER"], account, album_name)
 
     photos = {"photos": []}
+    if not os.path.exists(album_path):
+        return photos["photos"]
+    
     # 遍历相册目录下的所有文件
     for photo in os.listdir(album_path):
         # 如果是文件，将其加入photos字典中
@@ -247,17 +273,10 @@ def get_moments(rank):
     if moment.name not in MomentManager.user_json_data:
         return info_to_send
 
-    photos = get_photo_list_in_timeorder(path[0], path[1])
-    for photo, ctime in moment.photo_list:
-        try:
-            i = photos.index((photo, ctime))
-            info_to_send["PhotoUrls"].append(
-                f"http://1.12.46.157/get_photos/{path[0]}/{path[1]}/{i}.jpg"
-            )
-        except ValueError:
-            info_to_send["PhotoUrls"].append(
-                f"http://1.12.46.157/get_photos/{path[0]}/{path[1]}/{-1}.jpg"
-            )
+    for photo, _ in moment.photo_list:
+        info_to_send["PhotoUrls"].append(
+            f"http://1.12.46.157/get_photos_byid/{path[0]}/{path[1]}/{photo}"
+        )
 
     return info_to_send
 
