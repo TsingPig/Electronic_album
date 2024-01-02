@@ -1,4 +1,5 @@
 using System.Data;
+using System.Runtime.InteropServices.WindowsRuntime;
 using TsingPigSDK;
 
 public class MySQLManager : Singleton<MySQLManager>
@@ -44,6 +45,38 @@ public class MySQLManager : Singleton<MySQLManager>
         {
             // 用户名和密码匹配，登录成功
             return true;
+        }
+        else
+        {
+            // 用户名和密码不匹配，登录失败
+            //Console.WriteLine("登录失败：用户名或密码不正确。");
+            return false;
+        }
+    }
+
+
+    /// <summary>
+    /// 向数据库尝试登录管理员账号
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="userPassword"></param>
+    /// <returns>是否成功登录</returns>
+    public bool LoginSuper(string account, string userPassword)
+    { 
+        string[] items = { "account", "password", "isSuper" };
+        string tablename = "useraccount";
+        string[] operation = { "=", "=" };
+        string[] whereColumns = { "account", "password" };
+        string[] value = { account, userPassword };
+        DataSet result = new DataSet();
+        result = _mySQLAccess.Select(tablename, items, whereColumns, operation, value);
+        // 检查是否返回了任何行
+        if (result != null && result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0 && result.Tables[0].Columns.Count > 1 )
+        {
+            object columnValue = result.Tables[0].Rows[0][2];
+            bool booleanValue = (bool)columnValue;
+            if (booleanValue) { return true; }// 用户名和密码匹配，登录成功
+            else { return false; }
         }
         else
         {

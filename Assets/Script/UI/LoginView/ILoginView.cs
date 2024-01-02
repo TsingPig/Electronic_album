@@ -20,6 +20,8 @@ public interface ILoginView : IView
     ButtonManager BtnLogin { get; set; }
 
     ButtonManager BtnRegister { get; set; }
+    
+    ButtonManager BtnLoginSuper { get; set; }
 
     ButtonManager BtnRegisterInputAccountClear { get; set; }
 
@@ -30,4 +32,8 @@ public interface ILoginView : IView
     ButtonManager BtnLoginInputAccountClear { get; set; }
 
     ButtonManager BtnLoginInputPassWordClear { get; set; }
+
+    TMP_InputField InptLoginSuperInputAccount { get; set; }
+
+    TMP_InputField InptLoginSuperInputPassword { get; set; }
 }

@@ -11,14 +11,25 @@ public class LoginView : ViewBase<ILoginPresenter>, ILoginView
     private TMP_InputField _inptRegisterInputSurePassWord;
     private TMP_InputField _inptLoginInputAccount;
     private TMP_InputField _inptLoginInputPassword;
+    private TMP_InputField _inptLoginSuperInputAccount;
+    private TMP_InputField _inptLoginSuperInputPassword;
+
     private Toggle _tglLoginChangePasswordState;
     private ButtonManager _btnLogin;
     private ButtonManager _btnRegister;
+    private ButtonManager _btnLoginSuper;
     private ButtonManager _btnRegisterInputAccountClear;
     private ButtonManager _btnRegisterInputPasswordClear;
     private ButtonManager _btnRegisterInputSurePassWordClear;
     private ButtonManager _btnLoginInputAccountClear;
     private ButtonManager _btnLoginInputPassWordClear;
+    
+
+    
+
+    public TMP_InputField InptLoginSuperInputAccount { get => _inptLoginSuperInputAccount; set => _inptLoginSuperInputAccount = value; }
+
+    public TMP_InputField InptLoginSuperInputPassword { get => _inptLoginSuperInputPassword; set => _inptLoginSuperInputPassword = value; }
 
     public TMP_InputField InptRegisterInputAccount { get => _inptRegisterInputAccount; set => _inptRegisterInputAccount = value; }
 
@@ -36,6 +47,8 @@ public class LoginView : ViewBase<ILoginPresenter>, ILoginView
 
     public ButtonManager BtnRegister { get => _btnRegister; set => _btnRegister = value; }
 
+    public ButtonManager BtnLoginSuper { get => _btnLoginSuper; set => _btnLoginSuper = value; }
+
     public ButtonManager BtnRegisterInputAccountClear { get => _btnRegisterInputAccountClear; set => _btnRegisterInputAccountClear = value; }
 
     public ButtonManager BtnRegisterInputPassWordClear { get => _btnRegisterInputPasswordClear; set => _btnRegisterInputPasswordClear = value; }
@@ -46,11 +59,15 @@ public class LoginView : ViewBase<ILoginPresenter>, ILoginView
 
     public ButtonManager BtnLoginInputPassWordClear { get => _btnLoginInputPassWordClear; set => _btnLoginInputPassWordClear = value; }
 
+    
+
     protected override void OnCreate()
     {
         _inptRegisterInputAccount = _root.Find<TMP_InputField>("Window Manager/Windows/Register/Content/inptAccount");
         _inptRegisterInputPassword = _root.Find<TMP_InputField>("Window Manager/Windows/Register/Content/inptPassword");
         _inptRegisterInputSurePassWord = _root.Find<TMP_InputField>("Window Manager/Windows/Register/Content/inptSurePassword");
+        _inptLoginSuperInputAccount = _root.Find<TMP_InputField>("Window Manager/Windows/Admin/Content/inptAccount");
+        _inptLoginSuperInputPassword = _root.Find<TMP_InputField>("Window Manager/Windows/Admin/Content/inptPassword");
 
         _inptLoginInputAccount = _root.Find<TMP_InputField>("Window Manager/Windows/Login/Content/inptAccount");
         _inptLoginInputPassword = _root.Find<TMP_InputField>("Window Manager/Windows/Login/Content/inptPassword");
@@ -59,8 +76,11 @@ public class LoginView : ViewBase<ILoginPresenter>, ILoginView
 
         _btnLogin = _root.Find<ButtonManager>("Window Manager/Windows/Login/btnLogin");
         _btnRegister = _root.Find<ButtonManager>("Window Manager/Windows/Register/btnRegister");
+        _btnLoginSuper = _root.Find<ButtonManager>("Window Manager/Windows/Admin/btnLoginAdmin");
+
         _btnLogin.onClick.AddListener(_presenter.OnLogin);
         _btnRegister.onClick.AddListener(_presenter.OnRegister);
+        _btnLoginSuper.onClick.AddListener(_presenter.OnSuperLogin);
 
         _btnRegisterInputAccountClear = _root.Find<ButtonManager>("Window Manager/Windows/Register/Content/inptAccount/Clear");
         _btnRegisterInputPasswordClear = _root.Find<ButtonManager>("Window Manager/Windows/Register/Content/inptPassword/Clear");
