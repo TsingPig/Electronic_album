@@ -44,6 +44,10 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
         string RegisterInputPassWord = RestrictedStringToLettersOrNumbers(_view.InptRegisterInputPassWord.text);
         string RegisterInputSurePassWord = RestrictedStringToLettersOrNumbers(_view.InptRegisterInputSurePassWord.text);
 
+        if(RegisterInputAccount == "" || RegisterInputPassWord == "" || RegisterInputSurePassWord == "")
+        {
+            return;
+        }
         if(RegisterInputPassWord.Equals(RegisterInputSurePassWord))
         {
             if(MySQLManager.Instance.Register(RegisterInputAccount, RegisterInputAccount, RegisterInputPassWord))

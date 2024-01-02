@@ -200,6 +200,7 @@ def delete_moment(rank):
     rank = int(rank)
     MomentManager.delete_moment_by_index(rank)
     MomentManager.save_json_data()
+    return 'moment deteted'
 
 def get_photo_list_in_timeorder(account, album_name):
     album_path = os.path.join(app.config["UPLOAD_FOLDER"], account, album_name)
