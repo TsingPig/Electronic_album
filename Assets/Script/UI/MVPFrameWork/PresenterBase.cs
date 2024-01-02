@@ -54,16 +54,16 @@ namespace MVPFrameWork
         { }
     }
 
-    public abstract class PresenterBase<TView> : IPresenter where TView : class, IView 
+    public abstract class PresenterBase<TView> : IPresenter where TView : class, IView
     {
         protected TView _view;
-
 
         public IView View
         {
             get => _view;
             set => _view = value as TView;
         }
+
         public IModel Model { get; set; }
 
         public virtual void Install()

@@ -81,7 +81,7 @@ namespace Sirenix.OdinInspector
         /// Example: <code>[AssetList(Paths = "Assets/Textures|Assets/Other/Textures")]</code>
         /// </para>
         /// <para>
-        /// This property is simply a more clean way of populating the <see cref="SearchInFolders"/> array. 
+        /// This property is simply a more clean way of populating the <see cref="SearchInFolders"/> array.
         /// </para>
         /// </summary>
         public string Paths
