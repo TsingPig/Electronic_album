@@ -10,10 +10,12 @@ path = "uploads/data.json"
 class MomentManager:
     json_data: List[Moment] = []
     user_json_data: Dict[str, List[int]] = {}
+    current_id: int = 0
 
     def __init__(self) -> None:
         MomentManager.json_data = []
         MomentManager.user_json_data = {}
+        MomentManager.current_id = 0
         with open(path, "r") as f:
             data = json.load(f)
         for items in data:
@@ -25,16 +27,6 @@ class MomentManager:
                     items["comment_list"],
                 )
             )
-
-    @staticmethod
-    def get_startphotoid() -> int:
-        if len(MomentManager.json_data) == 0:
-            return 0
-        moment: Moment = MomentManager.json_data[-1]
-
-        start_photo_id = moment.start_photo_id
-        size = len(moment.photo_list)
-        return start_photo_id + size
 
     @staticmethod
     def get_total_photosize_by_name(username: str) -> int:
@@ -59,15 +51,35 @@ class MomentManager:
     # 静态方法，读取data.json文件，写入一个新数据
     @staticmethod
     def add_moment(data: Moment):
-        data.start_photo_id = MomentManager.get_startphotoid()
+        data.start_photo_id = MomentManager.current_id
         username = data.name
 
-        n = len(MomentManager.json_data)
         if username not in MomentManager.user_json_data:
             MomentManager.user_json_data[username] = []
 
-        MomentManager.user_json_data[username].append(n)
+        MomentManager.user_json_data[username].append(MomentManager.current_id)
+        MomentManager.current_id += 1
         MomentManager.json_data.append(data)
+
+    @staticmethod
+    def delete_moment_by_index(idx: int) -> None:
+        if idx >= len(MomentManager.json_data):
+            return
+        
+        name = MomentManager.json_data[idx].name
+        ridx = MomentManager.json_data[idx].start_photo_id
+        MomentManager.user_json_data[name].remove(ridx)
+        MomentManager.json_data.pop(idx)
+
+
+    @staticmethod
+    def delete_moment_by_user_index(user: str, idx: int) -> None:
+        if idx >= len(MomentManager.user_json_data[user]):
+            return
+
+        ridx = MomentManager.user_json_data[user][idx]
+        MomentManager.user_json_data[user].pop(idx)
+        MomentManager.json_data.pop(ridx) 
 
     @staticmethod
     def get_moment_by_index(idx: int) -> str:
