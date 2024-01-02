@@ -45,14 +45,16 @@ def upload_photo():
         if suffix not in ["jpg", "jpeg", "png", "gif", "bmp"]:
             return "File type not supported", 400
 
+        account = request.form["account"]
+        album_name = request.form["album_name"]
+
         t = time.localtime()
         msec = int(time.time() * 1000) % 1000
 
         filename = f"{t.tm_year}{t.tm_mon:02}{t.tm_mday:02}_{t.tm_hour:02}{t.tm_min:02}{t.tm_sec:02}_{msec:03}.{suffix}"
 
         filename = secure_filename(filename)
-        account = request.form["account"]
-        album_name = request.form["album_name"]
+        
         upload_path = os.path.join(app.config["UPLOAD_FOLDER"], account, album_name)
         print(upload_path)
         if not os.path.exists(upload_path):
@@ -177,7 +179,7 @@ def delete_photo(account, album_name, rank):
 @app.route("/get_moments", methods=["GET"])
 def get_moments():
     data = {"moments": []}
-    for i in range(len(MomentManager.json_data)-1, -1, -1):
+    for i in range(len(MomentManager.json_data) - 1, -1, -1):
         data["moments"].append(get_moments(i))
     return json.dumps(data)
 
@@ -195,12 +197,28 @@ def upload_moments():
     MomentManager.save_json_data()
     return "moment upload"
 
+
 @app.route("/delete_moments/<rank>", methods=["GET"])
 def delete_moment(rank):
     rank = int(rank)
-    MomentManager.delete_moment_by_index(rank)
+    name, photo_list = MomentManager.delete_moment_by_index(rank)
+
+    if name is None:
+        return "out of index"
+    photos = get_photo_list_in_timeorder(name, "Moment")
+    album_path = os.path.join(app.config["UPLOAD_FOLDER"], name, "Moment")
+    for photo, ctime in photo_list:
+        try:
+            _ = photos.index((photo, ctime))
+            photo_to_delete = os.path.join(album_path, photo)
+            print(photo_to_delete)
+            os.remove(photo_to_delete)
+        except ValueError:
+            pass
+
     MomentManager.save_json_data()
-    return 'moment deteted'
+    return "moment deteted"
+
 
 def get_photo_list_in_timeorder(account, album_name):
     album_path = os.path.join(app.config["UPLOAD_FOLDER"], account, album_name)
@@ -246,5 +264,6 @@ def get_moments(rank):
 
 if __name__ == "__main__":
     from waitress import serve
+
     MomentManager()
     serve(app, host="0.0.0.0", port=port)

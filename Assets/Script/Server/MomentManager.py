@@ -3,6 +3,7 @@ from typing import List
 from typing import Dict
 from Moment import Moment
 import json
+import copy
 
 path = "uploads/data.json"
 
@@ -62,14 +63,17 @@ class MomentManager:
         MomentManager.json_data.append(data)
 
     @staticmethod
-    def delete_moment_by_index(idx: int) -> None:
+    def delete_moment_by_index(idx: int) -> tuple(str, List[tuple]):
         if idx >= len(MomentManager.json_data):
-            return
+            return None
         
-        name = MomentManager.json_data[idx].name
+        photo_list = copy.deepcopy(MomentManager.json_data[idx].photo_list)
+        name = copy.deepcopy(MomentManager.json_data[idx].name)
         ridx = MomentManager.json_data[idx].start_photo_id
         MomentManager.user_json_data[name].remove(ridx)
         MomentManager.json_data.pop(idx)
+
+        return name, photo_list
 
 
     @staticmethod
