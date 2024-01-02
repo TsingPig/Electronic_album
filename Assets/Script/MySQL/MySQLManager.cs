@@ -1,6 +1,8 @@
 using System.Data;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Web;
 using TsingPigSDK;
+using Unity.VisualScripting.Antlr3.Runtime;
 
 public class MySQLManager : Singleton<MySQLManager>
 {
@@ -84,6 +86,26 @@ public class MySQLManager : Singleton<MySQLManager>
             //Console.WriteLine("登录失败：用户名或密码不正确。");
             return false;
         }
+    }
+
+    /// <summary>
+    /// 返回昵称
+    /// </summary>
+    /// <param name="account"></param>
+    /// <returns>查询昵称</returns>
+    public string GetNickname(string account)
+    {
+        string[] items = { "nick_name" };
+        string tablename = "useraccount";
+        string[] operation = { "=" };
+        string[] whereColumns = { "account" };
+        string[] value = { account};
+        DataSet result = new DataSet();
+        result = _mySQLAccess.Select(tablename, items, whereColumns, operation, value);
+        // 检查是否返回了任何行
+        object columnValue = result.Tables[0].Rows[0][0];
+        string NickNameValue = (string)columnValue;
+        return NickNameValue;   
     }
 
     /// <summary>

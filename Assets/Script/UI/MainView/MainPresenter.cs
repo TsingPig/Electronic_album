@@ -63,7 +63,7 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
         {
             PhotoWallItem photoWallItem = (await Instantiater.InstantiateAsync(StrDef.PHOTO_WALL_ITEM_DATA_PATH, _view.PhotoWallItemRoot.transform)).GetComponent<PhotoWallItem>();
             photoWallItem.TxtContent.text = moment.Content;
-            photoWallItem.TxtUserName.text = moment.UserName;
+            photoWallItem.TxtUserName.text = MySQLManager.Instance.GetNickName(moment.UserName);
             photoWallItem.TxtHeartCount.text = UnityEngine.Random.Range(0, 100).ToString();
             photoWallItem.PhotoUrls = moment.PhotoUrls;
             await photoWallItem.LoadMomentPhotoItems();
