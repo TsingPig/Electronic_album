@@ -45,6 +45,8 @@ class MomentManager:
             MomentManager.user_json_data[username] = []
             return 0
 
+        
+        print(MomentManager.user_json_data[username])
         for idx in MomentManager.user_json_data[username]:
             total_size += len(MomentManager.json_data[idx].photo_list)
         return total_size
@@ -63,9 +65,9 @@ class MomentManager:
         MomentManager.json_data.append(data)
 
     @staticmethod
-    def delete_moment_by_index(idx: int) -> tuple(str, List[tuple]):
+    def delete_moment_by_index(idx: int) -> tuple:
         if idx >= len(MomentManager.json_data):
-            return None
+            return None, []
         
         photo_list = copy.deepcopy(MomentManager.json_data[idx].photo_list)
         name = copy.deepcopy(MomentManager.json_data[idx].name)
