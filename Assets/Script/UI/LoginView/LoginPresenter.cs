@@ -44,6 +44,10 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
         string RegisterInputPassWord = RestrictedStringToLettersOrNumbers(_view.InptRegisterInputPassWord.text);
         string RegisterInputSurePassWord = RestrictedStringToLettersOrNumbers(_view.InptRegisterInputSurePassWord.text);
 
+        if(RegisterInputAccount == "" || RegisterInputPassWord == "" || RegisterInputSurePassWord == "")
+        {
+            return;
+        }
         if(RegisterInputPassWord.Equals(RegisterInputSurePassWord))
         {
             if(MySQLManager.Instance.Register(RegisterInputAccount, RegisterInputAccount, RegisterInputPassWord))
@@ -62,6 +66,30 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
 
     public void OnSuperLogin()
     {
+        string LoginInputSuperAccount = RestrictedStringToLettersOrNumbers(_view.InptLoginSuperInputAccount.text);
+        string LoginInputSuperPassword = RestrictedStringToLettersOrNumbers(_view.InptLoginSuperInputPassword.text);
+
+        if (MySQLManager.Instance.LoginSuper(LoginInputSuperAccount, LoginInputSuperPassword))
+        {
+            UIManager.Instance.Quit(ViewId.LoginView);
+
+            string NickName = MySQLManager.Instance.GetNickName(LoginInputSuperAccount);
+
+            Texture2D randomIcon = new Texture2D(200, 200);
+            randomIcon.RandomGenerate();
+
+            CacheManager.Instance.SaveUserInformation(LoginInputSuperAccount, NickName, randomIcon);
+            UIManager.Instance.Enter(ViewId.MainView, new MainModel());
+
+            //从服务器下载头像数据
+            ServerManager.Instance.DownLoadUserIcon(LoginInputSuperAccount);
+        }
+        else
+        {
+            Debug.Log("账号或者密码错误");
+        }
+
+
     }
 
     public void ChangePasswordState(bool value)

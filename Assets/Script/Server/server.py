@@ -177,7 +177,6 @@ def delete_photo(account, album_name, rank):
 @app.route("/get_moments", methods=["GET"])
 def get_moments():
     data = {"moments": []}
-    MomentManager()
     for i in range(len(MomentManager.json_data)-1, -1, -1):
         data["moments"].append(get_moments(i))
     return json.dumps(data)
@@ -196,6 +195,12 @@ def upload_moments():
     MomentManager.save_json_data()
     return "moment upload"
 
+@app.route("/delete_moments/<rank>", methods=["GET"])
+def delete_moment(rank):
+    rank = int(rank)
+    MomentManager.delete_moment_by_index(rank)
+    MomentManager.save_json_data()
+    return 'moment deteted'
 
 def get_photo_list_in_timeorder(account, album_name):
     album_path = os.path.join(app.config["UPLOAD_FOLDER"], account, album_name)
@@ -241,5 +246,5 @@ def get_moments(rank):
 
 if __name__ == "__main__":
     from waitress import serve
-
+    MomentManager()
     serve(app, host="0.0.0.0", port=port)
