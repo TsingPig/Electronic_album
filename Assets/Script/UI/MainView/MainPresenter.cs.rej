@@ -1,0 +1,22 @@
+diff a/Assets/Script/UI/MainView/MainPresenter.cs b/Assets/Script/UI/MainView/MainPresenter.cs	(rejected hunks)
+@@ -150,17 +150,17 @@
+         Texture2D icon = null;
+         NativeGallery.Permission permission = NativeGallery.GetImageFromGallery((path) =>
+         {
+-            Debug.Log("ͼƬ·��: " + path);
++            Debug.Log("ͼƬ·��: " + path);
+             if(path != null)
+             {
+                 try
+                 {
+-                    icon = CacheManager.LoadTexture(path);
++                    icon = CacheManager.LoadTexture(path).Scale(200, 200);
+                     if(icon != null)
+                     {
+                         _view.BtnUserIcon.image.sprite = Sprite.Create(icon, new Rect(0, 0, icon.width, icon.height), new Vector2(0.5f, 0.5f));
+ 
+-                        Debug.Log("ͷ����³ɹ�");
++                        Debug.Log("ͷ����³ɹ�");
+ 
+                         CacheManager.Instance.UpdateIcon(icon);
+                     }

@@ -25,6 +25,9 @@ public class CreatePhotoWallItemPresenter : PresenterBase<ICreatePhotoWallItemVi
     /// </summary>
     public void UploadPhotos()
     {
+#if UNITY_EDITOR
+        UploadPhoto();
+#else
         Texture2D[] photoTextures = null;
         NativeGallery.Permission permission = NativeGallery.GetImagesFromGallery((path) =>
         {
@@ -36,7 +39,7 @@ public class CreatePhotoWallItemPresenter : PresenterBase<ICreatePhotoWallItemVi
             {
                 try
                 {
-                    photoTextures = CacheManager.LoadTexture(path).Scale(200, 200);
+                    photoTextures = CacheManager.LoadTexture(path).Scale(ConstDef.ScaleSize, ConstDef.ScaleSize);
                     _model.Photos = photoTextures;
                     VisualizeUploadedPhotos(path.Length);
                 }
@@ -46,9 +49,12 @@ public class CreatePhotoWallItemPresenter : PresenterBase<ICreatePhotoWallItemVi
                 }
             }
         });
+#endif
     }
 
-    [Obsolete("上传单图已经过时，请改用上传多图")]
+    /// <summary>
+    /// 上传单图
+    /// </summary>
     public void UploadPhoto()
     {
         Texture2D[] photoTextures = null;
@@ -58,7 +64,7 @@ public class CreatePhotoWallItemPresenter : PresenterBase<ICreatePhotoWallItemVi
             {
                 try
                 {
-                    photoTextures = new Texture2D[1] { CacheManager.LoadTexture(path).Scale(200, 200) };
+                    photoTextures = new Texture2D[1] { CacheManager.LoadTexture(path).Scale(ConstDef.ScaleSize, ConstDef.ScaleSize) };
                     _model.Photos = photoTextures;
                     VisualizeUploadedPhotos(1);
                 }
@@ -108,11 +114,12 @@ public class CreatePhotoWallItemPresenter : PresenterBase<ICreatePhotoWallItemVi
     /// <param name="uploadedPhotoCount"></param>
     private async void VisualizeUploadedPhotos(int uploadedPhotoCount)
     {
+        Instantiater.DeactivateObjectPool(StrDef.PHOTO_UPLOAD_ITEM_DATA_PATH);
         for(int i = 0; i < uploadedPhotoCount; i++)
         {
             PhotoItem photoItem = (await Instantiater.InstantiateAsync(StrDef.PHOTO_UPLOAD_ITEM_DATA_PATH, _view.GridPhotoContent.transform)).GetComponent<PhotoItem>();
             Image photoImage = photoItem.Cover;
-            photoImage.sprite = Sprite.Create(_model.Photos[i], new Rect(0, 0, 200, 200), new Vector2(0.5f, 0.5f));
+            photoImage.sprite = Sprite.Create(_model.Photos[i], new Rect(0, 0, ConstDef.ScaleSize, ConstDef.ScaleSize), new Vector2(0.5f, 0.5f));
         }
     }
 

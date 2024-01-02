@@ -31,7 +31,7 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
     }
 
     /// <summary>
-    /// �û��˳���¼ʱ���ã�����û���Ϣ��ͷ���ļ�
+    /// 用户退出登录时调用，清除用户信息和头像文件
     /// </summary>
     public void ClearUserInformationCache()
     {
@@ -91,7 +91,7 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
     #region Public
 
     /// <summary>
-    /// ���ر��ػ�����û���Ϣ
+    /// 加载本地缓存的用户信息
     /// </summary>
     /// <param name="userData"></param>
     /// <returns></returns>
@@ -108,7 +108,7 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
     }
 
     /// <summary>
-    /// �����ǳ�
+    /// 更新昵称
     /// </summary>
     public void UpdateNickName()
     {
@@ -118,7 +118,7 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
     }
 
     /// <summary>
-    /// ȷ�ϸ���
+    /// 确认更新
     /// </summary>
     public void SureUpdateNickName()
     {
@@ -133,16 +133,16 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
 
             CacheManager.Instance.UpdateNickName(updatedNickName);
 
-            Debug.Log($"�ǳƸ���Ϊ��{updatedNickName}");
+            Debug.Log($"昵称更新为：{updatedNickName}");
         }
         else
         {
-            Debug.LogWarning("�ǳƲ���Ϊ��");
+            Debug.LogWarning("昵称不可为空");
         }
     }
 
     /// <summary>
-    /// �����û�ͷ��
+    /// 更新用户头像
     /// </summary>
     /// <param name="icon"></param>
     public void UpdateUserIcon()
@@ -150,17 +150,17 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
         Texture2D icon = null;
         NativeGallery.Permission permission = NativeGallery.GetImageFromGallery((path) =>
         {
-            Debug.Log("ͼƬ·��: " + path);
+            Debug.Log("图片路径: " + path);
             if(path != null)
             {
                 try
                 {
-                    icon = CacheManager.LoadTexture(path).Scale(200, 200);
+                    icon = CacheManager.LoadTexture(path).Scale(ConstDef.ScaleSize, ConstDef.ScaleSize);
                     if(icon != null)
                     {
                         _view.BtnUserIcon.image.sprite = Sprite.Create(icon, new Rect(0, 0, icon.width, icon.height), new Vector2(0.5f, 0.5f));
 
-                        Debug.Log("ͷ����³ɹ�");
+                        Debug.Log("头像更新成功");
 
                         CacheManager.Instance.UpdateIcon(icon);
                     }
@@ -176,7 +176,7 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
             }
         });
 
-        Debug.Log("Ȩ�޽����" + permission);
+        Debug.Log("权限结果：" + permission);
     }
 
     #endregion Public
@@ -184,7 +184,7 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
     #region Private
 
     /// <summary>
-    /// ������ͼ���е��û���Ϣ
+    /// 呈现视图层中的用户信息
     /// </summary>
     /// <param name="userInformation"></param>
     private void PresentUserInformation(UserInformation userInformation)
@@ -213,7 +213,7 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
     #region Private
 
     /// <summary>
-    /// ��Ⱦ����б���
+    /// 渲染相册列表项
     /// </summary>
     /// <param name="albumList"></param>
     private async void PresenterAlbumList(ServerManager.FolderList albumList)
@@ -231,7 +231,7 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
     }
 
     /// <summary>
-    ///  �������б�UI
+    ///  清空相册列表UI
     /// </summary>
     private void ClearAlbumList()
     {

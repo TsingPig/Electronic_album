@@ -40,8 +40,8 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
             {
                 try
                 {
-                    photoTex = CacheManager.LoadTexture(path).Scale(200, 200);
-                    //photoTex = ScaleTexture(photoTex, 200, 200);
+                    photoTex = CacheManager.LoadTexture(path).Scale(ConstDef.ScaleSize, ConstDef.ScaleSize);
+                    //photoTex = ScaleTexture(photoTex, ConstDef.ScaleSize, ConstDef.ScaleSize);
                     if(photoTex != null)
                     {
                         ServerManager.Instance.UploadPhoto(CacheManager.Instance.UserName, _model.AlbumName, photoTex.EncodeToPNG(), () =>
@@ -67,6 +67,9 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
     /// </summary>
     public void UploadMultiPhotos()
     {
+#if UNITY_EDITOR
+        UploadPhoto();
+#else
         Texture2D[] photoTextures = null;
         NativeGallery.Permission permission = NativeGallery.GetImagesFromGallery((path) =>
         {
@@ -78,7 +81,7 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
             {
                 try
                 {
-                    photoTextures = CacheManager.LoadTexture(path).Scale(200, 200);
+                    photoTextures = CacheManager.LoadTexture(path).Scale(ConstDef.ScaleSize, ConstDef.ScaleSize);
                     if(photoTextures != null)
                     {
                         ServerManager.Instance.UploadPhotos(CacheManager.Instance.UserName, _model.AlbumName, photoTextures.EncodeToPNG(), () =>
@@ -102,6 +105,7 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
                 }
             }
         });
+#endif
     }
 
     /// <summary>

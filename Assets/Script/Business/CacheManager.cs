@@ -48,7 +48,7 @@ public class CacheManager : Singleton<CacheManager>
             Debug.Log($"{texturePath} is null");
         }
         byte[] fileData = File.ReadAllBytes(texturePath);
-        Texture2D texture = new Texture2D(200, 200);
+        Texture2D texture = new Texture2D(ConstDef.ScaleSize, ConstDef.ScaleSize);
         texture.LoadImage(fileData);
         return texture;
     }
