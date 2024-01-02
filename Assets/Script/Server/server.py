@@ -158,6 +158,8 @@ def get_photos(account, album_name, rank):
 def delete_photo(account, album_name, rank):
     album_path = os.path.join(app.config["UPLOAD_FOLDER"], account, album_name)
     if os.path.exists(album_path):
+        if album_name == "Moment":
+            return "photo can not delete"
         photos = get_photo_list_in_timeorder(account, album_name)
         rank = int(rank.split(".")[0])
 
