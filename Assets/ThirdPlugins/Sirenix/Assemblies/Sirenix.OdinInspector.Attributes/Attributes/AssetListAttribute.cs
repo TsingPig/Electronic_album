@@ -23,39 +23,39 @@ namespace Sirenix.OdinInspector
     ///     [AssetList]
     ///     [InlineEditor(InlineEditorModes.LargePreview)]
     ///     public GameObject Prefab;
-    /// 
+    ///
     ///     [AssetList]
     ///     public List&lt;PlaceableObject&gt; PlaceableObjects;
-    /// 
+    ///
     ///     [AssetList(Path = "Plugins/Sirenix/")]
     ///     [InlineEditor(InlineEditorModes.LargePreview)]
     ///     public UnityEngine.Object Object;
-    /// 
+    ///
     ///     [AssetList(AutoPopulate = true)]
     ///     public List&lt;PlaceableObject&gt; PlaceableObjectsAutoPopulated;
-    /// 
+    ///
     ///     [AssetList(LayerNames = "MyLayerName")]
     ///     public GameObject[] AllPrefabsWithLayerName;
-    /// 
+    ///
     ///     [AssetList(AssetNamePrefix = "Rock")]
     ///     public List&lt;GameObject&gt; PrefabsStartingWithRock;
-    /// 
+    ///
     ///     [AssetList(Path = "/Plugins/Sirenix/")]
     ///     public List&lt;GameObject&gt; AllPrefabsLocatedInFolder;
-    /// 
+    ///
     ///     [AssetList(Tags = "MyTagA, MyTabB", Path = "/Plugins/Sirenix/")]
     ///     public List&lt;GameObject&gt; GameObjectsWithTag;
-    /// 
+    ///
     ///     [AssetList(Path = "/Plugins/Sirenix/")]
     ///     public List&lt;Material&gt; AllMaterialsInSirenix;
-    /// 
+    ///
     ///     [AssetList(Path = "/Plugins/Sirenix/")]
     ///     public List&lt;ScriptableObject&gt; AllScriptableObjects;
-    /// 
+    ///
     ///     [InfoBox("Use a method as a custom filter for the asset list.")]
     ///     [AssetList(CustomFilterMethod = "HasRigidbodyComponent")]
     ///     public List&lt;GameObject&gt; MyRigidbodyPrefabs;
-    /// 
+    ///
     ///     private bool HasRigidbodyComponent(GameObject obj)
     ///     {
     ///         return obj.GetComponent&lt;Rigidbody&gt;() != null;

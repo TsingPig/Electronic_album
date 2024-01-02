@@ -1,2 +1,4 @@
 using MVPFrameWork;
-public interface IMomentPresenter : IPresenter {}
+
+public interface IMomentPresenter : IPresenter
+{ }

@@ -1,6 +1,5 @@
 using MVPFrameWork;
 using System;
-using System.Collections;
 using TsingPigSDK;
 using UnityEngine;
 using UnityEngine.UI;
@@ -41,8 +40,8 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
             {
                 try
                 {
-                    photoTex = CacheManager.LoadTexture(path).Scale(200, 200);
-                    //photoTex = ScaleTexture(photoTex, 200, 200);
+                    photoTex = CacheManager.LoadTexture(path).Scale(ConstDef.ScaleSize, ConstDef.ScaleSize);
+                    //photoTex = ScaleTexture(photoTex, ConstDef.ScaleSize, ConstDef.ScaleSize);
                     if(photoTex != null)
                     {
                         ServerManager.Instance.UploadPhoto(CacheManager.Instance.UserName, _model.AlbumName, photoTex.EncodeToPNG(), () =>
@@ -79,7 +78,7 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
             {
                 try
                 {
-                    photoTextures = CacheManager.LoadTexture(path).Scale(200, 200);
+                    photoTextures = CacheManager.LoadTexture(path).Scale(ConstDef.ScaleSize, ConstDef.ScaleSize);
                     if(photoTextures != null)
                     {
                         ServerManager.Instance.UploadPhotos(CacheManager.Instance.UserName, _model.AlbumName, photoTextures.EncodeToPNG(), () =>
@@ -143,7 +142,6 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
         photoItem.photoId = albumSize - 1;
         ServerManager.Instance.GetPhotoAsync(CacheManager.Instance.UserName, _model.AlbumName, albumSize - 1, photoImage);
     }
-
 
     [Obsolete("方法已经废弃，请改用Texture2D扩展方法")]
     private Texture2D ScaleTexture(Texture2D source, float targetWidth, float targetHeight)

@@ -23,6 +23,5 @@ public class PhotoDetailView : ViewBase<IPhotoDetailPresenter>, IPhotoDetailView
 
         _btnQuit.onClick.AddListener(_presenter.Quit);
         _btnDeletePhoto.onClick.AddListener(_presenter.DeletePhoto);
-
     }
 }

@@ -1,2 +1,4 @@
 using MVPFrameWork;
-public interface IMomentView : IView {}
+
+public interface IMomentView : IView
+{ }

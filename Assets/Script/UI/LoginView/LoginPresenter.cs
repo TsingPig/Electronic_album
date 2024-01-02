@@ -23,7 +23,7 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
 
             string NickName = MySQLManager.Instance.GetNickName(LoginInputAccount);
 
-            Texture2D randomIcon = new Texture2D(200, 200);
+            Texture2D randomIcon = new Texture2D(ConstDef.ScaleSize, ConstDef.ScaleSize);
             randomIcon.RandomGenerate();
 
             CacheManager.Instance.SaveUserInformation(LoginInputAccount, NickName, randomIcon);
@@ -48,7 +48,7 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
         {
             if(MySQLManager.Instance.Register(RegisterInputAccount, RegisterInputAccount, RegisterInputPassWord))
             {
-                Texture2D randomIcon = new Texture2D(200, 200);
+                Texture2D randomIcon = new Texture2D(ConstDef.ScaleSize, ConstDef.ScaleSize);
                 randomIcon.RandomGenerate();
                 CacheManager.Instance.SaveUserInformation(RegisterInputAccount, RegisterInputAccount, randomIcon);
 
