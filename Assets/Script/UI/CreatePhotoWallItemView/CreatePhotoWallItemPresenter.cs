@@ -114,6 +114,7 @@ public class CreatePhotoWallItemPresenter : PresenterBase<ICreatePhotoWallItemVi
     /// <param name="uploadedPhotoCount"></param>
     private async void VisualizeUploadedPhotos(int uploadedPhotoCount)
     {
+        Instantiater.DeactivateObjectPool(StrDef.PHOTO_UPLOAD_ITEM_DATA_PATH);
         for(int i = 0; i < uploadedPhotoCount; i++)
         {
             PhotoItem photoItem = (await Instantiater.InstantiateAsync(StrDef.PHOTO_UPLOAD_ITEM_DATA_PATH, _view.GridPhotoContent.transform)).GetComponent<PhotoItem>();

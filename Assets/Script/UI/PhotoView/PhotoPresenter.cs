@@ -67,6 +67,9 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
     /// </summary>
     public void UploadMultiPhotos()
     {
+#if UNITY_EDITOR
+        UploadPhoto();
+#else
         Texture2D[] photoTextures = null;
         NativeGallery.Permission permission = NativeGallery.GetImagesFromGallery((path) =>
         {
@@ -102,6 +105,7 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
                 }
             }
         });
+#endif
     }
 
     /// <summary>

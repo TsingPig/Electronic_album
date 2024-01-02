@@ -1,4 +1,4 @@
 public static class ConstDef
 {
-    public const int ScaleSize = 400;
+    public const int ScaleSize = 200;
 }
