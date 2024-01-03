@@ -25,5 +25,9 @@ public static class UIRegister
         Container.Regist<ICreatePhotoWallItemPresenter, CreatePhotoWallItemPresenter>();
         Container.Regist<IView, CreatePhotoWallItemView>(ViewId.CreatePhotoWallItemView);
         Container.Regist<ICreatePhotoWallItemModel, CreatePhotoWallItemModel>();
+
+        Container.Regist<IMomentPresenter, MomentPresenter>();
+        Container.Regist<IView,  MomentView>(ViewId.MomentView);
+
     }
 }

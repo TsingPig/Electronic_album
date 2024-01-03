@@ -7,4 +7,5 @@ public static class StrDef
     public const string PHOTO_UPLOAD_ITEM_DATA_PATH = "PhotoUploadItem";
     public const string MOMENT_PHOTO_ITEM_DATA_PATH = "MomentPhotoItem";
     public const string PHOTO_WALL_ITEM_DATA_PATH = "PhotoWallItem";
+    public const string MOMENT_VIEW_DATA_PATH = "MomentView";
 }

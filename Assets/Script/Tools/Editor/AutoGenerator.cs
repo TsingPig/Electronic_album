@@ -105,7 +105,7 @@ namespace TsingPigSDK
 
                 // Éú³É NameView.cs
                 string viewImplCode = $"using MVPFrameWork;\n" +
-                                      $"[ParentInfo(FindType.FindWithName, ConstDef.CANVAS)]\n" +
+                                      $"[ParentInfo(FindType.FindWithName, StrDef.CANVAS)]\n" +
                                       $"public class {objectName}View : ViewBase<I{objectName}Presenter>, I{objectName}View {{ protected override void OnCreate() {{ throw new System.NotImplementedException(); }} }}";
 
                 File.WriteAllText(Path.Combine(folderPath, $"{objectName}View.cs"), viewImplCode);
