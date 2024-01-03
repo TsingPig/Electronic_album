@@ -54,7 +54,7 @@ def upload_photo():
         filename = f"{t.tm_year}{t.tm_mon:02}{t.tm_mday:02}_{t.tm_hour:02}{t.tm_min:02}{t.tm_sec:02}_{msec:03}.{suffix}"
 
         filename = secure_filename(filename)
-        
+
         upload_path = os.path.join(app.config["UPLOAD_FOLDER"], account, album_name)
 
         if not os.path.exists(upload_path):
@@ -156,6 +156,7 @@ def get_photos(account, album_name, rank):
     else:
         return "Album not found", 404
 
+
 # 输入用户名，相册名，照片名，返回对应图片
 @app.route("/get_photos_byid/<account>/<album_name>/<photo_name>", methods=["GET"])
 def get_photos_byid(account, album_name, photo_name):
@@ -168,6 +169,7 @@ def get_photos_byid(account, album_name, photo_name):
             return send_file(default_path)
     else:
         return "Album not found", 404
+
 
 # 输入用户名和相册名以及rank，删除按照时间排序后rank的图片
 @app.route("/delete_photo/<account>/<album_name>/<rank>", methods=["GET"])
@@ -193,8 +195,21 @@ def delete_photo(account, album_name, rank):
 @app.route("/get_moments", methods=["GET"])
 def get_moments():
     data = {"moments": []}
-    for i in range(len(MomentManager.json_data) - 1, -1, -1):
+    start = len(MomentManager.json_data) - 1
+    end = max(-1, start - 10)
+
+    for i in range(start, end, -1):
         data["moments"].append(get_moments(i))
+
+    if start - 20 > -1:
+        name, photo_list = MomentManager.delete_moment_by_index(0)
+        if name == None:
+            pass
+        else:
+            for photo, _ in photo_list:
+                delete_photo_by_name(name, "Moment", photo)
+
+    MomentManager.save_json_data()
     return json.dumps(data)
 
 
@@ -210,7 +225,7 @@ def upload_moments():
     if start_id == -1:
         print("对不起做不到")
         return "对不起做不到"
-    
+
     try:
         photos = photos[start_id : start_id + photo_size]
     except IndexError:
@@ -249,7 +264,7 @@ def get_photo_list_in_timeorder(account, album_name):
     photos = {"photos": []}
     if not os.path.exists(album_path):
         return photos["photos"]
-    
+
     # 遍历相册目录下的所有文件
     for photo in os.listdir(album_path):
         # 如果是文件，将其加入photos字典中
@@ -280,6 +295,14 @@ def get_moments(rank):
 
     return info_to_send
 
+def delete_photo_by_name(account, album_name, photo):
+    album_path = os.path.join(app.config["UPLOAD_FOLDER"], account, album_name)
+    if os.path.exists(album_path):
+        photo_to_delete = os.path.join(album_path, photo)
+        if os.path.exists(photo_to_delete):
+            os.remove(photo_to_delete)
+    else:
+        pass
 
 if __name__ == "__main__":
     from waitress import serve
