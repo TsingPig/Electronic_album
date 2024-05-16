@@ -234,7 +234,7 @@ namespace MVPFrameWork
 
         protected virtual void OnDestroy()
         {
-        }
+        } 
 
         private void ParseResInfo(out string assetPath, out bool async)
         {
