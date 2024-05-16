@@ -10,7 +10,8 @@ public class MySQLManager : Singleton<MySQLManager>
 
     private void Init()
     {
-        _mySQLAccess = new MySQLAccess("gz-cynosdbmysql-grp-cttmzfob.sql.tencentcdb.com", "25862", "Tsingpig", "123asd**", "electronic_album");
+        //_mySQLAccess = new MySQLAccess("gz-cynosdbmysql-grp-cttmzfob.sql.tencentcdb.com", "25862", "Tsingpig", "123asd**", "electronic_album");
+        _mySQLAccess = new MySQLAccess("cd-cdb-8py1pna8.sql.tencentcdb.com", "23211", "root", "114514_191980", "database");
     }
 
     /// <summary>

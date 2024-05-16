@@ -12,7 +12,7 @@ public class ServerManager : Singleton<ServerManager>
     /// <summary>
     /// ¹«Íøip
     /// </summary>
-    public string host = "http://1.12.46.157";
+    public string host = "http://114.132.233.105";
 
     public int post = 80;
 
