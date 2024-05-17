@@ -11,6 +11,7 @@ app.config["UPLOAD_FOLDER"] = "uploads"
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024  # 设置最大上传文件大小为16MB
 port = 80
 default_path = "uploads/default.png"
+host = "http://114.132.233.105"
 
 
 # 处理文件上传
@@ -138,16 +139,17 @@ def get_photos(account, album_name, rank):
     album_path = os.path.join(app.config["UPLOAD_FOLDER"], account, album_name)
     if os.path.exists(album_path):
         photos = get_photo_list_in_timeorder(account, album_name)
+        # print(photos)
         rank = int(rank.split(".")[0])
 
         if rank == -1:
             if len(photos) == 0:
                 return send_file(default_path)
-            photo_to_send = os.path.join(album_path, photos[0][0])
+            photo_to_send = os.path.join(album_path, photos[0])
             return send_file(photo_to_send)
 
         if rank < len(photos):
-            photo_to_send = os.path.join(album_path, photos[rank][0])
+            photo_to_send = os.path.join(album_path, photos[rank])
 
             return send_file(photo_to_send)
 
@@ -182,7 +184,7 @@ def delete_photo(account, album_name, rank):
         rank = int(rank.split(".")[0])
 
         if rank < len(photos):
-            photo_to_delete = os.path.join(album_path, photos[rank][0])
+            photo_to_delete = os.path.join(album_path, photos[rank])
 
             os.remove(photo_to_delete)
             return "photo deleted"
@@ -194,23 +196,8 @@ def delete_photo(account, album_name, rank):
 
 @app.route("/get_moments", methods=["GET"])
 def get_moments():
-    data = {"moments": []}
-    start = len(MomentManager.json_data) - 1
-    end = max(-1, start - 10)
-
-    for i in range(start, end, -1):
-        data["moments"].append(get_moments(i))
-
-    if start - 20 > -1:
-        name, photo_list = MomentManager.delete_moment_by_index(0)
-        if name == None:
-            pass
-        else:
-            for photo, _ in photo_list:
-                delete_photo_by_name(name, "Moment", photo)
-
-    MomentManager.save_json_data()
-    return json.dumps(data)
+    # print(MomentManager.get_moments())
+    return json.dumps(MomentManager.get_moments())
 
 
 @app.route("/upload_moments", methods=["POST"])
@@ -220,42 +207,35 @@ def upload_moments():
     text = request.form["text"]
 
     photos = get_photo_list_in_timeorder(user_name, "Moment")
-    start_id = MomentManager.get_total_photosize_by_name(user_name)
-
-    if start_id == -1:
-        print("对不起做不到")
-        return "对不起做不到"
-
-    try:
-        photos = photos[start_id : start_id + photo_size]
-    except IndexError:
-        photos = []
-
-    MomentManager.add_moment(Moment(user_name, photos, text))
-    MomentManager.save_json_data()
-    return "moment upload"
+    photo_list = photos[0: photo_size]
+    print(photo_list)
+    if MomentManager.add_moment(user_name, text, photo_list):
+        # print("moment upload")
+        return "moment upload"
+    else:
+        return "moment upload failed"
 
 
-@app.route("/delete_moments/<rank>", methods=["GET"])
-def delete_moment(rank):
-    rank = int(rank)
-    name, photo_list = MomentManager.delete_moment_by_index(rank)
+# @app.route("/delete_moments/<rank>", methods=["GET"])
+# def delete_moment(rank):
+#     rank = int(rank)
+#     name, photo_list = MomentManager.delete_moment_by_index(rank)
 
-    if name is None:
-        return "out of index"
-    photos = get_photo_list_in_timeorder(name, "Moment")
-    album_path = os.path.join(app.config["UPLOAD_FOLDER"], name, "Moment")
-    for photo, ctime in photo_list:
-        try:
-            _ = photos.index((photo, ctime))
-            photo_to_delete = os.path.join(album_path, photo)
+#     if name is None:
+#         return "out of index"
+#     photos = get_photo_list_in_timeorder(name, "Moment")
+#     album_path = os.path.join(app.config["UPLOAD_FOLDER"], name, "Moment")
+#     for photo, ctime in photo_list:
+#         try:
+#             _ = photos.index((photo, ctime))
+#             photo_to_delete = os.path.join(album_path, photo)
 
-            os.remove(photo_to_delete)
-        except ValueError:
-            pass
+#             os.remove(photo_to_delete)
+#         except ValueError:
+#             pass
 
-    MomentManager.save_json_data()
-    return "moment deteted"
+#     MomentManager.save_json_data()
+#     return "moment deteted"
 
 
 def get_photo_list_in_timeorder(account, album_name):
@@ -269,31 +249,12 @@ def get_photo_list_in_timeorder(account, album_name):
     for photo in os.listdir(album_path):
         # 如果是文件，将其加入photos字典中
         if os.path.isfile(os.path.join(album_path, photo)):
-            photo_ctime = os.path.getctime(os.path.join(album_path, photo))
-            photos["photos"].append((photo, photo_ctime))
-    photos["photos"].sort(key=lambda x: x[1], reverse=False)
+            photos["photos"].append(photo)
+    photos["photos"].sort(reverse=True)
 
     return photos["photos"]
 
 
-def get_moments(rank):
-    moment: Moment = MomentManager.json_data[rank]
-    info_to_send = {}
-    info_to_send["UserName"] = moment.name
-    info_to_send["Content"] = moment.text
-    info_to_send["PhotoCount"] = len(moment.photo_list)
-    info_to_send["PhotoUrls"] = []
-    path = (moment.name, "Moment")
-
-    if moment.name not in MomentManager.user_json_data:
-        return info_to_send
-
-    for photo, _ in moment.photo_list:
-        info_to_send["PhotoUrls"].append(
-            f"http://1.12.46.157/get_photos_byid/{path[0]}/{path[1]}/{photo}"
-        )
-
-    return info_to_send
 
 def delete_photo_by_name(account, album_name, photo):
     album_path = os.path.join(app.config["UPLOAD_FOLDER"], account, album_name)
