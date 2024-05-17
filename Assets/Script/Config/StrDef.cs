@@ -8,4 +8,6 @@ public static class StrDef
     public const string MOMENT_PHOTO_ITEM_DATA_PATH = "MomentPhotoItem";
     public const string PHOTO_WALL_ITEM_DATA_PATH = "PhotoWallItem";
     public const string MOMENT_VIEW_DATA_PATH = "MomentView";
+    public const string B_B_S_TYPE_VIEW_DATA_PATH = "BBSTypeView";
+    public const string B_B_S_VIEW_DATA_PATH = "BBSView";
 }
