@@ -49,7 +49,7 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
 
     public void EnterBBSTypeCreate()
     {
-        UIManager.Instance.Enter(ViewId.BBSView);
+        UIManager.Instance.Enter(ViewId.BBSTypeCreateView);
     }
 
     #endregion
