@@ -71,6 +71,10 @@ MonoBehaviour:
     m_Address: MomentPhotoItem
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: fa64cb60a5cf01d4f9ec6c3522cc3444
+    m_Address: Assets/Res/UI/BBSTypeView/BBSTypeView.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 8376ae8e59f31754e9161a4f4bbee900, type: 2}
   m_SchemaSet:
