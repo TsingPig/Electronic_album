@@ -1,6 +1,7 @@
 using Michsky.MUIP;
 using MVPFrameWork;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 [ParentInfo(FindType.FindWithName, StrDef.CANVAS)]
@@ -21,6 +22,19 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
     public ButtonManager BtnSetting { get => _btnSetting; set => _btnSetting = value; }
 
     #endregion TopPanel
+
+    #region BBSTypeView
+
+    private ButtonManager _btnCreateBBSType;
+    private Transform _bBSTypeItemRoot;
+
+    public ButtonManager BtnCreateBBSType { get => _btnCreateBBSType; set => _btnCreateBBSType = value; }
+    public Transform BBSTypeItemRoot
+    {
+        get => _bBSTypeItemRoot; set => _bBSTypeItemRoot = value;
+    }
+
+    #endregion
 
     #region PhotoWallView
 
@@ -84,6 +98,15 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
 
         #endregion TopPanel
 
+
+        #region BBSTypeView
+
+        _btnCreateBBSType = _root.Find<ButtonManager>("MainPanel/btnCreateBBSType");
+        _bBSTypeItemRoot = _root.Find<Transform>("MainPanel/BBSTypeItemRoot");
+        _btnCreateBBSType.onClick.AddListener(_presenter.EnterBBSTypeCreate);
+
+        #endregion
+        
         #region PhotoWallView
 
         _photoWallItemRoot = _root.Find<VerticalLayoutGroup>("Window Manager/Windows/PhotoWallView/ScrollbarView/Viewport/PhotoWallItemRoot"); ;
