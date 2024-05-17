@@ -10,6 +10,12 @@ public interface IMainPresenter : IPresenter
 
     #endregion TopPanel
 
+    #region BBSTypeView
+
+    void EnterBBSTypeCreate();
+
+    #endregion
+
     #region PhotoWallView
 
     #endregion PhotoWallView

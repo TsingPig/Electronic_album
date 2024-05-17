@@ -1,6 +1,7 @@
 using Michsky.MUIP;
 using MVPFrameWork;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public interface IMainView : IView
@@ -14,6 +15,13 @@ public interface IMainView : IView
     ButtonManager BtnCreatePhotoWallItem { get; }
 
     #endregion TopPanel
+
+    #region BBSTypeView
+    ButtonManager BtnCreateBBSType { get; set; }
+
+    Transform BBSTypeItemRoot { get; set; }
+
+    #endregion
 
     #region PhotoWallView
 

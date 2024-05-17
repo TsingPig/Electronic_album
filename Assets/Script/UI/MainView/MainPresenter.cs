@@ -3,6 +3,8 @@ using System;
 using TsingPigSDK;
 using UnityEngine;
 using UnityEngine.UI;
+using UIManager = MVPFrameWork.UIManager;
+
 
 public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresenter
 {
@@ -42,6 +44,15 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
     }
 
     #endregion TopPanel
+
+    #region BBSTypeView
+
+    public void EnterBBSTypeCreate()
+    {
+        UIManager.Instance.Enter(ViewId.BBSTypeCreateView);
+    }
+
+    #endregion
 
     #region PhotoWallView
 
