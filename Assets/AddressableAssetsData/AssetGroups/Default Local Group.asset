@@ -75,6 +75,10 @@ MonoBehaviour:
     m_Address: Assets/Res/UI/BBSTypeView/BBSTypeView.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: cd51a79d4c9a78142bce81f9d143e973
+    m_Address: Assets/Res/UI/BBSView/BBSView.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 8376ae8e59f31754e9161a4f4bbee900, type: 2}
   m_SchemaSet:
