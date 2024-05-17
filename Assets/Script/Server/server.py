@@ -1,7 +1,8 @@
 from flask import Flask, request, send_file
 from werkzeug.utils import secure_filename
 from MomentManager import MomentManager
-from Moment import Moment
+from SectionManager import SectionManager
+from PostManager import PostManager
 import os
 import json
 import time
@@ -9,6 +10,8 @@ import time
 app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = "uploads"
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024  # 设置最大上传文件大小为16MB
+app.config["UPLOAD_SECTIONS"] = "sections"
+app.config["PHOTO_FOLDER"] = "photos"
 port = 80
 default_path = "uploads/default.png"
 host = "http://114.132.233.105"
@@ -254,8 +257,6 @@ def get_photo_list_in_timeorder(account, album_name):
 
     return photos["photos"]
 
-
-
 def delete_photo_by_name(account, album_name, photo):
     album_path = os.path.join(app.config["UPLOAD_FOLDER"], account, album_name)
     if os.path.exists(album_path):
@@ -265,8 +266,51 @@ def delete_photo_by_name(account, album_name, photo):
     else:
         pass
 
+
+@app.route("/create_section/<section_name>", methods=["POST"])
+def create_section(section_name):
+    SectionManager.add_section(section_name)
+    
+@app.route("/get_sections", methods=["GET"])
+def get_sections():
+    sections = {"sections": []}
+    sections["sections"] = SectionManager.get_sections()
+    return json.dumps(sections)
+
+@app.route("/modify_section/<old_name>/<new_name>", methods=["POST"])
+def modify_section(old_name, new_name):
+    SectionManager.modify_section(old_name, new_name)
+
+@app.route("/delete_section/<section_name>", methods=["GET"])
+def delete_section(section_name):
+    SectionManager.delete_section(section_name)
+
+@app.route("/upload_post", methods=["POST"])
+def upload_post():
+    account = request.form["account"]
+    text = request.form["text"]
+    photo_size = int(request.form["size"])
+    section_name = request.form["section_name"]
+    section_id = SectionManager.get_sectionid_by_name(section_name)
+    photo_list = get_photo_list_in_timeorder(account, "Post")
+    photo_list = photo_list[0: photo_size]
+    if PostManager.add_post(account, text, photo_list, section_id):
+        return "post upload"
+    else:
+        return "post upload failed"
+    
+@app.route("/get_posts_by_section/<section_name>", methods=["GET"])
+def get_posts_by_section(section_name):
+    data = {"posts": []}
+    data["posts"] = PostManager.get_posts_by_section(section_name)
+    return json.dumps(data)
+
+
+
 if __name__ == "__main__":
     from waitress import serve
 
     MomentManager()
+    SectionManager()
+    PostManager()
     serve(app, host="0.0.0.0", port=port)
