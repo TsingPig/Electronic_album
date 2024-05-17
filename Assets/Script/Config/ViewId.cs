@@ -7,4 +7,5 @@ public static class ViewId
     public const int PhotoDetailView = 1004;
     public const int CreatePhotoWallItemView = 1005;
     public const int MomentView = 1007;
+    public const int BBSView = 1008;
 }

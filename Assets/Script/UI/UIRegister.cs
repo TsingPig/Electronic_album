@@ -29,5 +29,8 @@ public static class UIRegister
         Container.Regist<IMomentPresenter, MomentPresenter>();
         Container.Regist<IView,  MomentView>(ViewId.MomentView);
 
+        Container.Regist<IBBSPresenter, BBSPresenter>();
+        Container.Regist<IView, BBSView>(ViewId.BBSView);
+
     }
 }

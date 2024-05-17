@@ -18,5 +18,6 @@ public class BBSTypeView : ViewBase<IBBSTypePresenter>, IBBSTypeView
     {
         _btnCreateBBSType = _root.Find<ButtonManager>("MainPanel/btnCreateBBSType");
         _bBSTypeItemRoot = _root.Find<Transform>("MainPanel/BBSTypeItemRoot");
+        _btnCreateBBSType.onClick.AddListener(_presenter.EnterBBSTypeCreate);
     }
 }
