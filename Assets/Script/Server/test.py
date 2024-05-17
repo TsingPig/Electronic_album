@@ -34,11 +34,11 @@ class MomentManager:
         db, cursor = getconnection()
         cursor.execute("SELECT * FROM postinfo")
         moments = cursor.fetchall()
-        for moment in reversed(moments):
+        for moment in moments:
             info_to_send = {}
             info_to_send["UserName"] = moment["account"]
             info_to_send["Content"] = moment["textinfo"]
-            cursor.execute("SELECT * FROM urlinfo WHERE postid = %s", (moment["postid"]))        
+            cursor.execute("SELECT * FROM urlinfo WHERE postid = %s", (moment["postid"]))
             path = (moment["account"], "Moment")
             info_to_send["PhotoUrls"] = [f'{host}/get_photos_byid/{path[0]}/{path[1]}/{photo["url"]}' for photo in cursor.fetchall()]
             info_to_send["PhotoCount"] = len(info_to_send["PhotoUrls"])
