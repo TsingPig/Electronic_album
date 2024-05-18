@@ -101,7 +101,7 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
         #region BBSTypeView
 
         _btnCreateBBSType = _root.Find<ButtonManager>("Window Manager/Windows/BBSTypeView/MainPanel/btnCreateBBSType");
-        _bBSTypeItemRoot = _root.Find<GridLayoutGroup>("Window Manager/Windows/BBSTypeView/MainPanel/BBSTypeItemRoot");
+        _bBSTypeItemRoot = _root.Find<GridLayoutGroup>("Window Manager/Windows/BBSTypeView/MainPanel/ScrollbarView/Viewport/BBSTypeItemRoot");
         _btnCreateBBSType.onClick.AddListener(_presenter.EnterBBSTypeCreateView);
 
         #endregion
