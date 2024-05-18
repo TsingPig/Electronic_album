@@ -98,7 +98,6 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
 
         #endregion TopPanel
 
-
         #region BBSTypeView
 
         _btnCreateBBSType = _root.Find<ButtonManager>("Window Manager/Windows/BBSTypeView/MainPanel/btnCreateBBSType");

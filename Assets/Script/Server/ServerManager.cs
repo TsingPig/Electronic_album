@@ -38,6 +38,11 @@ public class ServerManager : Singleton<ServerManager>
     public Action UpdateMomentEvent;
 
     /// <summary>
+    /// BBSType更新回调事件
+    /// </summary>
+    public Action UpdateBBSTypeEvent;
+
+    /// <summary>
     /// 图片缓存
     /// </summary>
     private Dictionary<string, Sprite> _dicPhotoCache = new Dictionary<string, Sprite>();
@@ -124,7 +129,7 @@ public class ServerManager : Singleton<ServerManager>
     /// <param name="callback"></param>
     public void CreateBBSType(string typeName, Action callback = null)
     {
-        StartCoroutine(CreateSection(typeName, callback));
+        StartCoroutine(CreateSection(typeName, UpdateBBSTypeEvent));
     }
 
     /// <summary>
@@ -263,6 +268,7 @@ public class ServerManager : Singleton<ServerManager>
                 IMainModel.SectionsWrapper sectionsWrapper = JsonUtility.FromJson<IMainModel.SectionsWrapper>(jsonResult);
                 Debug.Log($"板块数据请求成功：{jsonResult}");
                 Debug.Log($"板块数据个数：{sectionsWrapper.sections.Count}");
+
                 return sectionsWrapper.sections;
             }
             else

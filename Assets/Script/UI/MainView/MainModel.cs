@@ -11,9 +11,9 @@ public class MainModel : IMainModel
 
     public List<IMainModel.Section> Sections { get => _sections; set => _sections = value; }
 
-    public void SetModel(List<IMainModel.Moment> moments, List<IMainModel.Section> bBSTypes)
+    public void SetModel(List<IMainModel.Moment> moments, List<IMainModel.Section> sections)
     {
         _moments = moments;
-        _sections = bBSTypes;
+        _sections = sections;
     }
 }

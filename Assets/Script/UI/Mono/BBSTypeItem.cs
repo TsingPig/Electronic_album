@@ -9,7 +9,6 @@ using Image = UnityEngine.UI.Image;
 
 public class BBSTypeItem : ItemBase
 {
-    public TMP_Text TxtBBSTypeName;
     public ButtonManager BtnEnterBBS;
 
     //[HideInInspector]
