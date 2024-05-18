@@ -8,7 +8,7 @@ public interface IMainModel : IModel
     class Section
     {
         [JsonProperty("sectionname")]
-        public string SectionName;
+        public string sectionname;
     }
 
     [Serializable]

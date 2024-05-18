@@ -26,10 +26,10 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
     #region BBSTypeView
 
     private ButtonManager _btnCreateBBSType;
-    private Transform _bBSTypeItemRoot;
+    private GridLayoutGroup _bBSTypeItemRoot;
 
     public ButtonManager BtnCreateBBSType { get => _btnCreateBBSType; set => _btnCreateBBSType = value; }
-    public Transform BBSTypeItemRoot
+    public GridLayoutGroup BBSTypeItemRoot
     {
         get => _bBSTypeItemRoot; set => _bBSTypeItemRoot = value;
     }
@@ -101,7 +101,7 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
         #region BBSTypeView
 
         _btnCreateBBSType = _root.Find<ButtonManager>("Window Manager/Windows/BBSTypeView/MainPanel/btnCreateBBSType");
-        _bBSTypeItemRoot = _root.Find<Transform>("Window Manager/Windows/BBSTypeView/MainPanel/BBSTypeItemRoot");
+        _bBSTypeItemRoot = _root.Find<GridLayoutGroup>("Window Manager/Windows/BBSTypeView/MainPanel/BBSTypeItemRoot");
         _btnCreateBBSType.onClick.AddListener(_presenter.EnterBBSTypeCreateView);
 
         #endregion

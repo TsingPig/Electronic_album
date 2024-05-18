@@ -17,14 +17,15 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
         CacheManager.Instance.UserInformUpdateEvent += LoadUserInformation;
         LoadUserInformation();
         RefreshMomentsModel(() => { RefreshPhotoWallItem(RefreshPhotoWallViewLayout); });
-        RefreshSectionsModel(() => { RefreshBBSTypeItem(); });
+        RefreshSectionsModel(() => { RefreshBBSTypeItem(RefreshBBSTypeViewLayout); });
     }
 
     public override void OnShowCompleted()
     {
         base.OnShowCompleted();
-        RefreshMomentsModel(() => { RefreshPhotoWallItem(RefreshPhotoWallViewLayout); });
-        RefreshSectionsModel(() => { RefreshBBSTypeItem(); });
+        RefreshPhotoWallView();
+        RefreshBBSTypeView();
+
     }
 
     #region TopPanel
@@ -70,8 +71,9 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
 
     private void RefreshBBSTypeView()
     {
+        Debug.Log("RefreshBBSTypeView");
         ClearBBSTypeItem();
-        RefreshSectionsModel(() => { RefreshBBSTypeItem(); });
+        RefreshSectionsModel(() => { RefreshBBSTypeItem(RefreshBBSTypeViewLayout); });
 
     }
 
@@ -80,8 +82,9 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
         foreach(IMainModel.Section section in _model.Sections)
         {
             BBSTypeItem bBSTypeItem = (await Instantiater.InstantiateAsync(StrDef.B_B_S_TYPE_ITEM_DATA_PATH, _view.BBSTypeItemRoot.transform)).GetComponent<BBSTypeItem>();
-            bBSTypeItem.BtnEnterBBS.buttonText = section.SectionName;
-            Debug.Log(section.SectionName);
+            bBSTypeItem.TxtBBSTypeName.text = section.sectionname;
+
+            // Debug.Log(section.sectionname);
         }
         callback?.Invoke();
     }
@@ -91,6 +94,11 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
     {
         Instantiater.DeactivateObjectPool(StrDef.B_B_S_TYPE_ITEM_DATA_PATH);
         Instantiater.Release(StrDef.B_B_S_TYPE_ITEM_DATA_PATH);
+    }
+
+    private void RefreshBBSTypeViewLayout()
+    {
+        _view.BBSTypeItemRoot.RebuildLayout();
     }
     #endregion
 

@@ -11,6 +11,8 @@ public class BBSTypeItem : ItemBase
 {
     public ButtonManager BtnEnterBBS;
 
+    public TMP_Text TxtBBSTypeName;
+
     //[HideInInspector]
     //public List<string> PhotoUrls;
 
