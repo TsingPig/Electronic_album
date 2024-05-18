@@ -211,7 +211,7 @@ def upload_moments():
 
     photos = get_photo_list_in_timeorder(user_name, "Moment")
     photo_list = photos[0: photo_size]
-    print(photo_list)
+    # print(photo_list)
     if MomentManager.add_moment(user_name, text, photo_list):
         # print("moment upload")
         return "moment upload"
@@ -270,6 +270,7 @@ def delete_photo_by_name(account, album_name, photo):
 @app.route("/create_section/<section_name>", methods=["POST"])
 def create_section(section_name):
     SectionManager.add_section(section_name)
+    return "section create"
     
 @app.route("/get_sections", methods=["GET"])
 def get_sections():
@@ -280,10 +281,12 @@ def get_sections():
 @app.route("/modify_section/<old_name>/<new_name>", methods=["POST"])
 def modify_section(old_name, new_name):
     SectionManager.modify_section(old_name, new_name)
+    return "section modify"
 
 @app.route("/delete_section/<section_name>", methods=["GET"])
 def delete_section(section_name):
     SectionManager.delete_section(section_name)
+    return "section delete"
 
 @app.route("/upload_post", methods=["POST"])
 def upload_post():

@@ -125,6 +125,11 @@ public class ServerManager : Singleton<ServerManager>
         StartCoroutine(GetFolders(account, UpdateAlbumEvent));
     }
 
+    public void CreateBBSTypeView(string typeName, Action callback = null)
+    {
+        StartCoroutine(CreateSection(typeName, callback));
+    }
+
     /// <summary>
     /// 获取用户相册的所有图片
     /// </summary>
@@ -286,6 +291,25 @@ public class ServerManager : Singleton<ServerManager>
             else
             {
                 Debug.LogError($"Error creating album: {www.error}");
+                callback?.Invoke();
+            }
+        }
+    }
+
+    private IEnumerator CreateSection(string sectionName, Action callback)
+    {
+        using(UnityWebRequest www = UnityWebRequest.Post($"{url}/create_section/{sectionName}", ""))
+        {
+            yield return www.SendWebRequest();
+
+            if(www.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log($"Section创建成功：{sectionName}");
+                callback?.Invoke();
+            }
+            else
+            {
+                Debug.LogError($"Error creating section: {www.error}");
                 callback?.Invoke();
             }
         }
@@ -509,6 +533,8 @@ public class ServerManager : Singleton<ServerManager>
             }
         }
     }
+
+    
 
     /// <summary>
     ///  获得某个文件夹路径下的文件数量

@@ -22,6 +22,7 @@ class PostManager:
         cursor.execute("INSERT INTO postinfo (account, textinfo, sectionid) VALUES (%s, %s, %s)", (account, text, section_id))
         post_id = cursor.lastrowid
         for photo in photo_list:
+            photo = f'{host}/get_photos/{account}/Post/{photo}'
             cursor.execute("INSERT INTO urlinfo (postid, url) VALUES (%s, %s)", (post_id, photo))
         db.commit()
         cursor.close()
@@ -40,9 +41,8 @@ class PostManager:
             info_to_send = {}
             info_to_send["UserName"] = post["account"]
             info_to_send["Content"] = post["textinfo"]
-            cursor.execute("SELECT * FROM urlinfo WHERE postid = %s", (post["postid"]))        
-            path = (post["account"], "Post")
-            info_to_send["PhotoUrls"] = [f'{host}/get_photos_byid/{path[0]}/{path[1]}/{photo["url"]}' for photo in cursor.fetchall()]
+            cursor.execute("SELECT * FROM urlinfo WHERE postid = %s", (post["postid"]))
+            info_to_send["PhotoUrls"] = [photo["url"] for photo in cursor.fetchall()]
             info_to_send["PhotoCount"] = len(info_to_send["PhotoUrls"])
             data.append(info_to_send)
         cursor.close()
