@@ -348,7 +348,9 @@ public class ServerManager : Singleton<ServerManager>
     /// <returns></returns>
     private IEnumerator CreateSection(string sectionName, Action callback)
     {
-        using(UnityWebRequest www = UnityWebRequest.Post($"{url}/create_section/{sectionName}", ""))
+        WWWForm form = new WWWForm();
+        form.AddField("section_name", sectionName);
+        using(UnityWebRequest www = UnityWebRequest.Post($"{host}/create_section", form))
         {
             yield return www.SendWebRequest();
 

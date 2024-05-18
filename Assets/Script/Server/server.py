@@ -267,8 +267,10 @@ def delete_photo_by_name(account, album_name, photo):
         pass
 
 
-@app.route("/create_section/<section_name>", methods=["POST"])
-def create_section(section_name):
+@app.route("/create_section", methods=["POST"])
+def create_section():
+    section_name = request.form["section_name"]
+    print(section_name)
     SectionManager.add_section(section_name)
     return "section create"
     
