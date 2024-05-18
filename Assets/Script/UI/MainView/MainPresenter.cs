@@ -12,16 +12,20 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
     {
         ServerManager.Instance.UpdateAlbumEvent += PresenterAlbumList;
         ServerManager.Instance.UpdateMomentEvent += RefreshPhotoWallView;
+        ServerManager.Instance.UpdateBBSTypeEvent += RefreshBBSTypeView;
         ServerManager.Instance.DownLoadUserIconEvent += LoadUserInformation;
         CacheManager.Instance.UserInformUpdateEvent += LoadUserInformation;
         LoadUserInformation();
-        RefreshModel(() => RefreshPhotoWallItem(RefreshLayout));
+        RefreshMomentsModel(() => { RefreshPhotoWallItem(RefreshPhotoWallViewLayout); });
+        RefreshSectionsModel(() => { RefreshBBSTypeItem(RefreshBBSTypeViewLayout); });
     }
 
     public override void OnShowCompleted()
     {
         base.OnShowCompleted();
         RefreshPhotoWallView();
+        RefreshBBSTypeView();
+
     }
 
     #region TopPanel
@@ -47,25 +51,70 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
 
     #region BBSTypeView
 
-    public void EnterBBSTypeCreate()
+    #region Public
+    public void EnterBBSTypeCreateView()
     {
         UIManager.Instance.Enter(ViewId.BBSTypeCreateView);
     }
 
     #endregion
 
-    #region PhotoWallView
+    #region Private
 
-    private void RefreshPhotoWallView()
+
+    private async void RefreshSectionsModel(Action callback = null)
     {
-        ClearPhotoWallItem();
-        RefreshModel(() => RefreshPhotoWallItem(RefreshLayout));
+        _model.Sections = await ServerManager.Instance.GetSections();
+        callback?.Invoke();
+
     }
 
-    private async void RefreshModel(Action callback = null)
+    private void RefreshBBSTypeView()
+    {
+        Debug.Log("RefreshBBSTypeView");
+        ClearBBSTypeItem();
+        RefreshSectionsModel(() => { RefreshBBSTypeItem(RefreshBBSTypeViewLayout); });
+
+    }
+
+    private async void RefreshBBSTypeItem(Action callback = null)
+    {
+        foreach(IMainModel.Section section in _model.Sections)
+        {
+            BBSTypeItem bBSTypeItem = (await Instantiater.InstantiateAsync(StrDef.B_B_S_TYPE_ITEM_DATA_PATH, _view.BBSTypeItemRoot.transform)).GetComponent<BBSTypeItem>();
+            bBSTypeItem.TxtBBSTypeName.text = section.sectionname;
+
+            // Debug.Log(section.sectionname);
+        }
+        callback?.Invoke();
+    }
+
+
+    private void ClearBBSTypeItem()
+    {
+        Instantiater.DeactivateObjectPool(StrDef.B_B_S_TYPE_ITEM_DATA_PATH);
+        Instantiater.Release(StrDef.B_B_S_TYPE_ITEM_DATA_PATH);
+    }
+
+    private void RefreshBBSTypeViewLayout()
+    {
+        _view.BBSTypeItemRoot.RebuildLayout();
+    }
+    #endregion
+
+    #endregion
+
+    #region PhotoWallView
+
+    private async void RefreshMomentsModel(Action callback = null)
     {
         _model.Moments = await ServerManager.Instance.GetAllPhotoWallItems();
         callback?.Invoke();
+    }
+    private void RefreshPhotoWallView()
+    {
+        ClearPhotoWallItem();
+        RefreshMomentsModel(() => RefreshPhotoWallItem(RefreshPhotoWallViewLayout));
     }
 
     private async void RefreshPhotoWallItem(Action callback = null)
@@ -90,7 +139,7 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
         Instantiater.Release(StrDef.MOMENT_PHOTO_ITEM_DATA_PATH);
     }
 
-    private void RefreshLayout()
+    private void RefreshPhotoWallViewLayout()
     {
         _view.PhotoWallItemRoot.RebuildLayout();
     }

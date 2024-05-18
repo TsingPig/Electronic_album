@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using TsingPigSDK;
 using UnityEngine;
@@ -35,6 +36,11 @@ public class ServerManager : Singleton<ServerManager>
     /// 动态更新回调事件
     /// </summary>
     public Action UpdateMomentEvent;
+
+    /// <summary>
+    /// BBSType更新回调事件
+    /// </summary>
+    public Action UpdateBBSTypeEvent;
 
     /// <summary>
     /// 图片缓存
@@ -117,17 +123,22 @@ public class ServerManager : Singleton<ServerManager>
     }
 
     /// <summary>
+    /// 创建帖子类型
+    /// </summary>
+    /// <param name="typeName">帖子类型名</param>
+    /// <param name="callback"></param>
+    public void CreateBBSType(string typeName, Action callback = null)
+    {
+        StartCoroutine(CreateSection(typeName, UpdateBBSTypeEvent));
+    }
+
+    /// <summary>
     /// 获取用户的相册列表
     /// </summary>
     /// <param name="account">用户名</param>
     public void GetAlbumFolder(string account)
     {
         StartCoroutine(GetFolders(account, UpdateAlbumEvent));
-    }
-
-    public void CreateBBSTypeView(string typeName, Action callback = null)
-    {
-        StartCoroutine(CreateSection(typeName, callback));
     }
 
     /// <summary>
@@ -138,39 +149,6 @@ public class ServerManager : Singleton<ServerManager>
     public void GetAlbumSize(string account, string albumName, Action<int> callback = null)
     {
         StartCoroutine(GetConnectSize($"{account}/{albumName}", callback));
-    }
-
-    /// <summary>
-    /// 请求所有动态数据
-    /// </summary>
-    /// <returns></returns>
-    public async Task<List<IMainModel.Moment>> GetAllPhotoWallItems()
-    {
-        using(UnityWebRequest www = UnityWebRequest.Get($"{url}/get_moments"))
-        {
-            Debug.Log($"开始请求动态数据");
-            www.SendWebRequest();
-            while(!www.isDone)
-            {
-                await Task.Yield();
-            }
-
-            if(www.result == UnityWebRequest.Result.Success)
-            {
-                string jsonResult = www.downloadHandler.text;
-                //string jsonResult = $"{{\"moments\":[{{\"UserName\": \"1\", \"Content\": \"\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/0.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/0.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/1.jpg\"]}}, {{\"UserName\": \"1231231123123\", \"Content\": \"1111\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1231231123123/Moment/0.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u5b63\\u6da6\\u6c11\\u662f\\u732a\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/1.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/2.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/2.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/3.jpg\"]}}, {{\"UserName\": \"1231231123123\", \"Content\": \"1111\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1231231123123/Moment/1.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u5b63\\u6da6\\u6c11\\u662f\\u732a\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/3.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/4.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/4.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/5.jpg\"]}}, {{\"UserName\": \"1231231123123\", \"Content\": \"1111\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1231231123123/Moment/2.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u5b63\\u6da6\\u6c11\\u662f\\u732a\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/5.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/6.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/6.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/7.jpg\"]}}, {{\"UserName\": \"1231231123123\", \"Content\": \"1111\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1231231123123/Moment/3.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u5b63\\u6da6\\u6c11\\u662f\\u732a\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/7.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/8.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/8.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/9.jpg\"]}}, {{\"UserName\": \"1231231123123\", \"Content\": \"1111\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1231231123123/Moment/4.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u5b63\\u6da6\\u6c11\\u662f\\u732a\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/9.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/10.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/10.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/11.jpg\"]}}, {{\"UserName\": \"1231231123123\", \"Content\": \"1111\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1231231123123/Moment/5.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u5b63\\u6da6\\u6c11\\u662f\\u732a\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/11.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/12.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/12.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/13.jpg\"]}}, {{\"UserName\": \"1231231123123\", \"Content\": \"1111\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1231231123123/Moment/6.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u5b63\\u6da6\\u6c11\\u662f\\u732a\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/13.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/14.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/14.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/15.jpg\"]}}, {{\"UserName\": \"1231231123123\", \"Content\": \"1111\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1231231123123/Moment/7.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u5b63\\u6da6\\u6c11\\u662f\\u732a\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/15.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/16.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/16.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/17.jpg\"]}}, {{\"UserName\": \"1231231123123\", \"Content\": \"1111\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1231231123123/Moment/8.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u5b63\\u6da6\\u6c11\\u662f\\u732a\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/17.jpg\"]}}]\r\n}}";
-
-                IMainModel.MomentsWrapper momentsWrapper = JsonUtility.FromJson<IMainModel.MomentsWrapper>(jsonResult);
-                Debug.Log($"动态数据请求成功：{jsonResult}");
-                Debug.Log($"动态数据个数：{momentsWrapper.moments.Count}");
-                return momentsWrapper.moments;
-            }
-            else
-            {
-                Debug.LogError($"Error: {www.error}");
-                return null;
-            }
-        }
     }
 
     /// <summary>
@@ -231,6 +209,72 @@ public class ServerManager : Singleton<ServerManager>
                 Debug.Log($"{albumName}/{photoId}请求完毕");
                 Texture2D photoTex = texD1.texture;
                 image.sprite = Sprite.Create(photoTex, new Rect(0, 0, ConstDef.ScaleSize, ConstDef.ScaleSize), new Vector2(0.5f, 0.5f));
+            }
+        }
+    }
+    
+    /// <summary>
+    /// 请求所有动态数据
+    /// </summary>
+    /// <returns></returns>
+    public async Task<List<IMainModel.Moment>> GetAllPhotoWallItems()
+    {
+        using(UnityWebRequest www = UnityWebRequest.Get($"{url}/get_moments"))
+        {
+            Debug.Log($"开始请求动态数据");
+            www.SendWebRequest();
+            while(!www.isDone)
+            {
+                await Task.Yield();
+            }
+
+            if(www.result == UnityWebRequest.Result.Success)
+            {
+                string jsonResult = www.downloadHandler.text;
+                //string jsonResult = $"{{\"moments\":[{{\"UserName\": \"1\", \"Content\": \"\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/0.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/0.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/1.jpg\"]}}, {{\"UserName\": \"1231231123123\", \"Content\": \"1111\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1231231123123/Moment/0.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u5b63\\u6da6\\u6c11\\u662f\\u732a\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/1.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/2.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/2.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/3.jpg\"]}}, {{\"UserName\": \"1231231123123\", \"Content\": \"1111\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1231231123123/Moment/1.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u5b63\\u6da6\\u6c11\\u662f\\u732a\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/3.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/4.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/4.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/5.jpg\"]}}, {{\"UserName\": \"1231231123123\", \"Content\": \"1111\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1231231123123/Moment/2.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u5b63\\u6da6\\u6c11\\u662f\\u732a\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/5.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/6.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/6.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/7.jpg\"]}}, {{\"UserName\": \"1231231123123\", \"Content\": \"1111\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1231231123123/Moment/3.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u5b63\\u6da6\\u6c11\\u662f\\u732a\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/7.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/8.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/8.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/9.jpg\"]}}, {{\"UserName\": \"1231231123123\", \"Content\": \"1111\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1231231123123/Moment/4.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u5b63\\u6da6\\u6c11\\u662f\\u732a\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/9.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/10.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/10.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/11.jpg\"]}}, {{\"UserName\": \"1231231123123\", \"Content\": \"1111\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1231231123123/Moment/5.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u5b63\\u6da6\\u6c11\\u662f\\u732a\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/11.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/12.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/12.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/13.jpg\"]}}, {{\"UserName\": \"1231231123123\", \"Content\": \"1111\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1231231123123/Moment/6.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u5b63\\u6da6\\u6c11\\u662f\\u732a\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/13.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/14.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/14.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/15.jpg\"]}}, {{\"UserName\": \"1231231123123\", \"Content\": \"1111\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1231231123123/Moment/7.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u5b63\\u6da6\\u6c11\\u662f\\u732a\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/15.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\\u597d\\uff0c\\u8fd9\\u6b21\\u4e00\\u5b9a\\u6ca1\\u95ee\\u9898\\uff09\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/16.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/16.jpg\"]}}, {{\"UserName\": \"2\", \"Content\": \"\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\\u732a\\u732a\\u79cd\\u65cf\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/2/Moment/17.jpg\"]}}, {{\"UserName\": \"1231231123123\", \"Content\": \"1111\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1231231123123/Moment/8.jpg\"]}}, {{\"UserName\": \"1\", \"Content\": \"\\u5b63\\u6da6\\u6c11\\u662f\\u732a\", \"PhotoCount\": 1, \"PhotoUrls\": [\"http://1.12.46.157/get_photos/1/Moment/17.jpg\"]}}]\r\n}}";
+
+                IMainModel.MomentsWrapper momentsWrapper = JsonUtility.FromJson<IMainModel.MomentsWrapper>(jsonResult);
+                Debug.Log($"动态数据请求成功：{jsonResult}");
+                Debug.Log($"动态数据个数：{momentsWrapper.moments.Count}");
+                return momentsWrapper.moments;
+            }
+            else
+            {
+                Debug.LogError($"Error: {www.error}");
+                return null;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 异步加载所有分区板块数据
+    /// </summary>
+    /// <returns></returns>
+    public async Task<List<IMainModel.Section>> GetSections()
+    {
+        using(UnityWebRequest www = UnityWebRequest.Get($"{url}/get_sections"))
+        {
+            Debug.Log($"开始请求分区数据");
+            www.SendWebRequest();
+            while(!www.isDone)
+            {
+                await Task.Yield();
+            }
+
+            if(www.result == UnityWebRequest.Result.Success)
+            {
+                string jsonResult = www.downloadHandler.text;
+
+                IMainModel.SectionsWrapper sectionsWrapper = JsonUtility.FromJson<IMainModel.SectionsWrapper>(jsonResult);
+                Debug.Log($"板块数据请求成功：{jsonResult}");
+                Debug.Log($"板块数据个数：{sectionsWrapper.sections.Count}");
+
+                return sectionsWrapper.sections;
+            }
+            else
+            {
+                Debug.LogError($"Error: {www.error}");
+                return null;
             }
         }
     }
@@ -296,6 +340,12 @@ public class ServerManager : Singleton<ServerManager>
         }
     }
 
+    /// <summary>
+    /// 创建分区
+    /// </summary>
+    /// <param name="sectionName">分区名</param>
+    /// <param name="callback"></param>
+    /// <returns></returns>
     private IEnumerator CreateSection(string sectionName, Action callback)
     {
         using(UnityWebRequest www = UnityWebRequest.Post($"{url}/create_section/{sectionName}", ""))
@@ -534,7 +584,7 @@ public class ServerManager : Singleton<ServerManager>
         }
     }
 
-    
+
 
     /// <summary>
     ///  获得某个文件夹路径下的文件数量

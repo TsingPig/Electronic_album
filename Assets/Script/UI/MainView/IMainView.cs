@@ -19,7 +19,7 @@ public interface IMainView : IView
     #region BBSTypeView
     ButtonManager BtnCreateBBSType { get; set; }
 
-    Transform BBSTypeItemRoot { get; set; }
+    GridLayoutGroup BBSTypeItemRoot { get; set; }
 
     #endregion
 
