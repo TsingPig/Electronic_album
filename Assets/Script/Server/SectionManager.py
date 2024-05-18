@@ -30,7 +30,7 @@ class SectionManager:
         sections = cursor.fetchall()
         cursor.close()
         db.close()
-        return [section["sectionname"] for section in sections]
+        return [{"sectionname": section["sectionname"]} for section in sections]
     
     @staticmethod
     def modify_section(old_name: str, new_name: str):

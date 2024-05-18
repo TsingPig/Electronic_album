@@ -14,7 +14,7 @@ public class BBSTypeCreatePresenter : PresenterBase<IBBSTypeCreateView>, IBBSTyp
         Debug.Log($"{_view.InptBBSTypeName.text}");
         ServerManager.Instance.CreateBBSTypeView(_view.InptBBSTypeName.text);
         UIManager.Instance.Quit(ViewId.BBSTypeCreateView);
-        // ServerManager.Instance.GetBBSFolder(CacheManager.Instance.UserName);
+        // ServerManager.Instance.GetBBSFolder();
     }
 
 
