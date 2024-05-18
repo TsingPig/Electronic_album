@@ -12,7 +12,7 @@ public interface IMainPresenter : IPresenter
 
     #region BBSTypeView
 
-    void EnterBBSTypeCreate();
+    void EnterBBSTypeCreateView();
 
     #endregion
 

@@ -103,7 +103,7 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
 
         _btnCreateBBSType = _root.Find<ButtonManager>("Window Manager/Windows/BBSTypeView/MainPanel/btnCreateBBSType");
         _bBSTypeItemRoot = _root.Find<Transform>("Window Manager/Windows/BBSTypeView/MainPanel/BBSTypeItemRoot");
-        _btnCreateBBSType.onClick.AddListener(_presenter.EnterBBSTypeCreate);
+        _btnCreateBBSType.onClick.AddListener(_presenter.EnterBBSTypeCreateView);
 
         #endregion
         

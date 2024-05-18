@@ -15,13 +15,23 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
         ServerManager.Instance.DownLoadUserIconEvent += LoadUserInformation;
         CacheManager.Instance.UserInformUpdateEvent += LoadUserInformation;
         LoadUserInformation();
-        RefreshModel(() => RefreshPhotoWallItem(RefreshLayout));
+        RefreshModel(() => {
+            RefreshPhotoWallItem(RefreshPhotoWallViewLayout);
+            RefreshBBSTypeItem();
+        });
     }
 
     public override void OnShowCompleted()
     {
         base.OnShowCompleted();
         RefreshPhotoWallView();
+    }
+
+    private async void RefreshModel(Action callback = null)
+    {
+        _model.Moments = await ServerManager.Instance.GetAllPhotoWallItems();
+        _model.Sections = await ServerManager.Instance.GetSections();
+        callback?.Invoke();
     }
 
     #region TopPanel
@@ -47,10 +57,26 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
 
     #region BBSTypeView
 
-    public void EnterBBSTypeCreate()
+    #region Public
+    public void EnterBBSTypeCreateView()
     {
         UIManager.Instance.Enter(ViewId.BBSTypeCreateView);
     }
+
+    #endregion
+
+    #region Private
+    private async void RefreshBBSTypeItem(Action callback = null)
+    {
+        foreach(IMainModel.Section section in _model.Sections)
+        {
+            BBSTypeItem bBSTypeItem = (await Instantiater.InstantiateAsync(StrDef.B_B_S_TYPE_ITEM_DATA_PATH, _view.BBSTypeItemRoot.transform)).GetComponent<BBSTypeItem>();
+            bBSTypeItem.TxtBBSTypeName.text = section.SectionName;
+        }
+        callback?.Invoke();
+    }
+
+    #endregion  
 
     #endregion
 
@@ -59,13 +85,7 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
     private void RefreshPhotoWallView()
     {
         ClearPhotoWallItem();
-        RefreshModel(() => RefreshPhotoWallItem(RefreshLayout));
-    }
-
-    private async void RefreshModel(Action callback = null)
-    {
-        _model.Moments = await ServerManager.Instance.GetAllPhotoWallItems();
-        callback?.Invoke();
+        RefreshModel(() => RefreshPhotoWallItem(RefreshPhotoWallViewLayout));
     }
 
     private async void RefreshPhotoWallItem(Action callback = null)
@@ -90,7 +110,7 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
         Instantiater.Release(StrDef.MOMENT_PHOTO_ITEM_DATA_PATH);
     }
 
-    private void RefreshLayout()
+    private void RefreshPhotoWallViewLayout()
     {
         _view.PhotoWallItemRoot.RebuildLayout();
     }

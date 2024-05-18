@@ -181,6 +181,7 @@ GameObject:
   - component: {fileID: 8477788609927628440}
   - component: {fileID: 1573101205698552897}
   - component: {fileID: 2172989842057585823}
+  - component: {fileID: 177090531449501537}
   m_Layer: 5
   m_Name: BBSTypeItem
   m_TagString: Untagged
@@ -338,6 +339,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 0
+--- !u!114 &177090531449501537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218609664781685359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 658a44a40c7c1f747a8a67d1a7a98503, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TxtUserName: {fileID: 1644071453563566753}
+  BtnEnterBBS: {fileID: 8477788609927628440}
 --- !u!1 &355109961364007319
 GameObject:
   m_ObjectHideFlags: 0
