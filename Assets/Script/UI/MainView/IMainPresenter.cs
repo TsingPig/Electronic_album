@@ -1,3 +1,4 @@
+using Michsky.MUIP;
 using MVPFrameWork;
 
 public interface IMainPresenter : IPresenter

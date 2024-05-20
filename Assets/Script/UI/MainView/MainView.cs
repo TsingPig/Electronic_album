@@ -2,6 +2,7 @@ using Michsky.MUIP;
 using MVPFrameWork;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Purchasing;
 using UnityEngine.UI;
 
 [ParentInfo(FindType.FindWithName, StrDef.CANVAS)]
@@ -105,7 +106,7 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
         _btnCreateBBSType.onClick.AddListener(_presenter.EnterBBSTypeCreateView);
 
         #endregion
-        
+
         #region PhotoWallView
 
         _photoWallItemRoot = _root.Find<VerticalLayoutGroup>("Window Manager/Windows/PhotoWallView/ScrollbarView/Viewport/PhotoWallItemRoot"); ;

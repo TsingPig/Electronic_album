@@ -3,6 +3,7 @@ using System;
 using TsingPigSDK;
 using UnityEngine;
 using UnityEngine.UI;
+using Michsky.MUIP;
 using UIManager = MVPFrameWork.UIManager;
 
 
@@ -56,6 +57,7 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
     {
         UIManager.Instance.Enter(ViewId.BBSTypeCreateView);
     }
+
 
     #endregion
 
@@ -302,6 +304,7 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
         }
     }
 
+    
     #endregion Private
 
     #endregion AlbumView

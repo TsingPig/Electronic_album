@@ -32,5 +32,8 @@ public static class UIRegister
         Container.Regist<IBBSTypeCreatePresenter, BBSTypeCreatePresenter>();
         Container.Regist<IView, BBSTypeCreateView>(ViewId.BBSTypeCreateView);
 
+        Container.Regist<IBBSPresenter, BBSPresenter>();
+        Container.Regist<IView, BBSView>(ViewId.BBSView);
+
     }
 }
