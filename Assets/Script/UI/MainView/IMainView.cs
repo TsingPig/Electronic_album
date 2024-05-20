@@ -20,7 +20,7 @@ public interface IMainView : IView
     ButtonManager BtnCreateBBSType { get; set; }
 
     GridLayoutGroup BBSTypeItemRoot { get; set; }
-
+        
     #endregion
 
     #region PhotoWallView

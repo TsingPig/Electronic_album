@@ -7,4 +7,5 @@ public interface IBBSTypeCreateView : IView
     ButtonManager BtnQuit { get; }
     TMP_InputField InptBBSTypeName { get; }
     ButtonManager BtnCreate{ get; }
+
 }
