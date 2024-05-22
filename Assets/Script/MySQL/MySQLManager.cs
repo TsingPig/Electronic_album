@@ -169,8 +169,8 @@ public class MySQLManager : Singleton<MySQLManager>
         if (result != null && result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0)
         {
             // 返回查询到的昵称是否为管理员
-            object columnValue = result.Tables[0].Rows[0]["isSuper"];
-            bool booleanValue = (bool)columnValue;
+            string columnValue = result.Tables[0].Rows[0]["isSuper"].ToString();
+            bool booleanValue = (bool)(columnValue == "1");
             return booleanValue ? true : false;
         }
         else
