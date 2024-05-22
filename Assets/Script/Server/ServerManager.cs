@@ -246,9 +246,10 @@ public class ServerManager : Singleton<ServerManager>
         }
     }
 
-    public async Task<List<IMainModel.Moment>> GetBBSPostItems(string sectionName)
+    public async Task<List<IBBSModel.Post>> GetBBSPostItems(string sectionName)
     {
         int section_id = MySQLManager.Instance.GetSectionidBySectionName(sectionName);
+        Debug.Log($"section_id: {section_id}");
         if(section_id == -1) return null;
         using(UnityWebRequest www = UnityWebRequest.Get($"{url}/get_posts_by_section/{section_id}"))
         {
@@ -262,10 +263,10 @@ public class ServerManager : Singleton<ServerManager>
             if(www.result == UnityWebRequest.Result.Success)
             {
                 string jsonResult = www.downloadHandler.text;
-                IMainModel.MomentsWrapper momentsWrapper = JsonUtility.FromJson<IMainModel.MomentsWrapper>(jsonResult);
+                IBBSModel.PostWrapper postWrapper = JsonUtility.FromJson<IBBSModel.PostWrapper>(jsonResult);
                 Debug.Log($"帖子数据请求成功：{jsonResult}");
-                Debug.Log($"帖子数据个数：{momentsWrapper.moments.Count}");
-                return momentsWrapper.moments;
+                Debug.Log($"帖子数据个数：{postWrapper.posts.Count}");
+                return postWrapper.posts;
             }
             else
             {
