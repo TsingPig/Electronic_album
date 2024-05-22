@@ -362,6 +362,18 @@ public class ServerManager : Singleton<ServerManager>
     }
 
     /// <summary>
+    /// 上传帖子
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="content"></param>
+    /// <param name="photoSize"></param>
+    /// <param name="callback"></param>
+    public void UploadPostItem(string account, string content, int photoSize, string title, string sectionName, Action callback = null)
+    {
+        StartCoroutine(UploadPost(account, content, photoSize, title, sectionName, callback));
+    }
+
+    /// <summary>
     /// 创建空文件夹
     /// </summary>
     /// <param name="account">用户账号</param>
@@ -549,6 +561,44 @@ public class ServerManager : Singleton<ServerManager>
             if(www.result == UnityWebRequest.Result.Success)
             {
                 Debug.Log("Moment uploaded successfully");
+                callback?.Invoke();
+                UpdateMomentEvent?.Invoke();
+            }
+            else
+            {
+                Debug.LogError("Error uploading Moment: " + www.error);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 上传帖子
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="content"></param>
+    /// <param name="title"></param>
+    /// <param name="photoSize"></param>
+    /// <param name="callback"></param>
+    /// <returns></returns>
+    private IEnumerator UploadPost(string account, string content, int photoSize, string title, string sectionName, Action callback = null)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("account", account);
+        form.AddField("size", photoSize);
+        form.AddField("text", content);
+        form.AddField("title", title);
+        form.AddField("section_name", sectionName);
+
+        //form.AddBinaryData("file", bytes, fileName, "image/jpg");
+
+        using(UnityWebRequest www = UnityWebRequest.Post($"{host}/upload_post", form))
+        {
+            www.downloadHandler = new DownloadHandlerBuffer(); // 禁用压缩
+            yield return www.SendWebRequest();
+
+            if(www.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log("Post uploaded successfully");
                 callback?.Invoke();
                 UpdateMomentEvent?.Invoke();
             }

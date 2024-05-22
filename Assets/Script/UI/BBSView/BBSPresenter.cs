@@ -49,7 +49,9 @@ public class BBSPresenter : PresenterBase<IBBSView, IBBSModel>, IBBSPresenter
     /// </summary>
     public void EnterCreatePostItemView()
     {
-        UIManager.Instance.Enter(ViewId.CreatePostItemView, new CreatePostItemModel());
+        var model = new CreatePostItemModel();
+        model.SectionName = _model.Section.sectionname;
+        UIManager.Instance.Enter(ViewId.CreatePostItemView, model);
     }
 
     private void RefreshBBSView()

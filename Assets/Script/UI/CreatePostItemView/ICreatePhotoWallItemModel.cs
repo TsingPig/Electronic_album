@@ -8,5 +8,7 @@ public interface ICreatePostItemModel: IModel
 
     string Title { get; set; }
 
+    string SectionName { get; set;  }
+
     void SetModel(Texture2D[] photos, string content);
 }
