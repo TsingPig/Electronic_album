@@ -131,7 +131,7 @@ public class CacheManager : Singleton<CacheManager>
     /// <param name="account">账号</param>
     /// <param name="nickName">昵称</param>
     /// <param name="icon">头像贴图</param>
-    public void SaveUserInformation(string account, string nickName, Texture2D icon)
+    public void SaveUserInformation(string account, string nickName, Texture2D icon,bool isSuper)
     {
         UserInformationCached = true;
 
@@ -139,7 +139,8 @@ public class CacheManager : Singleton<CacheManager>
         {
             userName = account,
             nickName = nickName,
-            iconPath = SaveIcon(account, icon)
+            iconPath = SaveIcon(account, icon),
+            isSuper = isSuper
         };
 
         UserInform = userData;
@@ -148,7 +149,7 @@ public class CacheManager : Singleton<CacheManager>
 
         // 保存到本地文件
         File.WriteAllText(USER_DATA_FILE, json);
-        Debug.Log($"缓存信息：账号：{account}   昵称：{nickName}   图像：{icon.name}");
+        Debug.Log($"缓存信息：账号：{account}   昵称：{nickName}   图像：{icon.name}   是否为管理员：{isSuper}");
     }
 
     /// <summary>

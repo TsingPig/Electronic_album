@@ -316,4 +316,5 @@ public class UserInformation
     public string userName;
     public string nickName;
     public string iconPath;
+    public bool isSuper;
 }

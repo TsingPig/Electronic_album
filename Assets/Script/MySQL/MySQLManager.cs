@@ -151,6 +151,35 @@ public class MySQLManager : Singleton<MySQLManager>
         }
     }
 
+    /// <summary>
+    /// 查询指定账号是否为管理员
+    /// </summary>
+    /// <param name="account">要查询昵称的账号</param>
+    /// <returns>账号对应的昵称</returns>
+    public bool GetIsSuper(string account)
+    {
+        string tableName = "useraccount";
+        string[] items = { "isSuper" };
+        string[] whereColumns = { "account" };
+        string[] operation = { "=" };
+        string[] values = { account };
+
+        DataSet result = _mySQLAccess.Select(tableName, items, whereColumns, operation, values);
+
+        if (result != null && result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0)
+        {
+            // 返回查询到的昵称是否为管理员
+            object columnValue = result.Tables[0].Rows[0]["isSuper"];
+            bool booleanValue = (bool)columnValue;
+            return booleanValue ? true : false;
+        }
+        else
+        {
+            // 没有找到对应账号的昵称
+            return false;
+        }
+    }
+
     private new void Awake()
     {
         base.Awake();
