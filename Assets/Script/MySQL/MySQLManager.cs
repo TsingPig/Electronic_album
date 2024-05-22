@@ -180,6 +180,27 @@ public class MySQLManager : Singleton<MySQLManager>
         }
     }
 
+    public int GetSectionidBySectionName(string sectionName)
+    {
+        string tableName = "sectioninfo";
+        string[] items = { "sectionid" };
+        string[] whereColumns = { "sectionname" };
+        string[] operation = { "=" };
+        string[] values = { sectionName };
+
+        DataSet result = _mySQLAccess.Select(tableName, items, whereColumns, operation, values);
+
+        if (result != null && result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0)
+        {
+            // 返回查询到的id
+            return int.Parse(result.Tables[0].Rows[0]["sectionid"].ToString());
+        }
+        else
+        {
+            // 没有找到对应账号的id
+            return -1;
+        }
+    }
     private new void Awake()
     {
         base.Awake();

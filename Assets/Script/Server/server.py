@@ -285,8 +285,9 @@ def modify_section(old_name, new_name):
     SectionManager.modify_section(old_name, new_name)
     return "section modify"
 
-@app.route("/delete_section/<section_name>", methods=["GET"])
-def delete_section(section_name):
+@app.route("/delete_section", methods=["POST"])
+def delete_section():
+    section_name = request.form["sectionName"]
     SectionManager.delete_section(section_name)
     return "section delete"
 
@@ -304,11 +305,10 @@ def upload_post():
     else:
         return "post upload failed"
     
-@app.route("/get_posts_by_section", methods=["GET"])
-def get_posts_by_section():
-    section_name = request.form["section_name"]
+@app.route("/get_posts_by_section/<section_id>", methods=["GET"])
+def get_posts_by_section(section_id):
     data = {"posts": []}
-    data["posts"] = PostManager.get_posts_by_section(section_name)
+    data["posts"] = PostManager.get_posts_by_section(section_id)
     return json.dumps(data)
 
 

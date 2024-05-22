@@ -248,9 +248,11 @@ public class ServerManager : Singleton<ServerManager>
 
     public async Task<List<IMainModel.Moment>> GetBBSPostItems(string sectionName)
     {
-        using(UnityWebRequest www = UnityWebRequest.Get($"{url}/get_posts_by_section"))
+        int section_id = MySQLManager.Instance.GetSectionidBySectionName(sectionName);
+        if(section_id == -1) return null;
+        using(UnityWebRequest www = UnityWebRequest.Get($"{url}/get_posts_by_section/{section_id}"))
         {
-            Debug.Log($"开始请求动态数据");
+            Debug.Log($"开始请求帖子数据");
             www.SendWebRequest();
             while(!www.isDone)
             {
@@ -260,10 +262,9 @@ public class ServerManager : Singleton<ServerManager>
             if(www.result == UnityWebRequest.Result.Success)
             {
                 string jsonResult = www.downloadHandler.text;
-
                 IMainModel.MomentsWrapper momentsWrapper = JsonUtility.FromJson<IMainModel.MomentsWrapper>(jsonResult);
-                Debug.Log($"动态数据请求成功：{jsonResult}");
-                Debug.Log($"动态数据个数：{momentsWrapper.moments.Count}");
+                Debug.Log($"帖子数据请求成功：{jsonResult}");
+                Debug.Log($"帖子数据个数：{momentsWrapper.moments.Count}");
                 return momentsWrapper.moments;
             }
             else
