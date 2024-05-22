@@ -41,6 +41,7 @@ class MomentManager:
             info_to_send["Content"] = moment["textinfo"]
             cursor.execute("SELECT * FROM urlinfo WHERE postid = %s", (moment["postid"]))        
             info_to_send["PhotoUrls"] = [photo["url"] for photo in cursor.fetchall()]
+            # print(info_to_send["PhotoUrls"])
             info_to_send["PhotoCount"] = len(info_to_send["PhotoUrls"])
             data["moments"].append(info_to_send)
         cursor.close()
