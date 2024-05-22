@@ -22,7 +22,7 @@ class PostManager:
         cursor.execute("INSERT INTO postinfo (account, textinfo, title, sectionid) VALUES (%s, %s, %s, %s)", (account, text, title, section_id))
         post_id = cursor.lastrowid
         for photo in photo_list:
-            photo = f'{host}/get_photosbyid/{account}/Post/{photo}'
+            photo = f'{host}/get_photos_byid/{account}/Post/{photo}'
             cursor.execute("INSERT INTO urlinfo (postid, url) VALUES (%s, %s)", (post_id, photo))
         db.commit()
         cursor.close()
