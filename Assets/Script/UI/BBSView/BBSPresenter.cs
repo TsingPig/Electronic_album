@@ -19,6 +19,10 @@ public class BBSPresenter : PresenterBase<IBBSView>, IBBSPresenter
         RefreshBBSView();
     }
 
+    public void DeleteSection()
+    {
+
+    }
     private void RefreshBBSView()
     {
         Debug.Log("RefreshBBSView");
