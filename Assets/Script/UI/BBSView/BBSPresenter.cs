@@ -12,6 +12,7 @@ public class BBSPresenter : PresenterBase<IBBSView, IBBSModel>, IBBSPresenter
     {
         base.OnCreateCompleted();
         RefreshBBSView();
+        ServerManager.Instance.UpdatePostItemEvent += RefreshBBSView;
     }
 
     public override void OnShowCompleted()
@@ -29,7 +30,6 @@ public class BBSPresenter : PresenterBase<IBBSView, IBBSModel>, IBBSPresenter
         CacheManager.Instance.CheckSuper(
             () =>
             {
-                // TODO: 服务器删除板块逻辑
                 ServerManager.Instance.DeleteBBSType(_model.Section.sectionname, () =>
                 {
                     UIManager.Instance.Quit(ViewId.BBSView);
@@ -40,7 +40,6 @@ public class BBSPresenter : PresenterBase<IBBSView, IBBSModel>, IBBSPresenter
                 _view.Notification.title = "当前用户不是管理员！";
                 _view.Notification.OpenNotification();
             }
-
             );
     }
 
@@ -58,10 +57,7 @@ public class BBSPresenter : PresenterBase<IBBSView, IBBSModel>, IBBSPresenter
 
     private void RefreshBBSView()
     {
-        Debug.Log("RefreshBBSView");
-
         ClearBBSPostItem();
-
         RefreshPostModel(() => { RefreshBBSPostItem(() => { _view.BBSPostItemRoot.RebuildLayout(); }); });
     }
 
@@ -79,7 +75,8 @@ public class BBSPresenter : PresenterBase<IBBSView, IBBSModel>, IBBSPresenter
             bBSPostItem.Title.text = post.Title;
             bBSPostItem.UserName.text = post.UserName;
             bBSPostItem.Content.text = post.Content;
-
+            bBSPostItem.PhotoUrls = post.PhotoUrls;
+            await bBSPostItem.LoadPostItems();
         }
         callback?.Invoke();
     }
@@ -89,6 +86,5 @@ public class BBSPresenter : PresenterBase<IBBSView, IBBSModel>, IBBSPresenter
         Instantiater.DeactivateObjectPool(StrDef.B_B_S_POST_ITEM_DATA_PATH);
         Instantiater.Release(StrDef.B_B_S_POST_ITEM_DATA_PATH);
     }
-
 
 }
