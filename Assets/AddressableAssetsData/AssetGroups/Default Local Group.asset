@@ -94,6 +94,10 @@ MonoBehaviour:
     m_Address: Assets/Res/UI/CreatePostItemView/CreatePostItemView.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 97ec6d2c73a73b748b534fff38e180cd
+    m_Address: PostPhotoItem
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 8376ae8e59f31754e9161a4f4bbee900, type: 2}
   m_SchemaSet:
