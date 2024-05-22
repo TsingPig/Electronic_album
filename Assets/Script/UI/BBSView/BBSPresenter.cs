@@ -45,13 +45,15 @@ public class BBSPresenter : PresenterBase<IBBSView, IBBSModel>, IBBSPresenter
     }
 
     /// <summary>
-    /// 发布帖子
+    /// 进入发布帖子页面
     /// </summary>
     public void EnterCreatePostItemView()
     {
-        var model = new CreatePostItemModel();
-        model.SectionName = _model.Section.sectionname;
-        UIManager.Instance.Enter(ViewId.CreatePostItemView, model);
+
+        UIManager.Instance.Enter(ViewId.CreatePostItemView, new CreatePostItemModel()
+        {
+            SectionName = _model.Section.sectionname
+        });
     }
 
     private void RefreshBBSView()
@@ -74,6 +76,10 @@ public class BBSPresenter : PresenterBase<IBBSView, IBBSModel>, IBBSPresenter
         foreach(IBBSModel.Post post in _model.Posts)
         {
             BBSPostItem bBSPostItem = (await Instantiater.InstantiateAsync(StrDef.B_B_S_POST_ITEM_DATA_PATH, _view.BBSPostItemRoot.transform)).GetComponent<BBSPostItem>();
+            bBSPostItem.Title.text = post.Title;
+            bBSPostItem.UserName.text = post.UserName;
+            bBSPostItem.Content.text = post.Content;
+
         }
         callback?.Invoke();
     }
