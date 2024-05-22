@@ -33,7 +33,14 @@ public class BBSPresenter : PresenterBase<IBBSView, IBBSModel>, IBBSPresenter
                 {
                     UIManager.Instance.Quit(ViewId.BBSView);
                 });
-            });
+            },
+            () =>
+            {
+                _view.Notification.title = "当前用户不是管理员！";
+                _view.Notification.OpenNotification();
+            }
+
+            );
     }
 
     private void RefreshBBSView()
