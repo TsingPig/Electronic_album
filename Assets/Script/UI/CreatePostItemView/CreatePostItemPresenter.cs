@@ -80,26 +80,26 @@ public class CreatePostItemPresenter : PresenterBase<ICreatePostItemView, ICreat
     public void CreatePhotoWallItem()
     {
 
-        ServerManager.Instance.CreateAlbumFolder(CacheManager.Instance.UserName, DefaultTargetAlbumName, () =>
-        {
-            if(_model.Photos != null || _model.)
-            {
-                ServerManager.Instance.GetAlbumFolder(CacheManager.Instance.UserName);
+        //ServerManager.Instance.CreateAlbumFolder(CacheManager.Instance.UserName, DefaultTargetAlbumName, () =>
+        //{
+        //    if(_model.Photos != null || _model.)
+        //    {
+        //        ServerManager.Instance.GetAlbumFolder(CacheManager.Instance.UserName);
 
-                ServerManager.Instance.UploadPhotos(CacheManager.Instance.UserName, DefaultTargetAlbumName, _model.Photos.EncodeToPNG(), () =>
-                {
-                    ServerManager.Instance.UploadMomentItem(CacheManager.Instance.UserName, _view.InptContent.text, _model.Photos.Length, () =>
-                    {
-                        Debug.Log($"上传动态成功");
-                        MVPFrameWork.UIManager.Instance.Quit(ViewId.CreatePhotoWallItemView);
-                    });
-                });
-            }
-            else
-            {
-                Debug.LogWarning("无法上传空动态");
-            }
-        });
+        //        ServerManager.Instance.UploadPhotos(CacheManager.Instance.UserName, DefaultTargetAlbumName, _model.Photos.EncodeToPNG(), () =>
+        //        {
+        //            ServerManager.Instance.UploadMomentItem(CacheManager.Instance.UserName, _view.InptContent.text, _model.Photos.Length, () =>
+        //            {
+        //                Debug.Log($"上传动态成功");
+        //                MVPFrameWork.UIManager.Instance.Quit(ViewId.CreatePhotoWallItemView);
+        //            });
+        //        });
+        //    }
+        //    else
+        //    {
+        //        Debug.LogWarning("无法上传空动态");
+        //    }
+        //});
     }
 
     public void Quit()
