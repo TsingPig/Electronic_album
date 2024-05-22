@@ -1,2 +1,10 @@
 using MVPFrameWork;
-public interface IBBSView : IView {}
+using UnityEngine;
+using UnityEngine.UI;
+
+public interface IBBSView : IView
+{
+
+    VerticalLayoutGroup BBSPostItemRoot { get; }
+
+}

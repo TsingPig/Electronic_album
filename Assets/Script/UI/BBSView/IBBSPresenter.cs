@@ -1,2 +1,4 @@
 using MVPFrameWork;
-public interface IBBSPresenter : IPresenter {}
+public interface IBBSPresenter : IPresenter
+{
+}

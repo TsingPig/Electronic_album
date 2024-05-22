@@ -10,4 +10,5 @@ public static class StrDef
     public const string MOMENT_VIEW_DATA_PATH = "MomentView";
     public const string B_B_S_TYPE_ITEM_DATA_PATH = "BBSTypeItem";
     public const string B_B_S_VIEW_DATA_PATH = "BBSView";
+    public const string B_B_S_POST_ITEM_DATA_PATH = "BBSPostItem";
 }
