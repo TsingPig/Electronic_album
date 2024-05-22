@@ -22,6 +22,7 @@ class MomentManager:
         cursor.execute("INSERT INTO postinfo (account, textinfo) VALUES (%s, %s)", (account, text))
         moment_id = cursor.lastrowid
         for photo in photo_list:
+            photo = f'{host}/get_photos_byid/{account}/Moment/{photo}'
             cursor.execute("INSERT INTO urlinfo (postid, url) VALUES (%s, %s)", (moment_id, photo))
         db.commit()
         cursor.close()
@@ -39,8 +40,7 @@ class MomentManager:
             info_to_send["UserName"] = moment["account"]
             info_to_send["Content"] = moment["textinfo"]
             cursor.execute("SELECT * FROM urlinfo WHERE postid = %s", (moment["postid"]))        
-            path = (moment["account"], "Moment")
-            info_to_send["PhotoUrls"] = [f'{host}/get_photos_byid/{path[0]}/{path[1]}/{photo["url"]}' for photo in cursor.fetchall()]
+            info_to_send["PhotoUrls"] = [photo["url"] for photo in cursor.fetchall()]
             info_to_send["PhotoCount"] = len(info_to_send["PhotoUrls"])
             data["moments"].append(info_to_send)
         cursor.close()
