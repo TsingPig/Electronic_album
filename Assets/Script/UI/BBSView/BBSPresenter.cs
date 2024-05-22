@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using Michsky.MUIP;
 using UIManager = MVPFrameWork.UIManager;
 
-public class BBSPresenter : PresenterBase<IBBSView>, IBBSPresenter
+public class BBSPresenter : PresenterBase<IBBSView, IBBSModel>, IBBSPresenter
 {
     public override void OnCreateCompleted()
     {
@@ -29,12 +29,10 @@ public class BBSPresenter : PresenterBase<IBBSView>, IBBSPresenter
             () =>
             {
                 // TODO: ·þÎñÆ÷É¾³ý°å¿éÂß¼­
-                ServerManager.Instance.DeleteBBSType("¼¾ÈóÃñ", () =>
+                ServerManager.Instance.DeleteBBSType(_model.Section.sectionname, () =>
                 {
                     UIManager.Instance.Quit(ViewId.BBSView);
-                    RefreshBBSView();
                 });
-
             });
     }
 

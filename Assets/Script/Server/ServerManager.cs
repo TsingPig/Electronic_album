@@ -714,6 +714,7 @@ public class ServerManager : Singleton<ServerManager>
             if(www.result == UnityWebRequest.Result.Success)
             {
                 Debug.Log($"³É¹¦É¾³ý°å¿é {sectionName}");
+                UpdateBBSTypeEvent?.Invoke();
                 callback?.Invoke();
             }
             else
