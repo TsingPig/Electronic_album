@@ -85,12 +85,9 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
         {
             BBSTypeItem bBSTypeItem = (await Instantiater.InstantiateAsync(StrDef.B_B_S_TYPE_ITEM_DATA_PATH, _view.BBSTypeItemRoot.transform)).GetComponent<BBSTypeItem>();
             bBSTypeItem.TxtBBSTypeName.text = section.sectionname;
-
-            // Debug.Log(section.sectionname);
         }
         callback?.Invoke();
     }
-
 
     private void ClearBBSTypeItem()
     {

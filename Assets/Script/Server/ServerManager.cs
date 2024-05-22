@@ -43,6 +43,11 @@ public class ServerManager : Singleton<ServerManager>
     public Action UpdateBBSTypeEvent;
 
     /// <summary>
+    /// 更新帖子事件
+    /// </summary>
+    public Action UpdatePostItemEvent;
+
+    /// <summary>
     /// 图片缓存
     /// </summary>
     private Dictionary<string, Sprite> _dicPhotoCache = new Dictionary<string, Sprite>();
@@ -601,6 +606,7 @@ public class ServerManager : Singleton<ServerManager>
                 Debug.Log("Post uploaded successfully");
                 callback?.Invoke();
                 UpdateMomentEvent?.Invoke();
+                UpdatePostItemEvent?.Invoke();
             }
             else
             {

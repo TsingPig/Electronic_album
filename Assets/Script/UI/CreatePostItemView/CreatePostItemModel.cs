@@ -8,7 +8,6 @@ public class CreatePostItemModel : ICreatePostItemModel
     private string _content;
     private string _sectionName;
 
-
     public Texture2D[] Photos
     {
         get => _photos; set => _photos = value;

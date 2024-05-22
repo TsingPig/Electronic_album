@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class CreatePostItemPresenter : PresenterBase<ICreatePostItemView, ICreatePostItemModel>, ICreatePostItemPresenter
 {
-
     public static string DefaultTargetAlbumName = "Post";
 
     public override void OnCreateCompleted()
@@ -82,7 +81,6 @@ public class CreatePostItemPresenter : PresenterBase<ICreatePostItemView, ICreat
     /// </summary>
     public void CreatePhotoWallItem()
     {
-
         ServerManager.Instance.CreateAlbumFolder(CacheManager.Instance.UserName, DefaultTargetAlbumName, () =>
         {
             if(_view.InptTitle.text != null && _view.InptContent.text != null)
@@ -94,7 +92,7 @@ public class CreatePostItemPresenter : PresenterBase<ICreatePostItemView, ICreat
                     ServerManager.Instance.UploadPostItem(CacheManager.Instance.UserName, _view.InptContent.text, _model.Photos.Length, _view.InptTitle.text, _model.SectionName, () =>
                     {
                         Debug.Log($"上传帖子成功");
-                        MVPFrameWork.UIManager.Instance.Quit(ViewId.CreatePhotoWallItemView);
+                        MVPFrameWork.UIManager.Instance.Quit(ViewId.CreatePostItemView);
                     });
                 });
             }
