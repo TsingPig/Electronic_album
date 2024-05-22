@@ -19,6 +19,22 @@ public class BBSPresenter : PresenterBase<IBBSView>, IBBSPresenter
         RefreshBBSView();
     }
 
+    
+    /// <summary>
+    /// 【管理员操作】 删除板块
+    /// </summary>
+    public void DeleteSection()
+    {
+        CacheManager.Instance.CheckSuper(
+            () =>
+            {
+                // TODO: 服务器删除板块逻辑
+
+                UIManager.Instance.Quit(ViewId.BBSView);
+                RefreshBBSView();
+            });
+    }
+
     private void RefreshBBSView()
     {
         Debug.Log("RefreshBBSView");

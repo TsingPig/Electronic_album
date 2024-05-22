@@ -131,7 +131,7 @@ public class CacheManager : Singleton<CacheManager>
     /// <param name="account">账号</param>
     /// <param name="nickName">昵称</param>
     /// <param name="icon">头像贴图</param>
-    public void SaveUserInformation(string account, string nickName, Texture2D icon,bool isSuper)
+    public void SaveUserInformation(string account, string nickName, Texture2D icon, bool isSuper)
     {
         UserInformationCached = true;
 
@@ -241,6 +241,26 @@ public class CacheManager : Singleton<CacheManager>
         byte[] bytes = updateIcon.EncodeToPNG();
         ServerManager.Instance.UploadUserIcon(UserName, bytes);
         File.WriteAllBytes(fileName, bytes);
+    }
+
+    /// <summary>
+    /// 管理员选项拦截
+    /// </summary>
+    /// <param name="succeedCallback">是管理员，执行的函数</param>
+    /// <param name="failedCallback">不是管理员，执行的回调</param>
+    /// <returns></returns>
+    public bool CheckSuper(Action succeedCallback = null, Action failedCallback = null)
+    {
+        if(UserInform.isSuper)
+        {
+            succeedCallback?.Invoke();
+        }
+        else
+        {
+            Debug.Log($"{UserName} 不是管理员，无法执行该操作");
+            failedCallback?.Invoke();
+        }
+        return UserInform.isSuper;
     }
 
     /// <summary>
