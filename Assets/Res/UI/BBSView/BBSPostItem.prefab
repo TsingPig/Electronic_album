@@ -215,6 +215,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BtnEnterPost: {fileID: 1647224939730464608}
+  UserName: {fileID: 7218379848475993239}
+  Title: {fileID: 2148407846171792385}
+  Content: {fileID: 1178170669732542146}
+  PhotoUrls: []
 --- !u!1 &1506314296776186569
 GameObject:
   m_ObjectHideFlags: 0
@@ -396,7 +400,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 550, y: 0}
+  m_AnchoredPosition: {x: 543.375, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1946237151703151838
@@ -614,9 +618,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
+    m_Left: 30
     m_Right: 0
-    m_Top: 0
+    m_Top: 30
     m_Bottom: 0
   m_ChildAlignment: 0
   m_Spacing: 15
@@ -889,8 +893,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 550, y: 0}
-  m_SizeDelta: {x: 1100, y: 0}
+  m_AnchoredPosition: {x: 508.875, y: 0}
+  m_SizeDelta: {x: 1017.75, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7549701234340313130
 CanvasRenderer:
@@ -1069,7 +1073,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u5C31\u8BB2\u8BB2"
+  m_text: 222
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c4bd322654d21d74a9e1522f523faa0c, type: 2}
   m_sharedMaterial: {fileID: -2968960263547407295, guid: c4bd322654d21d74a9e1522f523faa0c, type: 2}
