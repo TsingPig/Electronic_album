@@ -21,7 +21,14 @@ public class BBSTypeItem : ItemBase
         BtnEnterBBS.onClick.AddListener(() =>
         {
             Debug.Log("Enter BBSTypeView");
-            MVPFrameWork.UIManager.Instance.Enter(ViewId.BBSView);
+
+            var bbs = new BBSModel();
+            
+            bbs.SetModel(new IBBSModel.BBS() { 
+                sectionname = TxtBBSTypeName.text,
+            });
+
+            MVPFrameWork.UIManager.Instance.Enter(ViewId.BBSView, bbs);
             //var model = new MomentModel();
             //model.SetModel(this.gameObject);
             //MVPFrameWork.UIManager.Instance.Enter(ViewId.MomentView, model);

@@ -30,12 +30,10 @@ class PostManager:
         return True
     
     @staticmethod
-    def get_posts_by_section(section_name: str) -> List[Dict]:
+    def get_posts_by_section(sectionid: int) -> List[Dict]:
         data = []
         db, cursor = getconnection()
-        cursor.execute("SELECT * FROM sectioninfo WHERE sectionname = %s", (section_name))
-        section = cursor.fetchone()
-        cursor.execute("SELECT * FROM postinfo WHERE sectionid = %s", (section["sectionid"]))
+        cursor.execute("SELECT * FROM postinfo WHERE sectionid = %s", (sectionid))
         posts = cursor.fetchall()
         for post in reversed(posts):
             info_to_send = {}

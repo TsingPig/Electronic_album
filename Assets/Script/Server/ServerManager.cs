@@ -212,7 +212,7 @@ public class ServerManager : Singleton<ServerManager>
             }
         }
     }
-    
+
     /// <summary>
     /// 请求所有动态数据
     /// </summary>
@@ -248,9 +248,11 @@ public class ServerManager : Singleton<ServerManager>
 
     public async Task<List<IMainModel.Moment>> GetBBSPostItems(string sectionName)
     {
-        using(UnityWebRequest www = UnityWebRequest.Get($"{url}/get_posts_by_section"))
+        int section_id = MySQLManager.Instance.GetSectionidBySectionName(sectionName);
+        if(section_id == -1) return null;
+        using(UnityWebRequest www = UnityWebRequest.Get($"{url}/get_posts_by_section/{section_id}"))
         {
-            Debug.Log($"开始请求动态数据");
+            Debug.Log($"开始请求帖子数据");
             www.SendWebRequest();
             while(!www.isDone)
             {
@@ -260,10 +262,9 @@ public class ServerManager : Singleton<ServerManager>
             if(www.result == UnityWebRequest.Result.Success)
             {
                 string jsonResult = www.downloadHandler.text;
-
                 IMainModel.MomentsWrapper momentsWrapper = JsonUtility.FromJson<IMainModel.MomentsWrapper>(jsonResult);
-                Debug.Log($"动态数据请求成功：{jsonResult}");
-                Debug.Log($"动态数据个数：{momentsWrapper.moments.Count}");
+                Debug.Log($"帖子数据请求成功：{jsonResult}");
+                Debug.Log($"帖子数据个数：{momentsWrapper.moments.Count}");
                 return momentsWrapper.moments;
             }
             else
@@ -327,6 +328,16 @@ public class ServerManager : Singleton<ServerManager>
     public void DeletePhoto(string account, string albumName, int photoIndex, Action<int> callback = null)
     {
         StartCoroutine(DeletePhoto($"{account}/{albumName}/{photoIndex}.jpg", callback));
+    }
+
+    /// <summary>
+    /// 删除BBS论坛板块
+    /// </summary>
+    /// <param name="bBsTypeName">BBS论坛板块名字</param>
+    /// <param name="callback">回调函数</param>
+    public void DeleteBBSType(string bBsTypeName, Action callback = null)
+    {
+        StartCoroutine(DeleteSection(bBsTypeName, callback));
     }
 
     /// <summary>
@@ -680,6 +691,36 @@ public class ServerManager : Singleton<ServerManager>
             else
             {
                 Debug.LogWarning($"Error delete photo: {www.error}");
+            }
+        }
+    }
+
+    /// <summary>
+    /// 删除板块
+    /// </summary>
+    /// <param name="sectionName">板块名字</param>
+    /// <param name="callback"></param>
+    /// <returns></returns>
+    private IEnumerator DeleteSection(string sectionName, Action callback = null)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("sectionName", sectionName);
+
+
+        using(UnityWebRequest www = UnityWebRequest.Post($"{host}/delete_section", form))
+        {
+            www.downloadHandler = new DownloadHandlerBuffer(); // 禁用压缩
+            yield return www.SendWebRequest();
+
+            if(www.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log($"成功删除板块 {sectionName}");
+                UpdateBBSTypeEvent?.Invoke();
+                callback?.Invoke();
+            }
+            else
+            {
+                Debug.LogError($"删除板块 {sectionName} 失败: " + www.error);
             }
         }
     }

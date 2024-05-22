@@ -102,6 +102,7 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
     {
         _view.BBSTypeItemRoot.RebuildLayout();
     }
+
     #endregion
 
     #endregion

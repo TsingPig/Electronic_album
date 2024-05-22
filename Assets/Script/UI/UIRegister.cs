@@ -34,6 +34,7 @@ public static class UIRegister
 
         Container.Regist<IBBSPresenter, BBSPresenter>();
         Container.Regist<IView, BBSView>(ViewId.BBSView);
+        Container.Regist<IBBSModel, BBSModel>();
 
     }
 }
