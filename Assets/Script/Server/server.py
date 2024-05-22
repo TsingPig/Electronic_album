@@ -305,10 +305,11 @@ def upload_post():
     else:
         return "post upload failed"
     
-@app.route("/get_posts_by_section/<section_id>", methods=["GET"])
-def get_posts_by_section(section_id):
+@app.route("/get_posts_by_section", methods=["POST"])
+def get_posts_by_section():
+    sectionname = request.form["section_name"]
     data = {"posts": []}
-    data["posts"] = PostManager.get_posts_by_section(section_id)
+    data["posts"] = PostManager.get_posts_by_section(sectionname)
     return json.dumps(data)
 
 

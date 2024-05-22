@@ -248,10 +248,13 @@ public class ServerManager : Singleton<ServerManager>
 
     public async Task<List<IBBSModel.Post>> GetBBSPostItems(string sectionName)
     {
-        int section_id = MySQLManager.Instance.GetSectionidBySectionName(sectionName);
-        Debug.Log($"section_id: {section_id}");
-        if(section_id == -1) return null;
-        using(UnityWebRequest www = UnityWebRequest.Get($"{url}/get_posts_by_section/{section_id}"))
+        // Debug.Log("test");
+        // int section_id = MySQLManager.Instance.GetSectionidBySectionName(sectionName);
+        // Debug.Log($"section_id: {section_id}");
+        // if(section_id == -1) return null;
+        WWWForm form = new WWWForm();
+        form.AddField("section_name", sectionName);
+        using(UnityWebRequest www = UnityWebRequest.Post($"{url}/get_posts_by_section", form))
         {
             Debug.Log($"开始请求帖子数据");
             www.SendWebRequest();
