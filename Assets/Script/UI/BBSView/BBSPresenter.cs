@@ -11,6 +11,7 @@ public class BBSPresenter : PresenterBase<IBBSView, IBBSModel>, IBBSPresenter
     public override void OnCreateCompleted()
     {
         base.OnCreateCompleted();
+        RefreshBBSView();
     }
 
     public override void OnShowCompleted()
@@ -43,6 +44,14 @@ public class BBSPresenter : PresenterBase<IBBSView, IBBSModel>, IBBSPresenter
             );
     }
 
+    /// <summary>
+    /// ·¢²¼Ìû×Ó
+    /// </summary>
+    public void EnterCreatePostItemView()
+    {
+        UIManager.Instance.Enter(ViewId.CreatePostItemView, new CreatePostItemModel());
+    }
+
     private void RefreshBBSView()
     {
         Debug.Log("RefreshBBSView");
@@ -54,13 +63,13 @@ public class BBSPresenter : PresenterBase<IBBSView, IBBSModel>, IBBSPresenter
 
     private async void RefreshPostModel(Action callback = null)
     {
-        _model.Posts = await ServerManager.Instance.GetBBSPostItems(_model.Section.sectionname);
+        _model.Posts = await ServerManager.Instance.GetBBSPosts(_model.Section.sectionname);
         callback?.Invoke();
     }
 
     private async void RefreshBBSPostItem(Action callback = null)
     {
-        foreach (IBBSModel.Post post in _model.Posts)
+        foreach(IBBSModel.Post post in _model.Posts)
         {
             BBSPostItem bBSPostItem = (await Instantiater.InstantiateAsync(StrDef.B_B_S_POST_ITEM_DATA_PATH, _view.BBSPostItemRoot.transform)).GetComponent<BBSPostItem>();
         }

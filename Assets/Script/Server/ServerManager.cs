@@ -246,7 +246,12 @@ public class ServerManager : Singleton<ServerManager>
         }
     }
 
-    public async Task<List<IBBSModel.Post>> GetBBSPostItems(string sectionName)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sectionName"></param>
+    /// <returns></returns>
+    public async Task<List<IBBSModel.Post>> GetBBSPosts(string sectionName)
     {
         int section_id = MySQLManager.Instance.GetSectionidBySectionName(sectionName);
         Debug.Log($"section_id: {section_id}");

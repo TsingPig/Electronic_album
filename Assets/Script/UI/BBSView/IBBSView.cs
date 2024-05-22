@@ -8,5 +8,11 @@ public interface IBBSView : IView
 
     VerticalLayoutGroup BBSPostItemRoot { get; }
 
-    NotificationManager Notification { get; }
+    public ButtonManager BtnQuit { get; }
+
+    public ButtonManager BtnDeleteSection { get; }
+
+    public ButtonManager BtnEnterCreatePostItemView { get; }
+
+    public NotificationManager Notification { get; }
 }
