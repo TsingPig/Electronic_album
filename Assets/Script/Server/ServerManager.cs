@@ -246,6 +246,34 @@ public class ServerManager : Singleton<ServerManager>
         }
     }
 
+    public async Task<List<IMainModel.Moment>> GetBBSPostItems(string sectionName)
+    {
+        using(UnityWebRequest www = UnityWebRequest.Get($"{url}/get_posts_by_section"))
+        {
+            Debug.Log($"开始请求动态数据");
+            www.SendWebRequest();
+            while(!www.isDone)
+            {
+                await Task.Yield();
+            }
+
+            if(www.result == UnityWebRequest.Result.Success)
+            {
+                string jsonResult = www.downloadHandler.text;
+
+                IMainModel.MomentsWrapper momentsWrapper = JsonUtility.FromJson<IMainModel.MomentsWrapper>(jsonResult);
+                Debug.Log($"动态数据请求成功：{jsonResult}");
+                Debug.Log($"动态数据个数：{momentsWrapper.moments.Count}");
+                return momentsWrapper.moments;
+            }
+            else
+            {
+                Debug.LogError($"Error: {www.error}");
+                return null;
+            }
+        }
+    }
+
     /// <summary>
     /// 异步加载所有分区板块数据
     /// </summary>

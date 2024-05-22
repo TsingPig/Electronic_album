@@ -270,7 +270,7 @@ def delete_photo_by_name(account, album_name, photo):
 @app.route("/create_section", methods=["POST"])
 def create_section():
     section_name = request.form["section_name"]
-    print(section_name)
+    # print(section_name)
     SectionManager.add_section(section_name)
     return "section create"
     
@@ -304,8 +304,9 @@ def upload_post():
     else:
         return "post upload failed"
     
-@app.route("/get_posts_by_section/<section_name>", methods=["GET"])
-def get_posts_by_section(section_name):
+@app.route("/get_posts_by_section", methods=["GET"])
+def get_posts_by_section():
+    section_name = request.form["section_name"]
     data = {"posts": []}
     data["posts"] = PostManager.get_posts_by_section(section_name)
     return json.dumps(data)
