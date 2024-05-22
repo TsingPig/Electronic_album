@@ -19,7 +19,7 @@ public class BBSPresenter : PresenterBase<IBBSView>, IBBSPresenter
         RefreshBBSView();
     }
 
-    
+
     /// <summary>
     /// ¡¾¹ÜÀíÔ±²Ù×÷¡¿ É¾³ý°å¿é
     /// </summary>
@@ -29,9 +29,12 @@ public class BBSPresenter : PresenterBase<IBBSView>, IBBSPresenter
             () =>
             {
                 // TODO: ·þÎñÆ÷É¾³ý°å¿éÂß¼­
+                ServerManager.Instance.DeleteBBSType("¼¾ÈóÃñ", () =>
+                {
+                    UIManager.Instance.Quit(ViewId.BBSView);
+                    RefreshBBSView();
+                });
 
-                UIManager.Instance.Quit(ViewId.BBSView);
-                RefreshBBSView();
             });
     }
 
