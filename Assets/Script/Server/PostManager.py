@@ -15,14 +15,14 @@ def getconnection():
 
 class PostManager:
     @staticmethod
-    def add_post(account: str, text: str, photo_list: List[str], section_id: int):
+    def add_post(account: str, text: str, photo_list: List[str], title: str, section_id: int):
         if account is None:
             return False
         db, cursor = getconnection()
-        cursor.execute("INSERT INTO postinfo (account, textinfo, sectionid) VALUES (%s, %s, %s)", (account, text, section_id))
+        cursor.execute("INSERT INTO postinfo (account, textinfo, title, sectionid) VALUES (%s, %s, %s, %s)", (account, text, title, section_id))
         post_id = cursor.lastrowid
         for photo in photo_list:
-            photo = f'{host}/get_photos/{account}/Post/{photo}'
+            photo = f'{host}/get_photosbyid/{account}/Post/{photo}'
             cursor.execute("INSERT INTO urlinfo (postid, url) VALUES (%s, %s)", (post_id, photo))
         db.commit()
         cursor.close()

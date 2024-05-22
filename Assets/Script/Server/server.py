@@ -296,11 +296,12 @@ def upload_post():
     account = request.form["account"]
     text = request.form["text"]
     photo_size = int(request.form["size"])
+    title = request.form["title"]
     section_name = request.form["section_name"]
     section_id = SectionManager.get_sectionid_by_name(section_name)
     photo_list = get_photo_list_in_timeorder(account, "Post")
     photo_list = photo_list[0: photo_size]
-    if PostManager.add_post(account, text, photo_list, section_id):
+    if PostManager.add_post(account, text, photo_list, title, section_id):
         return "post upload"
     else:
         return "post upload failed"
