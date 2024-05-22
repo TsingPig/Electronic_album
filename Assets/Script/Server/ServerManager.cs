@@ -252,18 +252,15 @@ public class ServerManager : Singleton<ServerManager>
     }
 
     /// <summary>
-    /// 
+    /// 请求某个板块下的所有帖子
     /// </summary>
     /// <param name="sectionName"></param>
     /// <returns></returns>
     public async Task<List<IBBSModel.Post>> GetBBSPosts(string sectionName)
     {
-        // Debug.Log("test");
-        // int section_id = MySQLManager.Instance.GetSectionidBySectionName(sectionName);
-        // Debug.Log($"section_id: {section_id}");
-        // if(section_id == -1) return null;
         WWWForm form = new WWWForm();
         form.AddField("section_name", sectionName);
+
         using(UnityWebRequest www = UnityWebRequest.Post($"{url}/get_posts_by_section", form))
         {
             Debug.Log($"开始请求帖子数据");
@@ -352,6 +349,11 @@ public class ServerManager : Singleton<ServerManager>
     public void DeleteBBSType(string bBsTypeName, Action callback = null)
     {
         StartCoroutine(DeleteSection(bBsTypeName, callback));
+    }
+
+    public void DeletePostItem(string account, string createTime, Action callback = null)
+    {
+        StartCoroutine(DeletePost(account, createTime, callback));
     }
 
     /// <summary>
@@ -786,6 +788,30 @@ public class ServerManager : Singleton<ServerManager>
             else
             {
                 Debug.LogError($"删除板块 {sectionName} 失败: " + www.error);
+            }
+        }
+    }
+
+    private IEnumerator DeletePost(string account, string createTime, Action callback = null)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("account", account);
+        form.AddField("createtime", createTime);
+
+        using(UnityWebRequest www = UnityWebRequest.Post($"{host}/delete_post", form))
+        {
+            www.downloadHandler = new DownloadHandlerBuffer(); // 禁用压缩
+            yield return www.SendWebRequest();
+
+            if(www.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log($"成功删除帖子 {account} {createTime}");
+                UpdatePostItemEvent?.Invoke();
+                callback?.Invoke();
+            }
+            else
+            {
+                Debug.LogError($"删除帖子 {account} {createTime} 失败: " + www.error);
             }
         }
     }

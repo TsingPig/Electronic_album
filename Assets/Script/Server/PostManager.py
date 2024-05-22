@@ -40,15 +40,30 @@ class PostManager:
         for post in reversed(posts):
             info_to_send = {}
             info_to_send["UserName"] = post["account"]
+            info_to_send["Title"] = post["title"]
             info_to_send["Content"] = post["textinfo"]
             cursor.execute("SELECT * FROM urlinfo WHERE postid = %s", (post["postid"]))
             info_to_send["PhotoUrls"] = [photo["url"] for photo in cursor.fetchall()]
             info_to_send["PhotoCount"] = len(info_to_send["PhotoUrls"])
-            info_to_send["Title"] = post["title"]
+            info_to_send["CreateTime"] = post["createtime"]
             data.append(info_to_send)
         cursor.close()
         db.close()
         return data
+    
+    @staticmethod
+    def delete_post_by_username_and_createtime(account: str, createtime: str) -> bool:
+        db, cursor = getconnection()
+        cursor.execute("SELECT * FROM postinfo WHERE account = %s AND createtime = %s", (account, createtime))
+        post = cursor.fetchone()
+        if post is None:
+            return False
+        cursor.execute("DELETE FROM postinfo WHERE postid = %s", (post["postid"]))
+        # TODO: 图床中的图片是否要删除
+        db.commit()
+        cursor.close()
+        db.close()
+        return True
     
 
     
