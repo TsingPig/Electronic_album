@@ -22,11 +22,12 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
             UIManager.Instance.Quit(ViewId.LoginView);
 
             string NickName = MySQLManager.Instance.GetNickName(LoginInputAccount);
-
+            bool isSuper = MySQLManager.Instance.GetIsSuper(LoginInputAccount);
+            
             Texture2D randomIcon = new Texture2D(ConstDef.ScaleSize, ConstDef.ScaleSize);
             randomIcon.RandomGenerate();
 
-            CacheManager.Instance.SaveUserInformation(LoginInputAccount, NickName, randomIcon);
+            CacheManager.Instance.SaveUserInformation(LoginInputAccount, NickName, randomIcon,isSuper);
             UIManager.Instance.Enter(ViewId.MainView, new MainModel());
 
             //从服务器下载头像数据
