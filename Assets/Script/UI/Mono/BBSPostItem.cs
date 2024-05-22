@@ -40,10 +40,10 @@ public class BBSPostItem : MonoBehaviour
         //_ = ServerManager.Instance.GetPhotoAsync(url, UserIcon);
         foreach(string photoUrl in PhotoUrls)
         {
-            GameObject momentPhotoItemObj = await Instantiater.InstantiateAsync(StrDef.MOMENT_PHOTO_ITEM_DATA_PATH, PostPhotoItemRoot.transform);
-            MomentPhotoItem momentPhotoItem = momentPhotoItemObj.GetComponent<MomentPhotoItem>();
-            momentPhotoItem.PhotoUrl = photoUrl;
-            momentPhotoItem.GetPhotoAsync();
+            GameObject postPhotoItemObj = await Instantiater.InstantiateAsync(StrDef.POST_PHOTO_ITEM_DATA_PATH, PostPhotoItemRoot.transform);
+            MomentPhotoItem postPhotoItem = postPhotoItemObj.GetComponent<MomentPhotoItem>();
+            postPhotoItem.PhotoUrl = photoUrl;
+            postPhotoItem.GetPhotoAsync();
         }
     }
 }

@@ -84,7 +84,9 @@ public class BBSPresenter : PresenterBase<IBBSView, IBBSModel>, IBBSPresenter
     private void ClearBBSPostItem()
     {
         Instantiater.DeactivateObjectPool(StrDef.B_B_S_POST_ITEM_DATA_PATH);
+        Instantiater.DeactivateObjectPool(StrDef.POST_PHOTO_ITEM_DATA_PATH);
         Instantiater.Release(StrDef.B_B_S_POST_ITEM_DATA_PATH);
+        Instantiater.Release(StrDef.POST_PHOTO_ITEM_DATA_PATH);
     }
 
 }

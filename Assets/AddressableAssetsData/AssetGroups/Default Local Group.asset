@@ -45,8 +45,7 @@ MonoBehaviour:
   - m_GUID: d49bc42d3f5901a4c9d9afff074739ff
     m_Address: PhotoItem
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
+    m_SerializedLabels: []
   - m_GUID: 91b0294eba0d4294b9da8a26e661558b
     m_Address: Assets/Res/UI/PhotoDetailView/PhotoDetailView.prefab
     m_ReadOnly: 0
