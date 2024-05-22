@@ -36,5 +36,9 @@ public static class UIRegister
         Container.Regist<IView, BBSView>(ViewId.BBSView);
         Container.Regist<IBBSModel, BBSModel>();
 
+        Container.Regist<ICreatePostItemPresenter, CreatePostItemPresenter>();
+        Container.Regist<IView, CreatePostItemView>(ViewId.CreatePostItemView);
+        Container.Regist<ICreatePostItemModel, CreatePostItemModel>();
+
     }
 }

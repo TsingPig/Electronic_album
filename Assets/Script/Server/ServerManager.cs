@@ -246,7 +246,12 @@ public class ServerManager : Singleton<ServerManager>
         }
     }
 
-    public async Task<List<IBBSModel.Post>> GetBBSPostItems(string sectionName)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sectionName"></param>
+    /// <returns></returns>
+    public async Task<List<IBBSModel.Post>> GetBBSPosts(string sectionName)
     {
         // Debug.Log("test");
         // int section_id = MySQLManager.Instance.GetSectionidBySectionName(sectionName);
@@ -354,6 +359,18 @@ public class ServerManager : Singleton<ServerManager>
     public void UploadMomentItem(string account, string content, int photoSize, Action callback = null)
     {
         StartCoroutine(UploadMoment(account, content, photoSize, callback));
+    }
+
+    /// <summary>
+    /// 上传帖子
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="content"></param>
+    /// <param name="photoSize"></param>
+    /// <param name="callback"></param>
+    public void UploadPostItem(string account, string content, int photoSize, string title, string sectionName, Action callback = null)
+    {
+        StartCoroutine(UploadPost(account, content, photoSize, title, sectionName, callback));
     }
 
     /// <summary>
@@ -544,6 +561,44 @@ public class ServerManager : Singleton<ServerManager>
             if(www.result == UnityWebRequest.Result.Success)
             {
                 Debug.Log("Moment uploaded successfully");
+                callback?.Invoke();
+                UpdateMomentEvent?.Invoke();
+            }
+            else
+            {
+                Debug.LogError("Error uploading Moment: " + www.error);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 上传帖子
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="content"></param>
+    /// <param name="title"></param>
+    /// <param name="photoSize"></param>
+    /// <param name="callback"></param>
+    /// <returns></returns>
+    private IEnumerator UploadPost(string account, string content, int photoSize, string title, string sectionName, Action callback = null)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("account", account);
+        form.AddField("size", photoSize);
+        form.AddField("text", content);
+        form.AddField("title", title);
+        form.AddField("section_name", sectionName);
+
+        //form.AddBinaryData("file", bytes, fileName, "image/jpg");
+
+        using(UnityWebRequest www = UnityWebRequest.Post($"{host}/upload_post", form))
+        {
+            www.downloadHandler = new DownloadHandlerBuffer(); // 禁用压缩
+            yield return www.SendWebRequest();
+
+            if(www.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log("Post uploaded successfully");
                 callback?.Invoke();
                 UpdateMomentEvent?.Invoke();
             }
