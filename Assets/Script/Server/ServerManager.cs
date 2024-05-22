@@ -212,7 +212,7 @@ public class ServerManager : Singleton<ServerManager>
             }
         }
     }
-    
+
     /// <summary>
     /// ÇëÇóËùÓÐ¶¯Ì¬Êý¾Ý
     /// </summary>
@@ -327,6 +327,16 @@ public class ServerManager : Singleton<ServerManager>
     public void DeletePhoto(string account, string albumName, int photoIndex, Action<int> callback = null)
     {
         StartCoroutine(DeletePhoto($"{account}/{albumName}/{photoIndex}.jpg", callback));
+    }
+
+    /// <summary>
+    /// É¾³ýBBSÂÛÌ³°å¿é
+    /// </summary>
+    /// <param name="bBsTypeName">BBSÂÛÌ³°å¿éÃû×Ö</param>
+    /// <param name="callback">»Øµ÷º¯Êý</param>
+    public void DeleteBBSType(string bBsTypeName, Action callback = null)
+    {
+        StartCoroutine(DeleteSection(bBsTypeName, callback));
     }
 
     /// <summary>
@@ -680,6 +690,35 @@ public class ServerManager : Singleton<ServerManager>
             else
             {
                 Debug.LogWarning($"Error delete photo: {www.error}");
+            }
+        }
+    }
+
+    /// <summary>
+    /// É¾³ý°å¿é
+    /// </summary>
+    /// <param name="sectionName">°å¿éÃû×Ö</param>
+    /// <param name="callback"></param>
+    /// <returns></returns>
+    private IEnumerator DeleteSection(string sectionName, Action callback = null)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("sectionName", sectionName);
+
+
+        using(UnityWebRequest www = UnityWebRequest.Post($"{host}/delete_section", form))
+        {
+            www.downloadHandler = new DownloadHandlerBuffer(); // ½ûÓÃÑ¹Ëõ
+            yield return www.SendWebRequest();
+
+            if(www.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log($"³É¹¦É¾³ý°å¿é {sectionName}");
+                callback?.Invoke();
+            }
+            else
+            {
+                Debug.LogError($"É¾³ý°å¿é {sectionName} Ê§°Ü: " + www.error);
             }
         }
     }
