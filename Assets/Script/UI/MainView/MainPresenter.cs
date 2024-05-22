@@ -114,6 +114,7 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
         _model.Moments = await ServerManager.Instance.GetAllPhotoWallItems();
         callback?.Invoke();
     }
+
     private void RefreshPhotoWallView()
     {
         ClearPhotoWallItem();

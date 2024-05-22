@@ -10,6 +10,26 @@ public interface IBBSModel : IModel
         [JsonProperty("sectionname")]
         public string sectionname;
     }
+
+    [Serializable]
+    class Post
+    {
+        [JsonProperty("UserName")]
+        public string UserName;
+
+        [JsonProperty("Title")]
+        public string Title;
+
+        [JsonProperty("Content")]
+        public string Content;
+
+        [JsonProperty("PhotoCount")]
+        public int PhotoCount;
+
+        [JsonProperty("PhotoUrls")]
+        public List<string> PhotoUrls;
+    }
+
     //[Serializable]
     //class Moment
     //{
@@ -40,9 +60,15 @@ public interface IBBSModel : IModel
     //    public List<Section> sections;
     //}
 
+    class PostWrapper
+    {
+        [JsonProperty("posts")]
+        public List<Post> posts;
+    }
+
     public IBBSModel.BBS Section { get; set; }
+    public List<Post> Posts { get; set; }
     //public List<Moment> Moments { get; set; }
     //public List<Section> Sections { get; set; }
 
-    //public void SetModel(List<Moment> moments, List<Section> bBsTypes);
 }
