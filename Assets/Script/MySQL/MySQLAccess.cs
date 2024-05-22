@@ -49,7 +49,7 @@ namespace TsingPigSDK
         {
             try
             {
-                string mySqlString = string.Format("server = {0};port={1};database = {2};user = {3};password = {4};", host, port, databaseName, userName, password);
+                string mySqlString = string.Format("server = {0};port={1};database = {2};user = {3};password = {4};charset=utf8mb4", host, port, databaseName, userName, password);
                 mySqlConnection = new MySqlConnection(mySqlString);
 
                 //if(mySqlConnection.State == ConnectionState.Closed)
