@@ -1,6 +1,9 @@
 using MVPFrameWork;
+using Sirenix.Utilities;
 using System;
+using System.Threading.Tasks;
 using TsingPigSDK;
+using UnityEngine;
 using UIManager = MVPFrameWork.UIManager;
 
 public class PostPresenter : PresenterBase<IPostView, IPostModel>, IPostPresenter
@@ -73,7 +76,7 @@ public class PostPresenter : PresenterBase<IPostView, IPostModel>, IPostPresente
     {
         ClearPostItem();
         InitializePostItem();
-        
+
     }
 
     private async void RefreshPostModel(Action callback = null)
@@ -98,8 +101,22 @@ public class PostPresenter : PresenterBase<IPostView, IPostModel>, IPostPresente
 
         await bBSPostItem.LoadPostPhotoItem(StrDef.POST_PHOTO_ITEM_DATA_PATH);
 
-        // _view.PostItemRoot.RebuildLayout();
-        _view.PostRoot.RebuildLayout();
+        _view.PostItemRoot.RebuildLayout();
+
+        await Task.Delay(200);
+
+        RectTransform scrollbarRectTransform = _view.ScrollbarView;
+        RectTransform postRootRectTransform = _view.PostRoot;
+        RectTransform postItemRootRectTransform = _view.PostItemRoot.GetComponent<RectTransform>();
+        float postRootHeight = postRootRectTransform.rect.height;
+        float postItemRootHeight = postItemRootRectTransform.rect.height;
+        float newHeight = postRootHeight - postItemRootHeight - 50f;
+        scrollbarRectTransform.sizeDelta = new Vector2(scrollbarRectTransform.sizeDelta.x, newHeight);
+
+        _view.CommentItemRoot.RebuildLayout();
+
+
+
     }
 
     /// <summary>

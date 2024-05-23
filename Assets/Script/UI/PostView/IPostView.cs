@@ -7,7 +7,11 @@ public interface IPostView : IView
 {
     public VerticalLayoutGroup PostItemRoot { get; }
 
-    public VerticalLayoutGroup PostRoot { get; }
+    public VerticalLayoutGroup CommentItemRoot { get; }
+    
+    public RectTransform PostRoot { get; }
+
+    public RectTransform ScrollbarView { get;  }
 
     public ButtonManager BtnQuit { get; }
 
