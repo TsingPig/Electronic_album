@@ -73,7 +73,7 @@ public class MySQLManager : Singleton<MySQLManager>
         if(result != null && result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0 && result.Tables[0].Columns.Count > 1)
         {
             object columnValue = result.Tables[0].Rows[0][2];
-            bool booleanValue = (bool)columnValue;
+            bool booleanValue = columnValue.ToString() == "1";
             if(booleanValue) { return true; }// 用户名和密码匹配，登录成功
             else { return false; }
         }

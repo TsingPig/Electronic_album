@@ -53,7 +53,18 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
 
     public void EnterBBSTypeCreateView()
     {
-        UIManager.Instance.Enter(ViewId.BBSTypeCreateView);
+        CacheManager.Instance.CheckSuper(() =>
+        {
+            UIManager.Instance.Enter(ViewId.BBSTypeCreateView);
+        }, () =>
+        {
+            UIManager.Instance.Enter(ViewId.NotificationView, new NotificationModel()
+            {
+                Title = "创建板块操作需要管理员权限！"
+            });
+        });
+
+        // UIManager.Instance.Enter(ViewId.BBSTypeCreateView);
     }
 
     #endregion Public
