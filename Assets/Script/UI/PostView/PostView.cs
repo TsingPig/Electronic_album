@@ -1,16 +1,17 @@
 using Michsky.MUIP;
 using MVPFrameWork;
 using UnityEngine;
+using UnityEngine.UI;
 
 [ParentInfo(FindType.FindWithName, StrDef.CANVAS)]
 public class PostView : ViewBase<IPostPresenter>, IPostView
 {
-    private Transform _postItemRoot;
+    private VerticalLayoutGroup _postItemRoot;
     private ButtonManager _btnQuit;
     private ButtonManager _btnDeletePost;
     // private NotificationManager _notification;
 
-    public Transform PostItemRoot => _postItemRoot;
+    public VerticalLayoutGroup PostItemRoot => _postItemRoot;
 
     public ButtonManager BtnQuit => _btnQuit;
 
@@ -20,7 +21,7 @@ public class PostView : ViewBase<IPostPresenter>, IPostView
 
     protected override void OnCreate()
     {
-        _postItemRoot = _root.Find<Transform>("GroupPanel/MainPanel/PostItemRoot");
+        _postItemRoot = _root.Find<VerticalLayoutGroup>("GroupPanel/MainPanel/PostItemRoot");
         _btnQuit = _root.Find<ButtonManager>("GroupPanel/btnQuit");
         _btnDeletePost = _root.Find<ButtonManager>("GroupPanel/btnDeletePost");
         // _notification = _root.Find<NotificationManager>("Notification");

@@ -6,5 +6,5 @@ public interface INotificationView : IView
 {
     public TMP_Text Title { get; set; }
 
-    public NotificationManager Notification { get;  }
+    public NotificationManager Notification { get; }
 }

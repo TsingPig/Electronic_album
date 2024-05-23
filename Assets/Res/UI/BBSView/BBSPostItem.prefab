@@ -214,12 +214,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a43b3bafa811154b8022c8c6562433f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AllowEnterPostView: 1
   BtnEnterPost: {fileID: 2653385680696115335}
   UserName: {fileID: 7218379848475993239}
   Title: {fileID: 2148407846171792385}
   Content: {fileID: 1178170669732542146}
   PostPhotoItemRoot: {fileID: 4748858583609303507}
   PhotoUrls: []
+  Post:
+    UserName: 
+    Title: 
+    Content: 
+    PhotoCount: 0
+    PhotoUrls: []
+    CreateTime: 
 --- !u!1 &1506314296776186569
 GameObject:
   m_ObjectHideFlags: 0

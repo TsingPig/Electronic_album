@@ -1,6 +1,5 @@
 using Michsky.MUIP;
 using MVPFrameWork;
-using System;
 using TMPro;
 
 [ParentInfo(FindType.FindWithName, StrDef.CANVAS_2)]
