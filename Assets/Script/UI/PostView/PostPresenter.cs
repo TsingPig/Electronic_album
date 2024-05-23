@@ -71,6 +71,18 @@ public class PostPresenter : PresenterBase<IPostView, IPostModel>, IPostPresente
         );
     }
 
+    /// <summary>
+    /// 确认创建评论
+    /// </summary>
+    public void SureCreateComment()
+    {
+        ServerManager.Instance.CreateCommentItem(CacheManager.Instance.UserName, _model.Post.PostId, _view.InptComment.text,
+            () =>
+            {
+                _view.CreateCommentPanel.gameObject.SetActive(false);
+                RefreshPostView();
+            });
+    }
 
     /// <summary>
     /// 初始化帖子内容主体
@@ -137,7 +149,6 @@ public class PostPresenter : PresenterBase<IPostView, IPostModel>, IPostPresente
         }
         callback?.Invoke();
     }
-
 
     private void ClearPostItem()
     {

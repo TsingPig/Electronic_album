@@ -315,7 +315,7 @@ public class ServerManager : Singleton<ServerManager>
             }
             else
             {
-                Debug.LogError($"Error: {www.error}");
+                Debug.LogError($"Error:{postId} {www.error}");
                 return null;
             }
         }

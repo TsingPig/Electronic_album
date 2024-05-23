@@ -19,6 +19,7 @@ public class BBSPostItem : MonoBehaviour
 
     public GridLayoutGroup PostPhotoItemRoot;
 
+    
     [HideInInspector]
     public List<string> PhotoUrls;
 
