@@ -1,2 +1,4 @@
 using MVPFrameWork;
-public interface INotificationPresenter : IPresenter {}
+
+public interface INotificationPresenter : IPresenter
+{ }

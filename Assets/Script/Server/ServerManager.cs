@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using TsingPigSDK;
 using UnityEngine;
@@ -45,6 +46,11 @@ public class ServerManager : Singleton<ServerManager>
     /// 更新帖子事件
     /// </summary>
     public Action UpdatePostItemEvent;
+
+    /// <summary>
+    /// 更新评论事件
+    /// </summary>
+    public Action UpdateCommentItemEvent;
 
     /// <summary>
     /// 图片缓存
@@ -350,9 +356,28 @@ public class ServerManager : Singleton<ServerManager>
         StartCoroutine(DeleteSection(bBsTypeName, callback));
     }
 
+    
+    /// <summary>
+    /// 删除帖子项
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="createTime"></param>
+    /// <param name="callback"></param>
     public void DeletePostItem(int postId, Action callback = null)
     {
         StartCoroutine(DeletePost(postId, callback));
+    }
+
+    /// <summary>
+    /// 删除评论项
+    /// </summary>
+    /// <param name="account">用户名</param>
+    /// <param name="postCreateTime">帖子创建时间</param>
+    /// <param name="commentCreateTime">评论创建时间</param>
+    /// <param name="callback">回调事件</param>
+    public void DeleteCommentItem(string account, string postCreateTime, string commentCreateTime, Action callback = null)
+    {
+        StartCoroutine(DeleteComment(account, postCreateTime, commentCreateTime, callback));
     }
 
     /// <summary>
@@ -370,13 +395,25 @@ public class ServerManager : Singleton<ServerManager>
     /// <summary>
     /// 上传帖子
     /// </summary>
-    /// <param name="account"></param>
-    /// <param name="content"></param>
-    /// <param name="photoSize"></param>
-    /// <param name="callback"></param>
+    /// <param name="account">用户名</param>
+    /// <param name="content">发帖正文</param>
+    /// <param name="photoSize">附图数量</param>
+    /// <param name="callback">回调事件</param>
     public void UploadPostItem(string account, string content, int photoSize, string title, string sectionName, Action callback = null)
     {
         StartCoroutine(UploadPost(account, content, photoSize, title, sectionName, callback));
+    }
+
+    /// <summary>
+    /// 创建评论项
+    /// </summary>
+    /// <param name="account">用户名</param>
+    /// <param name="postCreateTime">发帖时间</param>
+    /// <param name="content">评论内容</param>
+    /// <param name="callback">回调事件</param>
+    public void CreateCommentItem(string account, string postCreateTime, string content, Action callback = null)
+    {
+        StartCoroutine(CreateComment(account, postCreateTime, content, callback));
     }
 
     /// <summary>
@@ -428,6 +465,39 @@ public class ServerManager : Singleton<ServerManager>
             else
             {
                 Debug.LogError($"Error creating section: {www.error}");
+                callback?.Invoke();
+            }
+        }
+    }
+
+    /// <summary>
+    /// 创建评论
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="content"></param>
+    /// <returns></returns>
+    private IEnumerator CreateComment(string account, string postCreateTime, string content, Action callback = null)
+    {
+        WWWForm form = new WWWForm();
+        // TODO：表单内容
+        form.AddField("account", account);
+        form.AddField("createtime", postCreateTime);
+        form.AddField("content", content);
+
+
+        // form.AddField("section_name", sectionName);
+        using(UnityWebRequest www = UnityWebRequest.Post($"{host}/create_comment", form))
+        {
+            yield return www.SendWebRequest();
+
+            if(www.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log($"评论创建成功");
+                callback?.Invoke();
+            }
+            else
+            {
+                Debug.LogError($"Error creating comment: {www.error}");
                 callback?.Invoke();
             }
         }
@@ -808,6 +878,39 @@ public class ServerManager : Singleton<ServerManager>
             else
             {
                 Debug.LogError($"删除帖子 {postId} 失败: " + www.error);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 删除评论
+    /// </summary>
+    /// <param name="account">用户名</param>
+    /// <param name="postCreateTime">帖子创建时间</param>
+    /// <param name="commentCreateTime">评论创建时间</param>
+    /// <param name="callback">回调事件</param>
+    /// <returns></returns>
+    private IEnumerator DeleteComment(string account, string postCreateTime, string commentCreateTime, Action callback = null)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("account", account);
+        form.AddField("createtime", postCreateTime);
+        form.AddField("comment_create_time", commentCreateTime);
+
+        using(UnityWebRequest www = UnityWebRequest.Post($"{host}/delete_comment", form))
+        {
+            www.downloadHandler = new DownloadHandlerBuffer(); // 禁用压缩
+            yield return www.SendWebRequest();
+
+            if(www.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log($"成功删除评论 {account} {postCreateTime} {commentCreateTime}");
+                UpdatePostItemEvent?.Invoke();
+                callback?.Invoke();
+            }
+            else
+            {
+                Debug.LogError($"删除评论 {account} {postCreateTime} {commentCreateTime} 失败: " + www.error);
             }
         }
     }

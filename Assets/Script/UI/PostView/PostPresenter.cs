@@ -5,11 +5,16 @@ using UIManager = MVPFrameWork.UIManager;
 
 public class PostPresenter : PresenterBase<IPostView, IPostModel>, IPostPresenter
 {
+    public override void OnCreateCompleted()
+    {
+        base.OnCreateCompleted();
+        InitializePostItem();
+    }
 
     public override void OnShowCompleted()
     {
         base.OnShowCompleted();
-
+        RefreshPostView();
     }
 
     public void Quit()
@@ -63,10 +68,11 @@ public class PostPresenter : PresenterBase<IPostView, IPostModel>, IPostPresente
         );
     }
 
-    private void RefreshBBSView()
+
+    private void RefreshPostView()
     {
-        ClearBBSPostItem();
-        // RefreshPostModel(() => { RefreshBBSPostItem(() => { _view.BBSPostItemRoot.RebuildLayout(); }); });
+        ClearPostItem();
+        InitializePostItem();
     }
 
     private async void RefreshPostModel(Action callback = null)
@@ -75,7 +81,28 @@ public class PostPresenter : PresenterBase<IPostView, IPostModel>, IPostPresente
         callback?.Invoke();
     }
 
-    private async void RefreshBBSPostItem(Action callback = null)
+    /// <summary>
+    /// 显示帖子内容主体
+    /// </summary>
+    private async void InitializePostItem()
+    {
+        BBSPostItem bBSPostItem = (await Instantiater.InstantiateAsync(StrDef.B_B_S_POST_ITEM_DATA_PATH, _view.PostItemRoot.transform)).GetComponent<BBSPostItem>();
+        bBSPostItem.AllowEnterPostView = false;
+        bBSPostItem.Title.text = _model.Post.Title;
+        bBSPostItem.UserName.text = _model.Post.UserName;
+        bBSPostItem.Content.text = _model.Post.Content;
+        bBSPostItem.PhotoUrls = _model.Post.PhotoUrls;
+        bBSPostItem.Post = _model.Post;
+        await bBSPostItem.LoadPostItems();
+
+        _view.PostItemRoot.RebuildLayout();
+    }
+
+    /// <summary>
+    /// 刷新评论区项
+    /// </summary>
+    /// <param name="callback"></param>
+    private async void RefreshCommentItem(Action callback = null)
     {
         //foreach(IBBSModel.Post post in _model.Posts)
         //{
@@ -90,7 +117,8 @@ public class PostPresenter : PresenterBase<IPostView, IPostModel>, IPostPresente
         //callback?.Invoke();
     }
 
-    private void ClearBBSPostItem()
+
+    private void ClearPostItem()
     {
         Instantiater.DeactivateObjectPool(StrDef.B_B_S_POST_ITEM_DATA_PATH);
         Instantiater.DeactivateObjectPool(StrDef.POST_PHOTO_ITEM_DATA_PATH);

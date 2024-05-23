@@ -1,5 +1,4 @@
 using MVPFrameWork;
-using TMPro;
 using UIManager = MVPFrameWork.UIManager;
 
 public class NotificationPresenter : PresenterBase<INotificationView, INotificationModel>, INotificationPresenter
@@ -9,6 +8,7 @@ public class NotificationPresenter : PresenterBase<INotificationView, INotificat
         base.OnCreateCompleted();
         OnShowCompleted();
     }
+
     public override void OnShowCompleted()
     {
         base.OnShowCompleted();
