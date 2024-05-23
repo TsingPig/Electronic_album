@@ -4,6 +4,7 @@ using TMPro;
 using TsingPigSDK;
 using UnityEngine;
 using UnityEngine.UI;
+using UIManager = MVPFrameWork.UIManager;
 
 public class BBSPostItem : MonoBehaviour
 {
@@ -22,7 +23,7 @@ public class BBSPostItem : MonoBehaviour
     {
         BtnEnterPost.onClick.AddListener(() =>
         {
-            Debug.Log("季神大计基");
+            UIManager.Instance.Enter(ViewId.PostView, new PostModel());
         });
     }
 
