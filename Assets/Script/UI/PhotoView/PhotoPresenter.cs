@@ -3,6 +3,7 @@ using System;
 using TsingPigSDK;
 using UnityEngine;
 using UnityEngine.UI;
+using UIManager = MVPFrameWork.UIManager;
 
 public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPresenter
 {
@@ -113,7 +114,17 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
     /// </summary>
     public void DeleteAlbum()
     {
-        ServerManager.Instance.DeletaAlbumFolder(CacheManager.Instance.UserName, _model.AlbumName);
+        string albumName = _model.AlbumName;
+        if(albumName == "Moment" || albumName == "Post")
+        {
+            Debug.LogError("不能删除系统相册！");
+            UIManager.Instance.Enter(ViewId.NotificationView, new NotificationModel()
+            {
+                Title = "不能删除系统相册！"
+            });
+            return;
+        }
+        ServerManager.Instance.DeletaAlbumFolder(CacheManager.Instance.UserName, albumName);
         MVPFrameWork.UIManager.Instance.Quit(ViewId.PhotoView);
     }
 

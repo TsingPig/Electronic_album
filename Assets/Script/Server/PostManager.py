@@ -1,5 +1,6 @@
 import pymysql
 from typing import List, Dict
+from PhotoManager import PhotoManager
 
 host = "http://114.132.233.105"
 def getconnection():
@@ -69,7 +70,8 @@ class PostManager:
     @staticmethod
     def delete_post_by_id(post_id: int) -> bool:
         db, cursor = getconnection()
-        print(post_id)
+        # print(post_id)
+        PhotoManager.delete_photos_by_postId(post_id)
         cursor.execute("DELETE FROM postinfo WHERE postid = %s", (post_id))
         # TODO: 图床中的图片是否要删除
         db.commit()
