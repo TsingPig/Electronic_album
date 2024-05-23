@@ -29,7 +29,7 @@ public class BBSTypeCreateView : ViewBase<IBBSTypeCreatePresenter>, IBBSTypeCrea
         _btnCreate = _root.Find<ButtonManager>("MainPanel/btnCreate");
         _btnClear = _root.Find<ButtonManager>("MainPanel/inptBBSTypeName/Clear");
         _btnQuit.onClick.AddListener(_presenter.Quit);
-        _btnCreate.onClick.AddListener(_presenter.TryCreate);
+        _btnCreate.onClick.AddListener(_presenter.Create);
         _btnClear.onClick.AddListener(() =>
         {
             _presenter.ClearInformation(_inptBBSTypeName);

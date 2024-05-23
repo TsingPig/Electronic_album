@@ -67,6 +67,7 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
 
     public void OnSuperLogin()
     {
+
         string LoginInputSuperAccount = RestrictedStringToLettersOrNumbers(_view.InptLoginSuperInputAccount.text);
         string LoginInputSuperPassword = RestrictedStringToLettersOrNumbers(_view.InptLoginSuperInputPassword.text);
 
@@ -87,7 +88,11 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
         }
         else
         {
-            Debug.Log("账号或者密码错误");
+            UIManager.Instance.Enter(ViewId.NotificationView, new NotificationModel()
+            {
+                Title = "您的账号不是管理员！"
+            });
+            Debug.Log("您的账号不是管理员！");
         }
     }
 

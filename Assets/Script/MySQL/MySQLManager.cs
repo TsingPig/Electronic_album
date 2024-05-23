@@ -62,7 +62,7 @@ public class MySQLManager : Singleton<MySQLManager>
     /// <returns>是否成功登录</returns>
     public bool LoginSuper(string account, string userPassword)
     {
-        string[] items = { "account", "password", "isSuper" };
+        string[] items = { "account", "password", "is_super" };
         string tablename = "useraccount";
         string[] operation = { "=", "=" };
         string[] whereColumns = { "account", "password" };
@@ -72,10 +72,14 @@ public class MySQLManager : Singleton<MySQLManager>
         // 检查是否返回了任何行
         if(result != null && result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0 && result.Tables[0].Columns.Count > 1)
         {
-            object columnValue = result.Tables[0].Rows[0][2];
-            bool booleanValue = (bool)columnValue;
+            /*object columnValue = result.Tables[0].Rows[0][2];
+            bool booleanValue = columnValue.ToString() == "1";
             if(booleanValue) { return true; }// 用户名和密码匹配，登录成功
-            else { return false; }
+            else { return false; }*/
+            // 返回查询到的昵称是否为管理员
+            string columnValue = result.Tables[0].Rows[0]["is_super"].ToString();
+            bool booleanValue = (bool)(columnValue == "1");
+            return booleanValue ? true : false;
         }
         else
         {
