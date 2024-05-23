@@ -2,7 +2,6 @@ using System.Collections.Generic;
 
 public class MainModel : IMainModel
 {
-
     private List<IMainModel.Moment> _moments;
 
     private List<IMainModel.Section> _sections;
@@ -16,5 +15,4 @@ public class MainModel : IMainModel
         _moments = moments;
         _sections = sections;
     }
-
 }

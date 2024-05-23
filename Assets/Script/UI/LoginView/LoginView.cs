@@ -23,9 +23,6 @@ public class LoginView : ViewBase<ILoginPresenter>, ILoginView
     private ButtonManager _btnRegisterInputSurePassWordClear;
     private ButtonManager _btnLoginInputAccountClear;
     private ButtonManager _btnLoginInputPassWordClear;
-    
-
-    
 
     public TMP_InputField InptLoginSuperInputAccount { get => _inptLoginSuperInputAccount; set => _inptLoginSuperInputAccount = value; }
 
@@ -58,8 +55,6 @@ public class LoginView : ViewBase<ILoginPresenter>, ILoginView
     public ButtonManager BtnLoginInputAccountClear { get => _btnLoginInputAccountClear; set => _btnLoginInputAccountClear = value; }
 
     public ButtonManager BtnLoginInputPassWordClear { get => _btnLoginInputPassWordClear; set => _btnLoginInputPassWordClear = value; }
-
-    
 
     protected override void OnCreate()
     {

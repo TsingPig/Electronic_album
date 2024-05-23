@@ -13,7 +13,7 @@ namespace TsingPigSDK
 
         public static void Release()
         {
-            foreach (var addressablePath in _objectPools.Keys)
+            foreach(var addressablePath in _objectPools.Keys)
             {
                 Release(addressablePath);
             }
@@ -22,9 +22,9 @@ namespace TsingPigSDK
 
         public static void Release(string addressablePath)
         {
-            if (_objectPools.ContainsKey(addressablePath))
+            if(_objectPools.ContainsKey(addressablePath))
             {
-                foreach (var obj in _objectPools[addressablePath])
+                foreach(var obj in _objectPools[addressablePath])
                 {
                     Addressables.ReleaseInstance(obj);
                 }
@@ -38,11 +38,11 @@ namespace TsingPigSDK
 
         public static void Release(string addressablePath, GameObject targetGameObject)
         {
-            if (_objectPools.ContainsKey(addressablePath))
+            if(_objectPools.ContainsKey(addressablePath))
             {
-                foreach (var gameObj in _objectPools[addressablePath])
+                foreach(var gameObj in _objectPools[addressablePath])
                 {
-                    if (targetGameObject == gameObj)
+                    if(targetGameObject == gameObj)
                     {
                         _objectPools.Remove(addressablePath);
                         Addressables.ReleaseInstance(targetGameObject);
@@ -59,11 +59,11 @@ namespace TsingPigSDK
         {
             List<GameObject> objectPool;
 
-            if (_objectPools.TryGetValue(addressablePath, out objectPool) && objectPool.Count > 0)
+            if(_objectPools.TryGetValue(addressablePath, out objectPool) && objectPool.Count > 0)
             {
-                foreach (var obj in objectPool)
+                foreach(var obj in objectPool)
                 {
-                    if (!obj.activeSelf)
+                    if(!obj.activeSelf)
                     {
                         obj.SetActive(true);
                         return obj;
@@ -75,14 +75,14 @@ namespace TsingPigSDK
 
             IList<IResourceLocation> results = handlers.Result;
 
-            if (results.Count > 0)
+            if(results.Count > 0)
             {
                 AsyncOperationHandle<GameObject> handler = Addressables.InstantiateAsync(results[0], parent);
                 await handler.Task;
                 GameObject instantiatedObject = handler.Result;
-                if (instantiatedObject != null)
+                if(instantiatedObject != null)
                 {
-                    if (!_objectPools.ContainsKey(addressablePath))
+                    if(!_objectPools.ContainsKey(addressablePath))
                     {
                         _objectPools[addressablePath] = new List<GameObject>();
                     }
@@ -104,9 +104,9 @@ namespace TsingPigSDK
 
         public static void DeactivateObjectPool(string addressablePath)
         {
-            if (_objectPools.ContainsKey(addressablePath))
+            if(_objectPools.ContainsKey(addressablePath))
             {
-                foreach (var obj in _objectPools[addressablePath])
+                foreach(var obj in _objectPools[addressablePath])
                 {
                     DeactivateObject(obj);
                 }
@@ -120,16 +120,16 @@ namespace TsingPigSDK
         public static int DeactivateObjectById(string addressablePath, int id)
         {
             int index = 0;
-            for (int i = 0; i < id; i++)
+            for(int i = 0; i < id; i++)
             {
-                if (_objectPools[addressablePath][i].activeSelf)
+                if(_objectPools[addressablePath][i].activeSelf)
                 {
                     index++;
                 }
             }
-            if (_objectPools.ContainsKey(addressablePath))
+            if(_objectPools.ContainsKey(addressablePath))
             {
-                if (id < _objectPools[addressablePath].Count)
+                if(id < _objectPools[addressablePath].Count)
                 {
                     _objectPools[addressablePath][id].SetActive(false);
                 }

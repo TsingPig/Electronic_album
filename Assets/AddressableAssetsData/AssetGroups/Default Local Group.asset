@@ -20,30 +20,17 @@ MonoBehaviour:
   - m_GUID: 2f230dc9de1093e4b9d37c74b28116af
     m_Address: Assets/Res/UI/LoginView/LoginView.prefab
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
+    m_SerializedLabels: []
   - m_GUID: b770143ca1d2ce9448de98d2d29872e8
     m_Address: Assets/Res/UI/MainView/MainView.prefab
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
+    m_SerializedLabels: []
   - m_GUID: d228b9bcf6f4bee4db939ad8a2865a4a
     m_Address: Assets/Res/UI/AlbumCreateView/AlbumCreateView.prefab
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
-  - m_GUID: 0f1e5193296401945bcf0ec3fd0fac84
-    m_Address: AlbumItem
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
+    m_SerializedLabels: []
   - m_GUID: fa237600f821d6649923336860cf2654
     m_Address: Assets/Res/UI/PhotoView/PhotoView.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
-  - m_GUID: d49bc42d3f5901a4c9d9afff074739ff
-    m_Address: PhotoItem
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 91b0294eba0d4294b9da8a26e661558b
@@ -54,20 +41,8 @@ MonoBehaviour:
     m_Address: Assets/Res/UI/CreatePhotoWallItemView/CreatePhotoWallItemView.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: 6f81694988372ec4791caa974076bc04
-    m_Address: PhotoUploadItem
-    m_ReadOnly: 0
-    m_SerializedLabels: []
   - m_GUID: 5cbcf59e2ba06fe498fbe5e58a79f2b1
     m_Address: Assets/Res/UI/MomentDetailView/MomentDetailView.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 8f8ac6bf5ee57d345bf7844e60c09a90
-    m_Address: PhotoWallItem
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: b5d52a0f763e00b4ea3060d54bc6ec23
-    m_Address: MomentPhotoItem
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: fa64cb60a5cf01d4f9ec6c3522cc3444
@@ -78,14 +53,6 @@ MonoBehaviour:
     m_Address: Assets/Res/UI/BBSTypeCreateView/BBSTypeCreateView.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: 14487469c1ee34048a44736b7d1423c4
-    m_Address: BBSTypeItem
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: c2fcb75975765db41b20f14405eee466
-    m_Address: BBSPostItem
-    m_ReadOnly: 0
-    m_SerializedLabels: []
   - m_GUID: c81214f44c3cfa94f937d6e80a8f266b
     m_Address: Assets/Res/UI/BBSView/BBSView.prefab
     m_ReadOnly: 0
@@ -94,8 +61,40 @@ MonoBehaviour:
     m_Address: Assets/Res/UI/CreatePostItemView/CreatePostItemView.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 403531beb7e50dd4199bc91a40e0d02f
+    m_Address: Assets/Res/UI/PostView/PostView.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   - m_GUID: 97ec6d2c73a73b748b534fff38e180cd
     m_Address: PostPhotoItem
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c2fcb75975765db41b20f14405eee466
+    m_Address: BBSPostItem
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 14487469c1ee34048a44736b7d1423c4
+    m_Address: BBSTypeItem
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8f8ac6bf5ee57d345bf7844e60c09a90
+    m_Address: PhotoWallItem
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b5d52a0f763e00b4ea3060d54bc6ec23
+    m_Address: MomentPhotoItem
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d49bc42d3f5901a4c9d9afff074739ff
+    m_Address: PhotoItem
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0f1e5193296401945bcf0ec3fd0fac84
+    m_Address: AlbumItem
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6f81694988372ec4791caa974076bc04
+    m_Address: PhotoUploadItem
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0

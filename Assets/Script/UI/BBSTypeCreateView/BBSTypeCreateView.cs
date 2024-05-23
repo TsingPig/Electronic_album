@@ -1,7 +1,6 @@
 using Michsky.MUIP;
 using MVPFrameWork;
 using TMPro;
-using UnityEngine;
 
 [ParentInfo(FindType.FindWithName, StrDef.CANVAS)]
 public class BBSTypeCreateView : ViewBase<IBBSTypeCreatePresenter>, IBBSTypeCreateView
@@ -13,9 +12,10 @@ public class BBSTypeCreateView : ViewBase<IBBSTypeCreatePresenter>, IBBSTypeCrea
     private ButtonManager _btnCreate;
 
     public ButtonManager BtnQuit => _btnQuit;
-    public TMP_InputField InptBBSTypeName => _inptBBSTypeName;
-    public ButtonManager BtnCreate => _btnCreate;
 
+    public TMP_InputField InptBBSTypeName => _inptBBSTypeName;
+
+    public ButtonManager BtnCreate => _btnCreate;
 
     protected override void OnCreate()
     {

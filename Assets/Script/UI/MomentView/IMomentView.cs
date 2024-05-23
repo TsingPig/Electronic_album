@@ -7,5 +7,4 @@ public interface IMomentView : IView
     ButtonManager BtnQuit { get; set; }
 
     Transform PhotoWallItemRoot { get; set; }
-
 }

@@ -1,9 +1,6 @@
 using MVPFrameWork;
 using System;
 using TsingPigSDK;
-using UnityEngine;
-using UnityEngine.UI;
-using Michsky.MUIP;
 using UIManager = MVPFrameWork.UIManager;
 
 public class BBSPresenter : PresenterBase<IBBSView, IBBSModel>, IBBSPresenter
@@ -20,7 +17,6 @@ public class BBSPresenter : PresenterBase<IBBSView, IBBSModel>, IBBSPresenter
         base.OnShowCompleted();
         RefreshBBSView();
     }
-
 
     /// <summary>
     /// 【管理员操作】 删除板块
@@ -48,7 +44,6 @@ public class BBSPresenter : PresenterBase<IBBSView, IBBSModel>, IBBSPresenter
     /// </summary>
     public void EnterCreatePostItemView()
     {
-
         UIManager.Instance.Enter(ViewId.CreatePostItemView, new CreatePostItemModel()
         {
             SectionName = _model.Section.sectionname
@@ -76,6 +71,7 @@ public class BBSPresenter : PresenterBase<IBBSView, IBBSModel>, IBBSPresenter
             bBSPostItem.UserName.text = post.UserName;
             bBSPostItem.Content.text = post.Content;
             bBSPostItem.PhotoUrls = post.PhotoUrls;
+            bBSPostItem.Post = post;
             await bBSPostItem.LoadPostItems();
         }
         callback?.Invoke();
@@ -88,5 +84,4 @@ public class BBSPresenter : PresenterBase<IBBSView, IBBSModel>, IBBSPresenter
         Instantiater.Release(StrDef.B_B_S_POST_ITEM_DATA_PATH);
         Instantiater.Release(StrDef.POST_PHOTO_ITEM_DATA_PATH);
     }
-
 }

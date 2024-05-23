@@ -40,4 +40,4 @@ public class CreatePostItemView : ViewBase<ICreatePostItemPresenter>, ICreatePos
         _btnUploadPhoto.onClick.AddListener(_presenter.UploadPhotos);
         _btnCreatePhtotoWallItem.onClick.AddListener(_presenter.CreatePhotoWallItem);
     }
-} 
+}

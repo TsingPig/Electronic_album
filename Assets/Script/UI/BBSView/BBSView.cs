@@ -1,6 +1,5 @@
 using Michsky.MUIP;
 using MVPFrameWork;
-using UnityEngine;
 using UnityEngine.UI;
 
 [ParentInfo(FindType.FindWithName, StrDef.CANVAS)]

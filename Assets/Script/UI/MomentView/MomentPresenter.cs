@@ -8,17 +8,18 @@ public class MomentPresenter : PresenterBase<IMomentView, IMomentModel>, IMoment
         Debug.Log("MomentPresenter");
         UIManager.Instance.Quit(ViewId.MomentView);
     }
+
     public override void OnCreateCompleted()
     {
         base.OnCreateCompleted();
         OnShowCompleted();
     }
+
     public override void OnShowCompleted()
     {
         base.OnShowCompleted();
-        if (_model.PhotoWallItemObj)
+        if(_model.PhotoWallItemObj)
         {
-
             GameObject.Instantiate(_model.PhotoWallItemObj, _view.PhotoWallItemRoot);
         }
         else

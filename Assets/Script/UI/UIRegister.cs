@@ -27,7 +27,7 @@ public static class UIRegister
         Container.Regist<ICreatePhotoWallItemModel, CreatePhotoWallItemModel>();
 
         Container.Regist<IMomentPresenter, MomentPresenter>();
-        Container.Regist<IView,  MomentView>(ViewId.MomentView);
+        Container.Regist<IView, MomentView>(ViewId.MomentView);
 
         Container.Regist<IBBSTypeCreatePresenter, BBSTypeCreatePresenter>();
         Container.Regist<IView, BBSTypeCreateView>(ViewId.BBSTypeCreateView);
@@ -40,5 +40,8 @@ public static class UIRegister
         Container.Regist<IView, CreatePostItemView>(ViewId.CreatePostItemView);
         Container.Regist<ICreatePostItemModel, CreatePostItemModel>();
 
+        Container.Regist<IPostPresenter, PostPresenter>();
+        Container.Regist<IView, PostView>(ViewId.PostView);
+        Container.Regist<IPostModel, PostModel>();
     }
 }
