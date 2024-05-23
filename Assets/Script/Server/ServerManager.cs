@@ -350,9 +350,9 @@ public class ServerManager : Singleton<ServerManager>
         StartCoroutine(DeleteSection(bBsTypeName, callback));
     }
 
-    public void DeletePostItem(string account, string createTime, Action callback = null)
+    public void DeletePostItem(int postId, Action callback = null)
     {
-        StartCoroutine(DeletePost(account, createTime, callback));
+        StartCoroutine(DeletePost(postId, callback));
     }
 
     /// <summary>
@@ -789,11 +789,10 @@ public class ServerManager : Singleton<ServerManager>
         }
     }
 
-    private IEnumerator DeletePost(string account, string createTime, Action callback = null)
+    private IEnumerator DeletePost(int postId, Action callback = null)
     {
         WWWForm form = new WWWForm();
-        form.AddField("account", account);
-        form.AddField("createtime", createTime);
+        form.AddField("post_id", postId);
 
         using(UnityWebRequest www = UnityWebRequest.Post($"{host}/delete_post", form))
         {
@@ -802,13 +801,13 @@ public class ServerManager : Singleton<ServerManager>
 
             if(www.result == UnityWebRequest.Result.Success)
             {
-                Debug.Log($"³É¹¦É¾³ýÌû×Ó {account} {createTime}");
+                Debug.Log($"³É¹¦É¾³ýÌû×Ó {postId}");
                 UpdatePostItemEvent?.Invoke();
                 callback?.Invoke();
             }
             else
             {
-                Debug.LogError($"É¾³ýÌû×Ó {account} {createTime} Ê§°Ü: " + www.error);
+                Debug.LogError($"É¾³ýÌû×Ó {postId} Ê§°Ü: " + www.error);
             }
         }
     }

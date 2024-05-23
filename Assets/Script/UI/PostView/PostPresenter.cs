@@ -25,7 +25,7 @@ public class PostPresenter : PresenterBase<IPostView, IPostModel>, IPostPresente
     {
         CacheManager.Instance.CheckSuper(() =>
             {
-                ServerManager.Instance.DeletePostItem(_model.Post.UserName, _model.Post.CreateTime, () =>
+                ServerManager.Instance.DeletePostItem(_model.Post.PostId, () =>
                 {
                     UIManager.Instance.Quit(ViewId.PostView);
                 }
@@ -46,7 +46,7 @@ public class PostPresenter : PresenterBase<IPostView, IPostModel>, IPostPresente
         CacheManager.Instance.CheckSuper(
             () =>
             {
-                ServerManager.Instance.DeletePostItem(_model.Post.UserName, _model.Post.CreateTime,
+                ServerManager.Instance.DeletePostItem(_model.Post.PostId,
                     () =>
                     {
                         UIManager.Instance.Quit(ViewId.PostView);

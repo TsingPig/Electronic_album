@@ -3,6 +3,7 @@ from werkzeug.utils import secure_filename
 from MomentManager import MomentManager
 from SectionManager import SectionManager
 from PostManager import PostManager
+from CommentManager import CommentManager
 import os
 import json
 import time
@@ -315,12 +316,15 @@ def get_posts_by_section():
 
 @app.route("/delete_post", methods=["POST"])
 def delete_post():
-    account = request.form["account"]
-    createtime = request.form["createtime"]
-    if PostManager.delete_post_by_username_and_createtime(account, createtime):
-        return "post delete"
-    else:
-        return "post delete failed"
+    # account = request.form["account"]
+    # createtime = request.form["createtime"]
+    # if PostManager.delete_post_by_username_and_createtime(account, createtime):
+    #     return "post delete"
+    # else:
+    #     return "post delete failed"
+    postid = request.form["post_id"]
+    PostManager.delete_post_by_id(postid)
+    return "post delete"
     
 @app.route("/upload_comment", methods=["POST"])
 def upload_comment():
