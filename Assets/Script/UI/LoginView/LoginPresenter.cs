@@ -90,9 +90,9 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
         {
             UIManager.Instance.Enter(ViewId.NotificationView, new NotificationModel()
             {
-                Title = "账号或者密码错误！"
+                Title = "您的账号不是管理员！"
             });
-            Debug.Log("账号或者密码错误");
+            Debug.Log("您的账号不是管理员！");
         }
     }
 
