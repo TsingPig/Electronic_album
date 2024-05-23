@@ -330,8 +330,8 @@ namespace Michsky.MUIP
             }
 
             waitingForDoubleClickInput = true;
-            StopCoroutine("CheckForDoubleClick");
-            StartCoroutine("CheckForDoubleClick");
+            // StopCoroutine("CheckForDoubleClick");
+            // StartCoroutine("CheckForDoubleClick");
         }
 
         public void OnPointerDown(PointerEventData eventData)

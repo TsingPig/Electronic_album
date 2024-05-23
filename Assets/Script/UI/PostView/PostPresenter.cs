@@ -23,6 +23,7 @@ public class PostPresenter : PresenterBase<IPostView, IPostModel>, IPostPresente
     public void Quit()
     {
         UIManager.Instance.Quit(ViewId.PostView);
+        _view.CreateCommentPanel.gameObject.SetActive(false);
     }
 
     [Obsolete("请使用TryDeletePost，其Notification效果更加通用。")]
@@ -71,6 +72,18 @@ public class PostPresenter : PresenterBase<IPostView, IPostModel>, IPostPresente
         );
     }
 
+    /// <summary>
+    /// 确认创建评论
+    /// </summary>
+    public void SureCreateComment()
+    {
+        ServerManager.Instance.CreateCommentItem(CacheManager.Instance.UserName, _model.Post.PostId, _view.InptComment.text,
+            () =>
+            {
+                _view.CreateCommentPanel.gameObject.SetActive(false);
+                RefreshPostView();
+            });
+    }
 
     /// <summary>
     /// 初始化帖子内容主体
@@ -138,12 +151,13 @@ public class PostPresenter : PresenterBase<IPostView, IPostModel>, IPostPresente
         callback?.Invoke();
     }
 
-
     private void ClearPostItem()
     {
         Instantiater.DeactivateObjectPool(StrDef.POST_ITEM_DATA_PATH);
         Instantiater.DeactivateObjectPool(StrDef.POST_PHOTO_ITEM_DATA_PATH);
+        Instantiater.DeactivateObjectPool(StrDef.COMMENT_ITEM_DATA_PATH);
         Instantiater.Release(StrDef.POST_ITEM_DATA_PATH);
         Instantiater.Release(StrDef.POST_PHOTO_ITEM_DATA_PATH);
+        Instantiater.Release(StrDef.COMMENT_ITEM_DATA_PATH);
     }
 }
