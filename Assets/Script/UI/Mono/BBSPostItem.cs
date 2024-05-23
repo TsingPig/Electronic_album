@@ -28,7 +28,6 @@ public class BBSPostItem : MonoBehaviour
         });
     }
 
-    // Update is called once per frame
     void Update()
     {
         
@@ -36,8 +35,6 @@ public class BBSPostItem : MonoBehaviour
 
     public async Task LoadPostItems()
     {
-        //string url = $"{ServerManager.Instance.host}/download/{TxtUserName.text}/usericon.jpg";
-        //_ = ServerManager.Instance.GetPhotoAsync(url, UserIcon);
         foreach(string photoUrl in PhotoUrls)
         {
             GameObject postPhotoItemObj = await Instantiater.InstantiateAsync(StrDef.POST_PHOTO_ITEM_DATA_PATH, PostPhotoItemRoot.transform);
