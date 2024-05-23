@@ -2,7 +2,7 @@ using MVPFrameWork;
 
 public interface IBBSPresenter : IPresenter
 {
-    void DeleteSection();
+    void TryDeleteSection();
 
     void EnterCreatePostItemView();
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -18,6 +19,11 @@ namespace Michsky.MUIP
 
         // Resources
         public Animator notificationAnimator;
+
+        /// <summary>
+        /// 弹窗关闭后的事件
+        /// </summary>
+        public Action CloseEvent;
 
         public Image iconObj;
         public TextMeshProUGUI titleObj;
@@ -120,6 +126,8 @@ namespace Michsky.MUIP
 
             if(closeBehaviour == CloseBehaviour.Disable) { gameObject.SetActive(false); isOn = false; }
             else if(closeBehaviour == CloseBehaviour.Destroy) { Destroy(gameObject); }
+            
+            CloseEvent?.Invoke();
         }
     }
 }

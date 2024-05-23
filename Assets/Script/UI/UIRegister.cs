@@ -43,5 +43,9 @@ public static class UIRegister
         Container.Regist<IPostPresenter, PostPresenter>();
         Container.Regist<IView, PostView>(ViewId.PostView);
         Container.Regist<IPostModel, PostModel>();
+
+        Container.Regist<INotificationPresenter, NotificationPresenter>();
+        Container.Regist<IView, NotificationView>(ViewId.NotificationView);
+        Container.Regist<INotificationModel, NotificationModel>();
     }
 }

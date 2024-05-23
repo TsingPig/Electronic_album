@@ -18,6 +18,8 @@ public class BBSPresenter : PresenterBase<IBBSView, IBBSModel>, IBBSPresenter
         RefreshBBSView();
     }
 
+
+    [Obsolete("TryDeleteSection，其Notification效果更加通用。")]
     /// <summary>
     /// 【管理员操作】 删除板块
     /// </summary>
@@ -35,6 +37,29 @@ public class BBSPresenter : PresenterBase<IBBSView, IBBSModel>, IBBSPresenter
             {
                 _view.Notification.title = "当前用户不是管理员！";
                 _view.Notification.OpenNotification();
+            }
+            );
+    }
+
+    /// <summary>
+    /// 【管理员操作】 尝试删除板块
+    /// </summary>
+    public void TryDeleteSection()
+    {
+        CacheManager.Instance.CheckSuper(
+            () =>
+            {
+                ServerManager.Instance.DeleteBBSType(_model.Section.sectionname, () =>
+                {
+                    UIManager.Instance.Quit(ViewId.BBSView);
+                });
+            },
+            () =>
+            {
+                UIManager.Instance.Enter(ViewId.NotificationView, new NotificationModel()
+                {
+                    Title = "删除板块操作需要管理员权限！"
+                });
             }
             );
     }

@@ -38,7 +38,7 @@ public class BBSView : ViewBase<IBBSPresenter>, IBBSView
             MVPFrameWork.UIManager.Instance.Quit(ViewId.BBSView);
         });
 
-        _btnDeleteSection.onClick.AddListener(_presenter.DeleteSection);
+        _btnDeleteSection.onClick.AddListener(_presenter.TryDeleteSection);
         _btnEnterCreatePostItemView.onClick.AddListener(_presenter.EnterCreatePostItemView);
     }
 }
