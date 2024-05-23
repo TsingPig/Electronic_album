@@ -5,7 +5,13 @@ using UnityEngine.UI;
 
 public interface IPostView : IView
 {
-    public VerticalLayoutGroup PostItemRoot { get;  }
+    public VerticalLayoutGroup PostItemRoot { get; }
+
+    public VerticalLayoutGroup CommentItemRoot { get; }
+    
+    public RectTransform PostRoot { get; }
+
+    public RectTransform ScrollbarView { get;  }
 
     public ButtonManager BtnQuit { get; }
 
