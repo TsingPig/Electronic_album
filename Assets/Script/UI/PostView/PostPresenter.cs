@@ -8,7 +8,7 @@ public class PostPresenter : PresenterBase<IPostView, IPostModel>, IPostPresente
     public override void OnCreateCompleted()
     {
         base.OnCreateCompleted();
-        OnShowCompleted();
+        InitializePostItem();
     }
 
     public override void OnShowCompleted()
@@ -94,6 +94,7 @@ public class PostPresenter : PresenterBase<IPostView, IPostModel>, IPostPresente
         bBSPostItem.PhotoUrls = _model.Post.PhotoUrls;
         bBSPostItem.Post = _model.Post;
         await bBSPostItem.LoadPostItems();
+
         _view.PostItemRoot.RebuildLayout();
     }
 
@@ -120,7 +121,8 @@ public class PostPresenter : PresenterBase<IPostView, IPostModel>, IPostPresente
     private void ClearPostItem()
     {
         Instantiater.DeactivateObjectPool(StrDef.B_B_S_POST_ITEM_DATA_PATH);
+        Instantiater.DeactivateObjectPool(StrDef.POST_PHOTO_ITEM_DATA_PATH);
         Instantiater.Release(StrDef.B_B_S_POST_ITEM_DATA_PATH);
-
+        Instantiater.Release(StrDef.POST_PHOTO_ITEM_DATA_PATH);
     }
 }
