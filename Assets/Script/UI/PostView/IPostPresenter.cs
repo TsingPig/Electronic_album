@@ -4,5 +4,5 @@ public interface IPostPresenter : IPresenter
 {
     void Quit();
 
-    void DeletePost();
+    void TryDeletePost();
 }

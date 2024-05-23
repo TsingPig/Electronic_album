@@ -1132,7 +1132,7 @@ GameObject:
   - component: {fileID: 489125348845689620}
   - component: {fileID: 3543336164814382523}
   m_Layer: 5
-  m_Name: Content
+  m_Name: CommentItemRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3331,7 +3331,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5682656696636542765}
   m_Layer: 5
-  m_Name: PhotoWallItemRoot
+  m_Name: PostItemRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3448,8 +3448,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2515315029351467153}
   m_HandleRect: {fileID: 1721901550431236990}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.9057493
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4569,25 +4569,29 @@ PrefabInstance:
       propertyPath: m_Name
       value: Notification
       objectReference: {fileID: 0}
+    - target: {fileID: 7595267012989811271, guid: cc5c5abf040f33b449de2829652b06ad, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7673430980527762693, guid: cc5c5abf040f33b449de2829652b06ad, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7673430980527762693, guid: cc5c5abf040f33b449de2829652b06ad, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7673430980527762693, guid: cc5c5abf040f33b449de2829652b06ad, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 364
       objectReference: {fileID: 0}
     - target: {fileID: 7673430980527762693, guid: cc5c5abf040f33b449de2829652b06ad, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 7673430980527762693, guid: cc5c5abf040f33b449de2829652b06ad, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -50
       objectReference: {fileID: 0}
     - target: {fileID: 7673965051498470149, guid: cc5c5abf040f33b449de2829652b06ad, type: 3}
       propertyPath: m_Pivot.x
@@ -4623,7 +4627,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7673965051498470149, guid: cc5c5abf040f33b449de2829652b06ad, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 62
       objectReference: {fileID: 0}
     - target: {fileID: 7673965051498470149, guid: cc5c5abf040f33b449de2829652b06ad, type: 3}
       propertyPath: m_LocalPosition.x

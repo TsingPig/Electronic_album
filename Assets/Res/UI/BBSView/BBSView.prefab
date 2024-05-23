@@ -4836,25 +4836,29 @@ PrefabInstance:
       propertyPath: m_Name
       value: Notification
       objectReference: {fileID: 0}
+    - target: {fileID: 7595267012989811271, guid: cc5c5abf040f33b449de2829652b06ad, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7673430980527762693, guid: cc5c5abf040f33b449de2829652b06ad, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7673430980527762693, guid: cc5c5abf040f33b449de2829652b06ad, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7673430980527762693, guid: cc5c5abf040f33b449de2829652b06ad, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 364
       objectReference: {fileID: 0}
     - target: {fileID: 7673430980527762693, guid: cc5c5abf040f33b449de2829652b06ad, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 7673430980527762693, guid: cc5c5abf040f33b449de2829652b06ad, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -50
       objectReference: {fileID: 0}
     - target: {fileID: 7673965051498470149, guid: cc5c5abf040f33b449de2829652b06ad, type: 3}
       propertyPath: m_Pivot.x
@@ -4890,7 +4894,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7673965051498470149, guid: cc5c5abf040f33b449de2829652b06ad, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 62
       objectReference: {fileID: 0}
     - target: {fileID: 7673965051498470149, guid: cc5c5abf040f33b449de2829652b06ad, type: 3}
       propertyPath: m_LocalPosition.x
