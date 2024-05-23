@@ -6,6 +6,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UIManager = MVPFrameWork.UIManager;
 
+/// <summary>
+/// 每个帖子的项
+/// </summary>
 public class BBSPostItem : MonoBehaviour
 {
     public Button BtnEnterPost;

@@ -16,7 +16,7 @@ public class PhotoDetailPresenter : PresenterBase<IPhotoDetailView, IPhotoDetail
     {
         base.OnCreateCompleted();
         _view.ImgDetailPhoto.sprite = _model.ImgPhotoDetail.sprite;
-        _view.BtnDeletePhoto.gameObject.SetActive(_model.AllowDelete && _model.AlbumName != CreatePhotoWallItemPresenter.DefaultTargetAlbumName);
+        _view.BtnDeletePhoto.gameObject.SetActive(_model.AllowDelete && (_model.AlbumName != CreatePhotoWallItemPresenter.DefaultTargetAlbumName && _model.AlbumName != CreatePostItemPresenter.DefaultTargetAlbumName));
     }
 
     public void DeletePhoto()

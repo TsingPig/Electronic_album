@@ -2,6 +2,9 @@ using Michsky.MUIP;
 using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// Ã¿¸ö°å¿éÏî
+/// </summary>
 public class BBSTypeItem : ItemBase
 {
     public ButtonManager BtnEnterBBS;

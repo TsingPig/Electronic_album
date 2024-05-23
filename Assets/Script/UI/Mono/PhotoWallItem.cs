@@ -6,6 +6,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using Image = UnityEngine.UI.Image;
 
+/// <summary>
+/// ¶¯Ì¬Ïî£¨ÕÕÆ¬Ç½Ïî£©
+/// </summary>
 public class PhotoWallItem : ItemBase
 {
     public Image UserIcon;
