@@ -66,6 +66,22 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
                 UIManager.Instance.Quit(ViewId.LoginView);
                 UIManager.Instance.Enter(ViewId.MainView, new MainModel());
             }
+            else
+            {
+                UIManager.Instance.Enter(ViewId.NotificationView, new NotificationModel()
+                {
+                    Title = "账号已存在"
+                });
+                Debug.Log("账号已存在");
+            }
+        }
+        else
+        {
+            UIManager.Instance.Enter(ViewId.NotificationView, new NotificationModel()
+            {
+                Title = "两次输入的密码不一致"
+            });
+            Debug.Log("两次输入的密码不一致");
         }
     }
 
