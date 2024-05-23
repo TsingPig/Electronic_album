@@ -73,7 +73,6 @@ class PostManager:
         # print(post_id)
         PhotoManager.delete_photos_by_postId(post_id)
         cursor.execute("DELETE FROM postinfo WHERE postid = %s", (post_id))
-        # TODO: 图床中的图片是否要删除
         db.commit()
         cursor.close()
         db.close()

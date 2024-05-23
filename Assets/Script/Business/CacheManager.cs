@@ -263,6 +263,24 @@ public class CacheManager : Singleton<CacheManager>
         return UserInform.isSuper;
     }
 
+    public bool CheckSuperOrSelf(string selfName, Action succeedCallback = null, Action failedCallback = null)
+    {
+        if(UserInform.isSuper)
+        {
+            succeedCallback?.Invoke();
+        }
+        else if(UserName == selfName)
+        {
+            succeedCallback?.Invoke();
+        }
+        else
+        {
+            Debug.Log($"{UserName} 不是管理员或本人，无法执行该操作");
+            failedCallback?.Invoke();
+        }
+        return UserInform.isSuper || (UserName == selfName);
+    }
+
     /// <summary>
     ///  保存头像到本地，并返回保存的路径
     /// </summary>

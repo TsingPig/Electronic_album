@@ -149,10 +149,11 @@ def get_photos(account, album_name, rank):
         if rank == -1:
             if len(photos) == 0:
                 return send_file(default_path)
-            photo_to_send = os.path.join(album_path, photos[0])
+            photo_to_send = os.path.join(album_path, photos[-1])
             return send_file(photo_to_send)
 
         if rank < len(photos):
+            rank = len(photos) - rank - 1
             photo_to_send = os.path.join(album_path, photos[rank])
 
             return send_file(photo_to_send)
@@ -188,6 +189,7 @@ def delete_photo(account, album_name, rank):
         rank = int(rank.split(".")[0])
 
         if rank < len(photos):
+            rank = len(photos) - rank - 1
             photo_to_delete = os.path.join(album_path, photos[rank])
 
             os.remove(photo_to_delete)

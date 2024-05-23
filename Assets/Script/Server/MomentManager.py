@@ -35,6 +35,7 @@ class MomentManager:
         db, cursor = getconnection()
         cursor.execute("SELECT * FROM postinfo")
         moments = cursor.fetchall()
+        moments = moments[0:10]
         for moment in reversed(moments):
             info_to_send = {}
             info_to_send["UserName"] = moment["account"]
