@@ -13,4 +13,5 @@ public static class StrDef
     public const string B_B_S_POST_PHOTO_ITEM_DATA_PATH = "BBSPostPhotoItem";
     public const string POST_ITEM_DATA_PATH = "PostItem";
     public const string POST_PHOTO_ITEM_DATA_PATH = "PostPhotoItem";
+    public const string COMMENT_ITEM_DATA_PATH = "CommentItem";
 }

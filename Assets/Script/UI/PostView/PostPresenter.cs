@@ -11,13 +11,13 @@ public class PostPresenter : PresenterBase<IPostView, IPostModel>, IPostPresente
     public override void OnCreateCompleted()
     {
         base.OnCreateCompleted();
-        InitializePostItem();
+        OnShowCompleted();
     }
 
     public override void OnShowCompleted()
     {
         base.OnShowCompleted();
-        RefreshPostView();
+        InitializePostItem(RefreshPostView);
     }
 
     public void Quit()
@@ -72,24 +72,10 @@ public class PostPresenter : PresenterBase<IPostView, IPostModel>, IPostPresente
     }
 
 
-    private void RefreshPostView()
-    {
-        ClearPostItem();
-        InitializePostItem();
-
-    }
-
-    private async void RefreshPostModel(Action callback = null)
-    {
-        _model.Comments = await ServerManager.Instance.GetComments(_model.Post.PostId);
-        // _model.Posts = await ServerManager.Instance.GetBBSPosts(_model.Section.sectionname);
-        callback?.Invoke();
-    }
-
     /// <summary>
-    /// 显示帖子内容主体
+    /// 初始化帖子内容主体
     /// </summary>
-    private async void InitializePostItem()
+    private async void InitializePostItem(Action callback = null)
     {
         BBSPostItem bBSPostItem = (await Instantiater.InstantiateAsync(StrDef.POST_ITEM_DATA_PATH, _view.PostItemRoot.transform)).GetComponent<BBSPostItem>();
         bBSPostItem.BtnEnterPost.interactable = false;
@@ -113,10 +99,27 @@ public class PostPresenter : PresenterBase<IPostView, IPostModel>, IPostPresente
         float newHeight = postRootHeight - postItemRootHeight - 50f;
         scrollbarRectTransform.sizeDelta = new Vector2(scrollbarRectTransform.sizeDelta.x, newHeight);
 
-        _view.CommentItemRoot.RebuildLayout();
+        callback?.Invoke();
 
+    }
 
+    /// <summary>
+    /// 刷新视图（数据、布局）
+    /// </summary>
+    private void RefreshPostView()
+    {
+        ClearPostItem();
+        InitializePostItem(() => { RefreshPostModel(() => { RefreshCommentItem(() => { _view.CommentItemRoot.RebuildLayout(); }); }); });
+    }
 
+    /// <summary>
+    /// 刷新帖子评论数据
+    /// </summary>
+    /// <param name="callback"></param>
+    private async void RefreshPostModel(Action callback = null)
+    {
+        _model.Comments = await ServerManager.Instance.GetComments(_model.Post.PostId);
+        callback?.Invoke();
     }
 
     /// <summary>
@@ -125,17 +128,14 @@ public class PostPresenter : PresenterBase<IPostView, IPostModel>, IPostPresente
     /// <param name="callback"></param>
     private async void RefreshCommentItem(Action callback = null)
     {
-        //foreach(IBBSModel.Post post in _model.Posts)
-        //{
-        //    BBSPostItem bBSPostItem = (await Instantiater.InstantiateAsync(StrDef.B_B_S_POST_ITEM_DATA_PATH, _view.BBSPostItemRoot.transform)).GetComponent<BBSPostItem>();
-        //    bBSPostItem.Title.text = post.Title;
-        //    bBSPostItem.UserName.text = post.UserName;
-        //    bBSPostItem.Content.text = post.Content;
-        //    bBSPostItem.PhotoUrls = post.PhotoUrls;
-        //    bBSPostItem.Post = post;
-        //    await bBSPostItem.LoadPostItems();
-        //}
-        //callback?.Invoke();
+        foreach(IPostModel.Comment comment in _model.Comments)
+        {
+            CommentItem commentItem = (await Instantiater.InstantiateAsync(StrDef.COMMENT_ITEM_DATA_PATH, _view.CommentItemRoot.transform)).GetComponent<CommentItem>();
+            commentItem.UserName.text = comment.UserName;
+            commentItem.Content.text = comment.Content;
+            commentItem.CreateTime.text = comment.CreateTime;
+        }
+        callback?.Invoke();
     }
 
 
