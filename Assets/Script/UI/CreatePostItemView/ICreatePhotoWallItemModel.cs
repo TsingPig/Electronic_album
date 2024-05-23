@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public interface ICreatePostItemModel: IModel
+public interface ICreatePostItemModel : IModel
 {
     Texture2D[] Photos { get; set; }
 
@@ -8,7 +8,7 @@ public interface ICreatePostItemModel: IModel
 
     string Title { get; set; }
 
-    string SectionName { get; set;  }
+    string SectionName { get; set; }
 
     void SetModel(Texture2D[] photos, string content);
 }

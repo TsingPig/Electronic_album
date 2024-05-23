@@ -1,6 +1,7 @@
 using MVPFrameWork;
 using UnityEngine;
 using UIManager = MVPFrameWork.UIManager;
+
 public class BBSTypeCreatePresenter : PresenterBase<IBBSTypeCreateView>, IBBSTypeCreatePresenter
 {
     public void Quit()
@@ -16,8 +17,4 @@ public class BBSTypeCreatePresenter : PresenterBase<IBBSTypeCreateView>, IBBSTyp
         UIManager.Instance.Quit(ViewId.BBSTypeCreateView);
         // ServerManager.Instance.GetBBS(CacheManager.Instance.UserName);
     }
-
-
-
-   
 }

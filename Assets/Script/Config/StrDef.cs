@@ -13,4 +13,5 @@ public static class StrDef
     public const string B_B_S_VIEW_DATA_PATH = "BBSView";
     public const string CREATE_POST_ITEM_VIEW_DATA_PATH = "CreatePostItemView";
     public const string POST_PHOTO_ITEM_DATA_PATH = "PostPhotoItem";
+    public const string POST_VIEW_DATA_PATH = "PostView";
 }

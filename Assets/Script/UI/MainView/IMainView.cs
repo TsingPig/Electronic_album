@@ -1,7 +1,6 @@
 using Michsky.MUIP;
 using MVPFrameWork;
 using TMPro;
-using UnityEngine;
 using UnityEngine.UI;
 
 public interface IMainView : IView
@@ -17,11 +16,12 @@ public interface IMainView : IView
     #endregion TopPanel
 
     #region BBSTypeView
+
     ButtonManager BtnCreateBBSType { get; set; }
 
     GridLayoutGroup BBSTypeItemRoot { get; set; }
-        
-    #endregion
+
+    #endregion BBSTypeView
 
     #region PhotoWallView
 

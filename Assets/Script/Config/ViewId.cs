@@ -10,4 +10,5 @@ public static class ViewId
     public const int BBSTypeCreateView = 1008;
     public const int BBSView = 1009;
     public const int CreatePostItemView = 1010;
+    public const int PostView = 1011;
 }

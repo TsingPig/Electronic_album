@@ -1,9 +1,5 @@
 using System.Data;
-using System.Diagnostics;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Web;
 using TsingPigSDK;
-using Unity.VisualScripting.Antlr3.Runtime;
 
 public class MySQLManager : Singleton<MySQLManager>
 {
@@ -58,7 +54,6 @@ public class MySQLManager : Singleton<MySQLManager>
         }
     }
 
-
     /// <summary>
     /// 向数据库尝试登录管理员账号
     /// </summary>
@@ -66,7 +61,7 @@ public class MySQLManager : Singleton<MySQLManager>
     /// <param name="userPassword"></param>
     /// <returns>是否成功登录</returns>
     public bool LoginSuper(string account, string userPassword)
-    { 
+    {
         string[] items = { "account", "password", "isSuper" };
         string tablename = "useraccount";
         string[] operation = { "=", "=" };
@@ -75,11 +70,11 @@ public class MySQLManager : Singleton<MySQLManager>
         DataSet result = new DataSet();
         result = _mySQLAccess.Select(tablename, items, whereColumns, operation, value);
         // 检查是否返回了任何行
-        if (result != null && result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0 && result.Tables[0].Columns.Count > 1 )
+        if(result != null && result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0 && result.Tables[0].Columns.Count > 1)
         {
             object columnValue = result.Tables[0].Rows[0][2];
             bool booleanValue = (bool)columnValue;
-            if (booleanValue) { return true; }// 用户名和密码匹配，登录成功
+            if(booleanValue) { return true; }// 用户名和密码匹配，登录成功
             else { return false; }
         }
         else
@@ -101,13 +96,13 @@ public class MySQLManager : Singleton<MySQLManager>
         string tablename = "useraccount";
         string[] operation = { "=" };
         string[] whereColumns = { "account" };
-        string[] value = { account};
+        string[] value = { account };
         DataSet result = new DataSet();
         result = _mySQLAccess.Select(tablename, items, whereColumns, operation, value);
         // 检查是否返回了任何行
         object columnValue = result.Tables[0].Rows[0][0];
         string NickNameValue = (string)columnValue;
-        return NickNameValue;   
+        return NickNameValue;
     }
 
     /// <summary>
@@ -167,7 +162,7 @@ public class MySQLManager : Singleton<MySQLManager>
 
         DataSet result = _mySQLAccess.Select(tableName, items, whereColumns, operation, values);
 
-        if (result != null && result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0)
+        if(result != null && result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0)
         {
             // 返回查询到的昵称是否为管理员
             string columnValue = result.Tables[0].Rows[0]["is_super"].ToString();
@@ -191,7 +186,7 @@ public class MySQLManager : Singleton<MySQLManager>
 
         DataSet result = _mySQLAccess.Select(tableName, items, whereColumns, operation, values);
 
-        if (result != null && result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0)
+        if(result != null && result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0)
         {
             // 返回查询到的id
             return int.Parse(result.Tables[0].Rows[0]["sectionid"].ToString());
@@ -202,6 +197,7 @@ public class MySQLManager : Singleton<MySQLManager>
             return -1;
         }
     }
+
     private new void Awake()
     {
         base.Awake();

@@ -1,8 +1,6 @@
 using Michsky.MUIP;
 using MVPFrameWork;
 using TMPro;
-using UnityEngine;
-using UnityEngine.Purchasing;
 using UnityEngine.UI;
 
 [ParentInfo(FindType.FindWithName, StrDef.CANVAS)]
@@ -30,12 +28,13 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
     private GridLayoutGroup _bBSTypeItemRoot;
 
     public ButtonManager BtnCreateBBSType { get => _btnCreateBBSType; set => _btnCreateBBSType = value; }
+
     public GridLayoutGroup BBSTypeItemRoot
     {
         get => _bBSTypeItemRoot; set => _bBSTypeItemRoot = value;
     }
 
-    #endregion
+    #endregion BBSTypeView
 
     #region PhotoWallView
 
@@ -105,7 +104,7 @@ public class MainView : ViewBase<IMainPresenter>, IMainView
         _bBSTypeItemRoot = _root.Find<GridLayoutGroup>("Window Manager/Windows/BBSTypeView/MainPanel/ScrollbarView/Viewport/BBSTypeItemRoot");
         _btnCreateBBSType.onClick.AddListener(_presenter.EnterBBSTypeCreateView);
 
-        #endregion
+        #endregion BBSTypeView
 
         #region PhotoWallView
 

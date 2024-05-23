@@ -1,4 +1,3 @@
-using Michsky.MUIP;
 using MVPFrameWork;
 
 public interface IMainPresenter : IPresenter
@@ -15,7 +14,7 @@ public interface IMainPresenter : IPresenter
 
     void EnterBBSTypeCreateView();
 
-    #endregion
+    #endregion BBSTypeView
 
     #region PhotoWallView
 

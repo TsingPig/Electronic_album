@@ -89,8 +89,6 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
         {
             Debug.Log("ÕËºÅ»òÕßÃÜÂë´íÎó");
         }
-
-
     }
 
     public void ChangePasswordState(bool value)

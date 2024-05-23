@@ -1,11 +1,6 @@
 using Michsky.MUIP;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using TMPro;
-using TsingPigSDK;
 using UnityEngine;
-using UnityEngine.UI;
-using Image = UnityEngine.UI.Image;
 
 public class BBSTypeItem : ItemBase
 {
@@ -20,8 +15,9 @@ public class BBSTypeItem : ItemBase
             Debug.Log("Enter BBSTypeView");
 
             var bbs = new BBSModel();
-            
-            bbs.SetModel(new IBBSModel.BBS() { 
+
+            bbs.SetModel(new IBBSModel.BBS()
+            {
                 sectionname = TxtBBSTypeName.text,
             });
 

@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Principal;
 using System.Threading.Tasks;
 using TsingPigSDK;
 using UnityEngine;
@@ -692,7 +691,6 @@ public class ServerManager : Singleton<ServerManager>
         }
     }
 
-
     /// <summary>
     ///  获得某个文件夹路径下的文件数量
     /// </summary>
@@ -772,7 +770,6 @@ public class ServerManager : Singleton<ServerManager>
     {
         WWWForm form = new WWWForm();
         form.AddField("sectionName", sectionName);
-
 
         using(UnityWebRequest www = UnityWebRequest.Post($"{host}/delete_section", form))
         {

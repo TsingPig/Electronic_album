@@ -9859,7 +9859,7 @@ GameObject:
   - component: {fileID: 6907039065110741276}
   - component: {fileID: 5288815193716536056}
   m_Layer: 5
-  m_Name: MomentView
+  m_Name: PostView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

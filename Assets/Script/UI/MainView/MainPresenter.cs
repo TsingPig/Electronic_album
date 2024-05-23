@@ -3,9 +3,7 @@ using System;
 using TsingPigSDK;
 using UnityEngine;
 using UnityEngine.UI;
-using Michsky.MUIP;
 using UIManager = MVPFrameWork.UIManager;
-
 
 public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresenter
 {
@@ -26,7 +24,6 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
         base.OnShowCompleted();
         RefreshPhotoWallView();
         RefreshBBSTypeView();
-
     }
 
     #region TopPanel
@@ -53,22 +50,20 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
     #region BBSTypeView
 
     #region Public
+
     public void EnterBBSTypeCreateView()
     {
         UIManager.Instance.Enter(ViewId.BBSTypeCreateView);
     }
 
-
-    #endregion
+    #endregion Public
 
     #region Private
-
 
     private async void RefreshSectionsModel(Action callback = null)
     {
         _model.Sections = await ServerManager.Instance.GetSections();
         callback?.Invoke();
-
     }
 
     private void RefreshBBSTypeView()
@@ -76,7 +71,6 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
         Debug.Log("RefreshBBSTypeView");
         ClearBBSTypeItem();
         RefreshSectionsModel(() => { RefreshBBSTypeItem(RefreshBBSTypeViewLayout); });
-
     }
 
     private async void RefreshBBSTypeItem(Action callback = null)
@@ -100,9 +94,9 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
         _view.BBSTypeItemRoot.RebuildLayout();
     }
 
-    #endregion
+    #endregion Private
 
-    #endregion
+    #endregion BBSTypeView
 
     #region PhotoWallView
 
@@ -303,7 +297,6 @@ public class MainPresenter : PresenterBase<IMainView, IMainModel>, IMainPresente
         }
     }
 
-    
     #endregion Private
 
     #endregion AlbumView
