@@ -9,4 +9,6 @@ public interface IBBSTypeCreateView : IView
     TMP_InputField InptBBSTypeName { get; }
 
     ButtonManager BtnCreate { get; }
+
+    ButtonManager BtnClear { get; }
 }
