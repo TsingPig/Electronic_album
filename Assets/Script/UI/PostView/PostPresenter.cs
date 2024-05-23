@@ -77,6 +77,7 @@ public class PostPresenter : PresenterBase<IPostView, IPostModel>, IPostPresente
 
     private async void RefreshPostModel(Action callback = null)
     {
+        _model.Comments = await ServerManager.Instance.GetComments(_model.Post.PostId);
         // _model.Posts = await ServerManager.Instance.GetBBSPosts(_model.Section.sectionname);
         callback?.Invoke();
     }

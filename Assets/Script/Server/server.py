@@ -316,23 +316,30 @@ def get_posts_by_section():
 
 @app.route("/delete_post", methods=["POST"])
 def delete_post():
-    # account = request.form["account"]
-    # createtime = request.form["createtime"]
-    # if PostManager.delete_post_by_username_and_createtime(account, createtime):
-    #     return "post delete"
-    # else:
-    #     return "post delete failed"
     postid = request.form["post_id"]
     PostManager.delete_post_by_id(postid)
     return "post delete"
     
-@app.route("/upload_comment", methods=["POST"])
-def upload_comment():
+@app.route("/create_comment", methods=["POST"])
+def create_comment():
     account = request.form["account"]
     post_id = request.form["post_id"]
     text = request.form["text"]
     CommentManager.add_comment(account, post_id, text)
-    return "comment upload"
+    return "comment create"
+
+@app.route("/get_comments", methods=["POST"])
+def get_comments():
+    post_id = request.form["post_id"]
+    data = {"comments": []}
+    data["comments"] = CommentManager.get_comments(post_id)
+    return json.dumps(data)
+
+@app.route("/delete_comment", methods=["POST"])
+def delete_comment():
+    comment_id = request.form["comment_id"]
+    CommentManager.delete_comment_by_id(comment_id)
+    return "comment delete"
     
 
 if __name__ == "__main__":

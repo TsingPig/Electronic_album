@@ -15,7 +15,7 @@ def getconnection():
 
 class CommentManager:
     @staticmethod
-    def add_comment(account: str, post_id: int, text: str):
+    def add_comment(account: str, post_id: int, text: str) -> bool:
         db, cursor = getconnection()
         cursor.execute("INSERT INTO commentinfo (account, rootpostid, commentinfo) VALUES (%s, %s, %s)", (account, post_id, text))
         db.commit()
@@ -25,9 +25,26 @@ class CommentManager:
     
     @staticmethod
     def get_comments(post_id: int) -> List[Dict]:
+        data = []
         db, cursor = getconnection()
         cursor.execute("SELECT * FROM commentinfo WHERE rootpostid = %s", (post_id))
-        result = cursor.fetchall()
+        comments = cursor.fetchall()
+        for comment in comments:
+            info_to_send = {}
+            info_to_send["UserName"] = comment["account"]
+            info_to_send["Content"] = comment["commentinfo"]
+            info_to_send["CreateTime"] = str(comment["createtime"])
+            info_to_send["CommentId"] = comment["commentid"]
+            data.append(info_to_send)
         cursor.close()
         db.close()
-        return result
+        return data
+    
+    @staticmethod
+    def delete_comment_by_id(comment_id: int) -> bool:
+        db, cursor = getconnection()
+        cursor.execute("DELETE FROM commentinfo WHERE commentid = %s", (comment_id))
+        db.commit()
+        cursor.close()
+        db.close()
+        return True

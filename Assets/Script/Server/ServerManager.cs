@@ -291,6 +291,36 @@ public class ServerManager : Singleton<ServerManager>
         }
     }
 
+    public async Task<List<IPostModel.Comment>> GetComments(int postId)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("post_id", postId);
+
+        using(UnityWebRequest www = UnityWebRequest.Post($"{url}/get_comments", form))
+        {
+            Debug.Log($"开始请求评论数据");
+            www.SendWebRequest();
+            while(!www.isDone)
+            {
+                await Task.Yield();
+            }
+
+            if(www.result == UnityWebRequest.Result.Success)
+            {
+                string jsonResult = www.downloadHandler.text;
+                IPostModel.CommentWrapper commentsWrapper = JsonUtility.FromJson<IPostModel.CommentWrapper>(jsonResult);
+                Debug.Log($"评论数据请求成功：{jsonResult}");
+                Debug.Log($"评论数据个数：{commentsWrapper.comments.Count}");
+                return commentsWrapper.comments;
+            }
+            else
+            {
+                Debug.LogError($"Error: {www.error}");
+                return null;
+            }
+        }
+    }
+
     /// <summary>
     /// 异步加载所有分区板块数据
     /// </summary>
@@ -375,9 +405,9 @@ public class ServerManager : Singleton<ServerManager>
     /// <param name="postCreateTime">帖子创建时间</param>
     /// <param name="commentCreateTime">评论创建时间</param>
     /// <param name="callback">回调事件</param>
-    public void DeleteCommentItem(string account, string postCreateTime, string commentCreateTime, Action callback = null)
+    public void DeleteCommentItem(int commentId, Action callback = null)
     {
-        StartCoroutine(DeleteComment(account, postCreateTime, commentCreateTime, callback));
+        StartCoroutine(DeleteComment(commentId, callback));
     }
 
     /// <summary>
@@ -411,9 +441,9 @@ public class ServerManager : Singleton<ServerManager>
     /// <param name="postCreateTime">发帖时间</param>
     /// <param name="content">评论内容</param>
     /// <param name="callback">回调事件</param>
-    public void CreateCommentItem(string account, string postCreateTime, string content, Action callback = null)
+    public void CreateCommentItem(string account, int postId, string content, Action callback = null)
     {
-        StartCoroutine(CreateComment(account, postCreateTime, content, callback));
+        StartCoroutine(CreateComment(account, postId, content, callback));
     }
 
     /// <summary>
@@ -476,13 +506,12 @@ public class ServerManager : Singleton<ServerManager>
     /// <param name="account"></param>
     /// <param name="content"></param>
     /// <returns></returns>
-    private IEnumerator CreateComment(string account, string postCreateTime, string content, Action callback = null)
+    private IEnumerator CreateComment(string account, int postId, string content, Action callback = null)
     {
         WWWForm form = new WWWForm();
-        // TODO：表单内容
         form.AddField("account", account);
-        form.AddField("createtime", postCreateTime);
-        form.AddField("content", content);
+        form.AddField("post_id", postId);
+        form.AddField("text", content);
 
 
         // form.AddField("section_name", sectionName);
@@ -890,12 +919,10 @@ public class ServerManager : Singleton<ServerManager>
     /// <param name="commentCreateTime">评论创建时间</param>
     /// <param name="callback">回调事件</param>
     /// <returns></returns>
-    private IEnumerator DeleteComment(string account, string postCreateTime, string commentCreateTime, Action callback = null)
+    private IEnumerator DeleteComment(int commentId, Action callback = null)
     {
         WWWForm form = new WWWForm();
-        form.AddField("account", account);
-        form.AddField("createtime", postCreateTime);
-        form.AddField("comment_create_time", commentCreateTime);
+        form.AddField("comment_id", commentId);
 
         using(UnityWebRequest www = UnityWebRequest.Post($"{host}/delete_comment", form))
         {
@@ -904,13 +931,13 @@ public class ServerManager : Singleton<ServerManager>
 
             if(www.result == UnityWebRequest.Result.Success)
             {
-                Debug.Log($"成功删除评论 {account} {postCreateTime} {commentCreateTime}");
+                Debug.Log($"成功删除评论 {commentId}");
                 UpdatePostItemEvent?.Invoke();
                 callback?.Invoke();
             }
             else
             {
-                Debug.LogError($"删除评论 {account} {postCreateTime} {commentCreateTime} 失败: " + www.error);
+                Debug.LogError($"删除评论 {commentId} 失败: " + www.error);
             }
         }
     }

@@ -67,7 +67,7 @@ class PostManager:
         return True
     
     @staticmethod
-    def delete_post_by_id(post_id: int):
+    def delete_post_by_id(post_id: int) -> bool:
         db, cursor = getconnection()
         print(post_id)
         cursor.execute("DELETE FROM postinfo WHERE postid = %s", (post_id))
