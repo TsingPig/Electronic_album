@@ -45,7 +45,7 @@ class PostManager:
             cursor.execute("SELECT * FROM urlinfo WHERE postid = %s", (post["postid"]))
             info_to_send["PhotoUrls"] = [photo["url"] for photo in cursor.fetchall()]
             info_to_send["PhotoCount"] = len(info_to_send["PhotoUrls"])
-            info_to_send["CreateTime"] = post["createtime"]
+            info_to_send["CreateTime"] = str(post["createtime"])
             data.append(info_to_send)
         cursor.close()
         db.close()
