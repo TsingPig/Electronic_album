@@ -18,11 +18,7 @@ public class BBSPresenter : PresenterBase<IBBSView, IBBSModel>, IBBSPresenter
         RefreshBBSView();
     }
 
-
     [Obsolete("TryDeleteSection，其Notification效果更加通用。")]
-    /// <summary>
-    /// 【管理员操作】 删除板块
-    /// </summary>
     public void DeleteSection()
     {
         CacheManager.Instance.CheckSuper(

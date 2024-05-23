@@ -67,7 +67,6 @@ public class LoginPresenter : PresenterBase<ILoginView>, ILoginPresenter
 
     public void OnSuperLogin()
     {
-
         string LoginInputSuperAccount = RestrictedStringToLettersOrNumbers(_view.InptLoginSuperInputAccount.text);
         string LoginInputSuperPassword = RestrictedStringToLettersOrNumbers(_view.InptLoginSuperInputPassword.text);
 

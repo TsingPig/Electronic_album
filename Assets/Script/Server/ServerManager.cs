@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Principal;
 using System.Threading.Tasks;
 using TsingPigSDK;
 using UnityEngine;
@@ -386,7 +385,6 @@ public class ServerManager : Singleton<ServerManager>
         StartCoroutine(DeleteSection(bBsTypeName, callback));
     }
 
-    
     /// <summary>
     /// É¾³ýÌû×ÓÏî
     /// </summary>
@@ -512,7 +510,6 @@ public class ServerManager : Singleton<ServerManager>
         form.AddField("account", account);
         form.AddField("post_id", postId);
         form.AddField("text", content);
-
 
         // form.AddField("section_name", sectionName);
         using(UnityWebRequest www = UnityWebRequest.Post($"{host}/create_comment", form))
