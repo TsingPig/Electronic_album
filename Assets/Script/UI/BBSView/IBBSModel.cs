@@ -28,6 +28,9 @@ public interface IBBSModel : IModel
 
         [JsonProperty("PhotoUrls")]
         public List<string> PhotoUrls;
+
+        [JsonProperty("CreateTime")]
+        public string CreateTime;
     }
 
     //[Serializable]

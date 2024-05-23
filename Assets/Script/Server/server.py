@@ -313,7 +313,15 @@ def get_posts_by_section():
     data["posts"] = PostManager.get_posts_by_section(sectionname)
     return json.dumps(data)
 
-
+@app.route("/delete_post", methods=["POST"])
+def delete_post():
+    account = request.form["account"]
+    createtime = request.form["createtime"]
+    if PostManager.delete_post_by_username_and_createtime(account, createtime):
+        return "post delete"
+    else:
+        return "post delete failed"
+    
 
 if __name__ == "__main__":
     from waitress import serve
