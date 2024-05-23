@@ -322,6 +322,14 @@ def delete_post():
     else:
         return "post delete failed"
     
+@app.route("/upload_comment", methods=["POST"])
+def upload_comment():
+    account = request.form["account"]
+    post_id = request.form["post_id"]
+    text = request.form["text"]
+    CommentManager.add_comment(account, post_id, text)
+    return "comment upload"
+    
 
 if __name__ == "__main__":
     from waitress import serve
