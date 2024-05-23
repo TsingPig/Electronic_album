@@ -11,12 +11,6 @@ using UIManager = MVPFrameWork.UIManager;
 /// </summary>
 public class BBSPostItem : MonoBehaviour
 {
-    /// <summary>
-    /// 是否点击帖子空白处可以进入评论区页面。只有在BBSView页面才需要为true
-    /// </summary>
-    [HideInInspector]
-    public bool AllowEnterPostView = true;
-
     public Button BtnEnterPost;
 
     public TMP_Text UserName;
@@ -33,17 +27,10 @@ public class BBSPostItem : MonoBehaviour
 
     private void Start()
     {
-        if(AllowEnterPostView)
+        BtnEnterPost.onClick.AddListener(() =>
         {
-            BtnEnterPost.onClick.AddListener(() =>
-            {
-                UIManager.Instance.Enter(ViewId.PostView, new PostModel() { Post = Post });
-            });
-        }
-        else
-        {
-            BtnEnterPost.gameObject.SetActive(false);
-        }
+            UIManager.Instance.Enter(ViewId.PostView, new PostModel() { Post = Post });
+        });
     }
 
 

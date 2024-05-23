@@ -87,7 +87,8 @@ public class PostPresenter : PresenterBase<IPostView, IPostModel>, IPostPresente
     private async void InitializePostItem()
     {
         BBSPostItem bBSPostItem = (await Instantiater.InstantiateAsync(StrDef.B_B_S_POST_ITEM_DATA_PATH, _view.PostItemRoot.transform)).GetComponent<BBSPostItem>();
-        bBSPostItem.AllowEnterPostView = false;
+        bBSPostItem.BtnEnterPost.gameObject.SetActive(false);
+
         bBSPostItem.Title.text = _model.Post.Title;
         bBSPostItem.UserName.text = _model.Post.UserName;
         bBSPostItem.Content.text = _model.Post.Content;
