@@ -73,6 +73,7 @@ public class PostPresenter : PresenterBase<IPostView, IPostModel>, IPostPresente
     {
         ClearPostItem();
         InitializePostItem();
+        
     }
 
     private async void RefreshPostModel(Action callback = null)
@@ -96,7 +97,8 @@ public class PostPresenter : PresenterBase<IPostView, IPostModel>, IPostPresente
 
         await bBSPostItem.LoadPostPhotoItem(StrDef.POST_PHOTO_ITEM_DATA_PATH);
 
-        _view.PostItemRoot.RebuildLayout();
+        // _view.PostItemRoot.RebuildLayout();
+        _view.PostRoot.RebuildLayout();
     }
 
     /// <summary>

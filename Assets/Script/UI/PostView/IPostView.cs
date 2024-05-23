@@ -5,7 +5,9 @@ using UnityEngine.UI;
 
 public interface IPostView : IView
 {
-    public VerticalLayoutGroup PostItemRoot { get;  }
+    public VerticalLayoutGroup PostItemRoot { get; }
+
+    public VerticalLayoutGroup PostRoot { get; }
 
     public ButtonManager BtnQuit { get; }
 
