@@ -23,6 +23,7 @@ public class PostPresenter : PresenterBase<IPostView, IPostModel>, IPostPresente
     public void Quit()
     {
         UIManager.Instance.Quit(ViewId.PostView);
+        _view.CreateCommentPanel.gameObject.SetActive(false);
     }
 
     [Obsolete("请使用TryDeletePost，其Notification效果更加通用。")]
@@ -154,7 +155,9 @@ public class PostPresenter : PresenterBase<IPostView, IPostModel>, IPostPresente
     {
         Instantiater.DeactivateObjectPool(StrDef.POST_ITEM_DATA_PATH);
         Instantiater.DeactivateObjectPool(StrDef.POST_PHOTO_ITEM_DATA_PATH);
+        Instantiater.DeactivateObjectPool(StrDef.COMMENT_ITEM_DATA_PATH);
         Instantiater.Release(StrDef.POST_ITEM_DATA_PATH);
         Instantiater.Release(StrDef.POST_PHOTO_ITEM_DATA_PATH);
+        Instantiater.Release(StrDef.COMMENT_ITEM_DATA_PATH);
     }
 }
