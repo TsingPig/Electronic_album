@@ -27,6 +27,9 @@ public interface IBBSModel : IModel
 
         [JsonProperty("CreateTime")]
         public string CreateTime;
+
+        [JsonProperty("PostId")]
+        public int PostId;
     }
 
     [Serializable]

@@ -356,15 +356,16 @@ public class ServerManager : Singleton<ServerManager>
         StartCoroutine(DeleteSection(bBsTypeName, callback));
     }
 
+    
     /// <summary>
     /// 删除帖子项
     /// </summary>
     /// <param name="account"></param>
     /// <param name="createTime"></param>
     /// <param name="callback"></param>
-    public void DeletePostItem(string account, string createTime, Action callback = null)
+    public void DeletePostItem(int postId, Action callback = null)
     {
-        StartCoroutine(DeletePost(account, createTime, callback));
+        StartCoroutine(DeletePost(postId, callback));
     }
 
     /// <summary>
@@ -858,18 +859,10 @@ public class ServerManager : Singleton<ServerManager>
         }
     }
 
-    /// <summary>
-    /// 删除帖子
-    /// </summary>
-    /// <param name="account">用户名</param>
-    /// <param name="createTime">帖子创建时间</param>
-    /// <param name="callback">回调事件</param>
-    /// <returns></returns>
-    private IEnumerator DeletePost(string account, string createTime, Action callback = null)
+    private IEnumerator DeletePost(int postId, Action callback = null)
     {
         WWWForm form = new WWWForm();
-        form.AddField("account", account);
-        form.AddField("createtime", createTime);
+        form.AddField("post_id", postId);
 
         using(UnityWebRequest www = UnityWebRequest.Post($"{host}/delete_post", form))
         {
@@ -878,13 +871,13 @@ public class ServerManager : Singleton<ServerManager>
 
             if(www.result == UnityWebRequest.Result.Success)
             {
-                Debug.Log($"成功删除帖子 {account} {createTime}");
+                Debug.Log($"成功删除帖子 {postId}");
                 UpdatePostItemEvent?.Invoke();
                 callback?.Invoke();
             }
             else
             {
-                Debug.LogError($"删除帖子 {account} {createTime} 失败: " + www.error);
+                Debug.LogError($"删除帖子 {postId} 失败: " + www.error);
             }
         }
     }

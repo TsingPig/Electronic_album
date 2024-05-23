@@ -22,3 +22,12 @@ class CommentManager:
         cursor.close()
         db.close()
         return True
+    
+    @staticmethod
+    def get_comments(post_id: int) -> List[Dict]:
+        db, cursor = getconnection()
+        cursor.execute("SELECT * FROM commentinfo WHERE rootpostid = %s", (post_id))
+        result = cursor.fetchall()
+        cursor.close()
+        db.close()
+        return result

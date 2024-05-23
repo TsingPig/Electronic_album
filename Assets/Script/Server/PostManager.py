@@ -46,6 +46,7 @@ class PostManager:
             info_to_send["PhotoUrls"] = [photo["url"] for photo in cursor.fetchall()]
             info_to_send["PhotoCount"] = len(info_to_send["PhotoUrls"])
             info_to_send["CreateTime"] = str(post["createtime"])
+            info_to_send["PostId"] = post["postid"]
             data.append(info_to_send)
         cursor.close()
         db.close()
@@ -59,6 +60,17 @@ class PostManager:
         if post is None:
             return False
         cursor.execute("DELETE FROM postinfo WHERE postid = %s", (post["postid"]))
+        # TODO: 图床中的图片是否要删除
+        db.commit()
+        cursor.close()
+        db.close()
+        return True
+    
+    @staticmethod
+    def delete_post_by_id(post_id: int):
+        db, cursor = getconnection()
+        print(post_id)
+        cursor.execute("DELETE FROM postinfo WHERE postid = %s", (post_id))
         # TODO: 图床中的图片是否要删除
         db.commit()
         cursor.close()
