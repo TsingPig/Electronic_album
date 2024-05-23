@@ -35,8 +35,8 @@ public class BBSPresenter : PresenterBase<IBBSView, IBBSModel>, IBBSPresenter
             },
             () =>
             {
-                _view.Notification.title = "当前用户不是管理员！";
-                _view.Notification.OpenNotification();
+                //_view.Notification.title = "当前用户不是管理员！";
+                //_view.Notification.OpenNotification();
             }
             );
     }

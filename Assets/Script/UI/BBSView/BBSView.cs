@@ -13,7 +13,7 @@ public class BBSView : ViewBase<IBBSPresenter>, IBBSView
 
     private ButtonManager _btnEnterCreatePostItemView;
 
-    private NotificationManager _notification;
+    //private NotificationManager _notification;
 
     public VerticalLayoutGroup BBSPostItemRoot => _bBSPostItemRoot;
 
@@ -23,7 +23,7 @@ public class BBSView : ViewBase<IBBSPresenter>, IBBSView
 
     public ButtonManager BtnEnterCreatePostItemView => _btnEnterCreatePostItemView;
 
-    public NotificationManager Notification => _notification;
+    //public NotificationManager Notification => _notification;
 
     protected override void OnCreate()
     {
@@ -32,7 +32,7 @@ public class BBSView : ViewBase<IBBSPresenter>, IBBSView
         _btnDeleteSection = _root.Find<ButtonManager>("GroupPanel/btnDeleteSection");
         _btnEnterCreatePostItemView = _root.Find<ButtonManager>("GroupPanel/btnEnterCreatePostItemView");
 
-        _notification = _root.Find<NotificationManager>("GroupPanel/Notification");
+        // _notification = _root.Find<NotificationManager>("GroupPanel/Notification");
         _btnQuit.onClick.AddListener(() =>
         {
             MVPFrameWork.UIManager.Instance.Quit(ViewId.BBSView);

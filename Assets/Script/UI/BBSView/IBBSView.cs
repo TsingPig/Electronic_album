@@ -12,5 +12,5 @@ public interface IBBSView : IView
 
     public ButtonManager BtnEnterCreatePostItemView { get; }
 
-    public NotificationManager Notification { get; }
+    // public NotificationManager Notification { get; }
 }

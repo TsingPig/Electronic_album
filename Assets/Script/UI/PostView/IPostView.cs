@@ -9,6 +9,6 @@ public interface IPostView : IView
 
     public ButtonManager BtnDeletePost { get; }
 
-    public NotificationManager Notification { get; }
+    // public NotificationManager Notification { get; }
 
 }
