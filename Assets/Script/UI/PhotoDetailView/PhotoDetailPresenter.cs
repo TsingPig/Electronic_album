@@ -1,5 +1,6 @@
 using MVPFrameWork;
 using TsingPigSDK;
+using UIManager = MVPFrameWork.UIManager;
 
 public class PhotoDetailPresenter : PresenterBase<IPhotoDetailView, IPhotoDetailModel>, IPhotoDetailPresenter
 {
@@ -21,13 +22,22 @@ public class PhotoDetailPresenter : PresenterBase<IPhotoDetailView, IPhotoDetail
 
     public void DeletePhoto()
     {
-        MVPFrameWork.UIManager.Instance.Quit(ViewId.PhotoDetailView);
-        ServerManager.Instance.DeletePhoto(CacheManager.Instance.UserName, _model.AlbumName,
+        string albumName = _model.AlbumName;
+        if(albumName == "Moment" || albumName == "Post")
+        {
+            UIManager.Instance.Enter(ViewId.NotificationView, new NotificationModel()
+            {
+                Title = "ÎÞ·¨É¾³ý",
+            });
+            return;
+        }
+        UIManager.Instance.Quit(ViewId.PhotoDetailView);
+        ServerManager.Instance.DeletePhoto(CacheManager.Instance.UserName, albumName,
             Instantiater.DeactivateObjectById(StrDef.PHOTO_ITEM_DATA_PATH, _model.PhotoId));
     }
 
     public void Quit()
     {
-        MVPFrameWork.UIManager.Instance.Quit(ViewId.PhotoDetailView);
+        UIManager.Instance.Quit(ViewId.PhotoDetailView);
     }
 }
