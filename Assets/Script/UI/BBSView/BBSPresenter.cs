@@ -71,6 +71,7 @@ public class BBSPresenter : PresenterBase<IBBSView, IBBSModel>, IBBSPresenter
             bBSPostItem.UserName.text = post.UserName;
             bBSPostItem.Content.text = post.Content;
             bBSPostItem.PhotoUrls = post.PhotoUrls;
+            bBSPostItem.Post = post;
             await bBSPostItem.LoadPostItems();
         }
         callback?.Invoke();

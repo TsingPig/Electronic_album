@@ -15,10 +15,11 @@ public class PostPresenter : PresenterBase<IPostView, IPostModel>, IPostPresente
         CacheManager.Instance.CheckSuper(
             () =>
             {
-                //ServerManager.Instance.DeleteBBSType(_model.Section.sectionname, () =>
-                //{
-                //    UIManager.Instance.Quit(ViewId.BBSView);
-                //});
+                ServerManager.Instance.DeletePostItem(_model.Post.UserName, _model.Post.CreateTime, () =>
+                {
+                    UIManager.Instance.Quit(ViewId.PostView);
+                }
+                );
             },
             () =>
             {

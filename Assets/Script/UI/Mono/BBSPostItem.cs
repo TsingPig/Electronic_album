@@ -22,11 +22,14 @@ public class BBSPostItem : MonoBehaviour
     [HideInInspector]
     public List<string> PhotoUrls;
 
+    [HideInInspector]
+    public IBBSModel.Post Post;
+
     private void Start()
     {
         BtnEnterPost.onClick.AddListener(() =>
         {
-            UIManager.Instance.Enter(ViewId.PostView, new PostModel());
+            UIManager.Instance.Enter(ViewId.PostView, new PostModel() { Post = Post });
         });
     }
 
