@@ -97,7 +97,7 @@ public class BBSPresenter : PresenterBase<IBBSView, IBBSModel>, IBBSPresenter
             bBSPostItem.Content.text = post.Content;
             bBSPostItem.PhotoUrls = post.PhotoUrls;
             bBSPostItem.Post = post;
-            await bBSPostItem.LoadPostItems();
+            await bBSPostItem.LoadPostPhotoItem(StrDef.B_B_S_POST_PHOTO_ITEM_DATA_PATH);
         }
         callback?.Invoke();
     }
@@ -105,8 +105,8 @@ public class BBSPresenter : PresenterBase<IBBSView, IBBSModel>, IBBSPresenter
     private void ClearBBSPostItem()
     {
         Instantiater.DeactivateObjectPool(StrDef.B_B_S_POST_ITEM_DATA_PATH);
-        Instantiater.DeactivateObjectPool(StrDef.POST_PHOTO_ITEM_DATA_PATH);
+        Instantiater.DeactivateObjectPool(StrDef.B_B_S_POST_PHOTO_ITEM_DATA_PATH);
         Instantiater.Release(StrDef.B_B_S_POST_ITEM_DATA_PATH);
-        Instantiater.Release(StrDef.POST_PHOTO_ITEM_DATA_PATH);
+        Instantiater.Release(StrDef.B_B_S_POST_PHOTO_ITEM_DATA_PATH);
     }
 }

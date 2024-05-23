@@ -87,14 +87,15 @@ public class PostPresenter : PresenterBase<IPostView, IPostModel>, IPostPresente
     /// </summary>
     private async void InitializePostItem()
     {
-        BBSPostItem bBSPostItem = (await Instantiater.InstantiateAsync(StrDef.B_B_S_POST_ITEM_DATA_PATH, _view.PostItemRoot.transform)).GetComponent<BBSPostItem>();
-        bBSPostItem.AllowEnterPostView = false;
+        BBSPostItem bBSPostItem = (await Instantiater.InstantiateAsync(StrDef.POST_ITEM_DATA_PATH, _view.PostItemRoot.transform)).GetComponent<BBSPostItem>();
+        bBSPostItem.BtnEnterPost.interactable = false;
         bBSPostItem.Title.text = _model.Post.Title;
         bBSPostItem.UserName.text = _model.Post.UserName;
         bBSPostItem.Content.text = _model.Post.Content;
         bBSPostItem.PhotoUrls = _model.Post.PhotoUrls;
         bBSPostItem.Post = _model.Post;
-        await bBSPostItem.LoadPostItems();
+
+        await bBSPostItem.LoadPostPhotoItem(StrDef.POST_PHOTO_ITEM_DATA_PATH);
 
         _view.PostItemRoot.RebuildLayout();
     }
@@ -121,9 +122,9 @@ public class PostPresenter : PresenterBase<IPostView, IPostModel>, IPostPresente
 
     private void ClearPostItem()
     {
-        Instantiater.DeactivateObjectPool(StrDef.B_B_S_POST_ITEM_DATA_PATH);
+        Instantiater.DeactivateObjectPool(StrDef.POST_ITEM_DATA_PATH);
         Instantiater.DeactivateObjectPool(StrDef.POST_PHOTO_ITEM_DATA_PATH);
-        Instantiater.Release(StrDef.B_B_S_POST_ITEM_DATA_PATH);
+        Instantiater.Release(StrDef.POST_ITEM_DATA_PATH);
         Instantiater.Release(StrDef.POST_PHOTO_ITEM_DATA_PATH);
     }
 }
