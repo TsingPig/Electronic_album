@@ -65,8 +65,8 @@ MonoBehaviour:
     m_Address: Assets/Res/UI/PostView/PostView.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: 97ec6d2c73a73b748b534fff38e180cd
-    m_Address: PostPhotoItem
+  - m_GUID: c308b8025ea0dfa46a77ad48ecf1c0e2
+    m_Address: BBSPostPhotoItem
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: c2fcb75975765db41b20f14405eee466
@@ -99,6 +99,14 @@ MonoBehaviour:
     m_SerializedLabels: []
   - m_GUID: 18cd8e9176ba82f44837505705526159
     m_Address: Assets/Res/UI/NotificationView/NotificationView.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7f65de45a42f1af47938b020a268f80a
+    m_Address: PostItem
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: bc4c569d8e970eb48b8ba670b626a66e
+    m_Address: PostPhotoItem
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0

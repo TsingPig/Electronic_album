@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 6983605550871090344}
   - component: {fileID: 5541765178317124492}
   m_Layer: 5
-  m_Name: BBSPostItem
+  m_Name: PostItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

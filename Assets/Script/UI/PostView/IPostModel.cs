@@ -5,4 +5,6 @@ using System;
 public interface IPostModel : IModel
 {
     IBBSModel.Post Post { get; set; }
+
+    
 }

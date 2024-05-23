@@ -33,13 +33,17 @@ public class BBSPostItem : MonoBehaviour
         });
     }
 
-
-    public async Task LoadPostItems()
+    /// <summary>
+    /// 加载帖子照片项
+    /// </summary>
+    /// <param name="addressablePath">指定是BBSPostPhotoItem / PostPhotoItem</param>
+    /// <returns></returns>
+    public async Task LoadPostPhotoItem(string addressablePath)
     {
         foreach(string photoUrl in PhotoUrls)
         {
-            GameObject postPhotoItemObj = await Instantiater.InstantiateAsync(StrDef.POST_PHOTO_ITEM_DATA_PATH, PostPhotoItemRoot.transform);
-            MomentPhotoItem postPhotoItem = postPhotoItemObj.GetComponent<MomentPhotoItem>();
+            GameObject bBsPostPhotoItemObj = await Instantiater.InstantiateAsync(addressablePath, PostPhotoItemRoot.transform);
+            MomentPhotoItem postPhotoItem = bBsPostPhotoItemObj.GetComponent<MomentPhotoItem>();
             postPhotoItem.PhotoUrl = photoUrl;
             postPhotoItem.GetPhotoAsync();
         }
