@@ -29,4 +29,6 @@ class PhotoManager:
         for photo in photos:
             url = photo["url"]
             path = url.split("/")[-1:-4:-1]
-            print(path)
+            photo_to_delete = os.path.join("uploads", path[2], path[1], path[0])
+            # print(photo_to_delete)
+            PhotoManager.delete_photo_by_path(photo_to_delete)

@@ -52,7 +52,8 @@ public class PostPresenter : PresenterBase<IPostView, IPostModel>, IPostPresente
     /// </summary>
     public void TryDeletePost()
     {
-        CacheManager.Instance.CheckSuper(
+        CacheManager.Instance.CheckSuperOrSelf(
+            _model.Post.UserName,
             () =>
             {
                 ServerManager.Instance.DeletePostItem(_model.Post.PostId,
@@ -66,7 +67,7 @@ public class PostPresenter : PresenterBase<IPostView, IPostModel>, IPostPresente
             {
                 UIManager.Instance.Enter(ViewId.NotificationView, new NotificationModel()
                 {
-                    Title = "删帖操作需要管理员权限！"
+                    Title = "删帖操作需要本人或者管理员权限！"
                 });
             }
         );
@@ -80,6 +81,7 @@ public class PostPresenter : PresenterBase<IPostView, IPostModel>, IPostPresente
         ServerManager.Instance.CreateCommentItem(CacheManager.Instance.UserName, _model.Post.PostId, _view.InptComment.text,
             () =>
             {
+                _view.InptComment.text = "";
                 _view.CreateCommentPanel.gameObject.SetActive(false);
                 RefreshPostView();
             });

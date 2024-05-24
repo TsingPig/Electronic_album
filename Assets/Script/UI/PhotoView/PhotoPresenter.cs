@@ -33,6 +33,16 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
     /// </summary>
     public void UploadPhoto()
     {
+        string albumName = _model.AlbumName;
+        if(albumName == "Moment" || albumName == "Post")
+        {
+            Debug.LogError("不能上传到系统相册！");
+            UIManager.Instance.Enter(ViewId.NotificationView, new NotificationModel()
+            {
+                Title = "不能上传到系统相册！"
+            });
+            return;
+        }
         Texture2D photoTex = null;
         NativeGallery.Permission permission = NativeGallery.GetImageFromGallery((path) =>
         {
@@ -68,6 +78,16 @@ public class PhotoPresenter : PresenterBase<IPhotoView, IPhotoModel>, IPhotoPres
     /// </summary>
     public void UploadMultiPhotos()
     {
+        string albumName = _model.AlbumName;
+        if(albumName == "Moment" || albumName == "Post")
+        {
+            Debug.LogError("不能上传到系统相册！");
+            UIManager.Instance.Enter(ViewId.NotificationView, new NotificationModel()
+            {
+                Title = "不能上传到系统相册！"
+            });
+            return;
+        }
 #if UNITY_EDITOR
         UploadPhoto();
 #else
