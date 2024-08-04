@@ -1,5 +1,7 @@
 # 电子相册系统
 
+效果展示：[https://www.bilibili.com/video/BV1rG411q7kS/?spm_id_from=333.999.0.0&vd_source=7edb63ea9bb59761315b8b9f881d685d](https://www.bilibili.com/video/BV11s421g77b/?spm_id_from=333.999.0.0&vd_source=7edb63ea9bb59761315b8b9f881d685d)
+
 ## 开发人员
 
 **朱正阳、季润民、马朝阳**
